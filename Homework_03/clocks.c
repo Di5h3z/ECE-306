@@ -8,10 +8,7 @@
 // ------------------------------------------------------------------------------
 #include  "functions.h"
 #include  "msp430.h"
-
-// MACROS========================================================================
-#define MCLK_FREQ_MHZ 8                     // MCLK = 8MHz
-#define CLEAR_REGISTER     (0X0000)
+#include "macros.h"
 
 void Init_Clocks(void);
 void Software_Trim(void);
@@ -118,5 +115,3 @@ void Software_Trim(void){
   CSCTL1 = csCtl1Copy;                      // Reload locked DCOFTRIM
   while(CSCTL7 & (FLLUNLOCK0 | FLLUNLOCK1));// Poll until FLL is locked
 }
-
-

@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 #include  "functions.h"
 #include  "msp430.h"
+#include "macros.h"
 
 void enable_interrupts(void);
 
@@ -36,4 +37,3 @@ void enable_interrupts(void){
 //void disable_interrupts(void){
 //  asm volatile ("dint \n");
 //}
-

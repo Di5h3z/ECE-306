@@ -12,11 +12,7 @@
 #include  "functions.h"
 #include  "msp430.h"
 #include <string.h>
-
-#define ALWAYS                  (1)
-#define RESET_STATE             (0)
-#define RED_LED              (0x01) // RED LED 0
-#define GRN_LED              (0x40) // GREEN LED 1
+#include "macros.h"
 
 // Function Prototypes
 void main(void);
@@ -45,6 +41,7 @@ void main(void){
   Init_Ports();                        // Initialize Ports
   Init_Clocks();                       // Initialize Clock System
   Init_Conditions();                   // Initialize Variables and Initial Conditions
+  P6OUT |= LCD_BACKLITE;               // Turn on backlight
   Init_Timers();                       // Initialize Timers
   Init_LCD();                          // Initialize LCD
 // Place the contents of what you want on the display, in between the quotes
@@ -110,39 +107,3 @@ void main(void){
   }
 //------------------------------------------------------------------------------
 }
-
-void Init_Conditions(void){
-//------------------------------------------------------------------------------
-  int i;
-
-  for(i=0;i<11;i++){
-    display_line[0][i] = RESET_STATE;
-    display_line[1][i] = RESET_STATE;
-    display_line[2][i] = RESET_STATE;
-    display_line[3][i] = RESET_STATE;
-  }
-  display_line[0][10] = 0;
-  display_line[1][10] = 0;
-  display_line[2][10] = 0;
-  display_line[3][10] = 0;
-
-  display[0] = &display_line[0][0];
-  display[1] = &display_line[1][0];
-  display[2] = &display_line[2][0];
-  display[3] = &display_line[3][0];
-  update_display = 0;
-// Interrupts are disabled by default, enable them.
-  enable_interrupts();
-//------------------------------------------------------------------------------
-}
-
-void Init_LEDs(void){
-//------------------------------------------------------------------------------
-// LED Configurations
-//------------------------------------------------------------------------------
-// Turns on both LEDs
-  P1OUT &= ~RED_LED;
-  P6OUT &= ~GRN_LED;
-//------------------------------------------------------------------------------
-}
-
