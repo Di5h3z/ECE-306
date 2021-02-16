@@ -21,16 +21,19 @@
 #define CCCW_L_COUNT     10
 
 
-//refrenceing the global variables in main
+//globals
 extern char start_cycle_time;
 extern unsigned int cycle_time;
 extern unsigned char motor_count;
+
 extern char next_state;
+extern char state;
 
 char fig_8_state;
 char triangle_state;
 
 char num_turns_completed;
+
 //Moves the both wheels forward
 void forward(void){
   if(!(P6OUT&L_FORWARD)){
@@ -201,6 +204,7 @@ void figure_eight(void){
         break;
       case DONE:
         //update the state to the next shape
+        state = 0;
     default:break;
   }
 }

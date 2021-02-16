@@ -41,6 +41,8 @@ extern volatile unsigned int Time_Sequence;
 extern volatile char one_time;
 
 extern unsigned int cycle_time;
+
+char next_state
 char state;
 
 
@@ -73,9 +75,9 @@ void main(void){
   enable_display_update();
 //  Display_Update(3,1,0,0);
 
-  
+
   cycle_time=0;
-  
+
 
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
@@ -83,9 +85,7 @@ void main(void){
   while(ALWAYS) {                      // Can the Operating system run
 
     if(state){
-      P1OUT &= ~RED_LED;
-      P6OUT &= ~GRN_LED;
-      circle();
+      figure_eight();
     }
 
     Switches_Process();                // Check for switch state change
