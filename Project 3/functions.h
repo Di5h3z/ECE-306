@@ -26,7 +26,7 @@ void Init_LEDs(void);
 void IR_LED_control(char selection);
 void Backlite_control(char selection);
 
-// LCD
+  // LCD
 void Display_Process(void);
 void Display_Update(char p_L1,char p_L2,char p_L3,char p_L4);
 void enable_display_update(void);
@@ -122,8 +122,6 @@ void five_msec_sleep(unsigned int msec);
 void measure_delay(void);
 void out_control_words(void);
 
-//Drive
-void forward(void);
-void stop(void);
+
 
 

@@ -16,3 +16,150 @@ Homework_03/Debug/
 Homework_03/settings/
 
 Homework_03/Homework_03.dep
+Project 4/path.txt
+Project 4/Project 4.dep
+Project 4/settings/Project 4.dbgdt
+Project 4/settings/Project 4.Debug.cspy.bat
+Project 4/settings/Project 4.Debug.cspy.ps1
+Project 4/settings/Project 4.Debug.driver.xcl
+Project 4/settings/Project 4.Debug.general.xcl
+Project 4/settings/Project 4.dnx
+Project 4/settings/Project 4.wsdt
+Project 4/Debug/Obj/timers.xcl
+Project 4/Debug/Obj/timers.r43
+Project 4/Debug/Obj/timers.pbi.dep
+Project 4/Debug/Obj/timers.pbi
+Project 4/Debug/Obj/system.xcl
+Project 4/Debug/Obj/system.r43
+Project 4/Debug/Obj/system.pbi.dep
+Project 4/Debug/Obj/system.pbi
+Project 4/Debug/Obj/switch.xcl
+Project 4/Debug/Obj/switch.r43
+Project 4/Debug/Obj/switch.pbi.dep
+Project 4/Debug/Obj/switch.pbi
+Project 4/Debug/Obj/Project 4_part2.pbi
+Project 4/Debug/Obj/Project 4_part1.pbi
+Project 4/Debug/Obj/Project 4_part0.pbi
+Project 4/Debug/Obj/Project 4.pbw
+Project 4/Debug/Obj/Project 4.pbd.browse
+Project 4/Debug/Obj/Project 4.pbd
+Project 4/Debug/Obj/Project 3_part2.pbi
+Project 4/Debug/Obj/Project 3_part1.pbi
+Project 4/Debug/Obj/Project 3_part0.pbi
+Project 4/Debug/Obj/Project 3.pbw
+Project 4/Debug/Obj/Project 3.pbd.browse
+Project 4/Debug/Obj/Project 3.pbd
+Project 4/Debug/Obj/ports.xcl
+Project 4/Debug/Obj/ports.r43
+Project 4/Debug/Obj/ports.pbi.dep
+Project 4/Debug/Obj/ports.pbi
+Project 4/Debug/Obj/main.xcl
+Project 4/Debug/Obj/main.r43
+Project 4/Debug/Obj/main.pbi.dep
+Project 4/Debug/Obj/main.pbi
+Project 4/Debug/Obj/led.xcl
+Project 4/Debug/Obj/led.r43
+Project 4/Debug/Obj/led.pbi.dep
+Project 4/Debug/Obj/led.pbi
+Project 4/Debug/Obj/init.xcl
+Project 4/Debug/Obj/init.r43
+Project 4/Debug/Obj/init.pbi.dep
+Project 4/Debug/Obj/init.pbi
+Project 4/Debug/Obj/Homework_03_part2.pbi
+Project 4/Debug/Obj/Homework_03_part1.pbi
+Project 4/Debug/Obj/Homework_03_part0.pbi
+Project 4/Debug/Obj/Homework_03.pbw
+Project 4/Debug/Obj/Homework_03.pbd.browse
+Project 4/Debug/Obj/Homework_03.pbd
+Project 4/Debug/Obj/drive.xcl
+Project 4/Debug/Obj/drive.r43
+Project 4/Debug/Obj/drive.pbi.dep
+Project 4/Debug/Obj/drive.pbi
+Project 4/Debug/Obj/clocks.xcl
+Project 4/Debug/Obj/clocks.r43
+Project 4/Debug/Obj/clocks.pbi.dep
+Project 4/Debug/Obj/clocks.pbi
+Project 4/Debug/Obj/build.ninja
+Project 4/Debug/Obj/.ninja_log
+Project 4/Debug/Obj/.ninja_deps
+Project 4/Debug/List/timers.lst
+Project 4/Debug/List/system.lst
+Project 4/Debug/List/switch.lst
+Project 4/Debug/List/Project 4.map
+Project 4/Debug/List/Project 3.map
+Project 4/Debug/List/ports.lst
+Project 4/Debug/List/main.lst
+Project 4/Debug/List/led.lst
+Project 4/Debug/List/init.lst
+Project 4/Debug/List/Homework_03.map
+Project 4/Debug/List/drive.lst
+Project 4/Debug/List/clocks.lst
+Project 4/Debug/Exe/Project 4.d43
+Project 4/Debug/Exe/Project 3.d43
+Project 4/Debug/Exe/Homework_03.d43
+Project 4/Compiled/timersB0.r43
+Project 4/Compiled/LCD.r43
+Project 3/settings/Project 3.dbgdt
+Project 3/settings/Project 3.Debug.cspy.bat
+Project 3/settings/Project 3.Debug.cspy.ps1
+Project 3/settings/Project 3.Debug.driver.xcl
+Project 3/settings/Project 3.Debug.general.xcl
+Project 3/settings/Project 3.dnx
+Project 3/settings/Project 3.wsdt
+Project 3/Compiled/LCD.r43
+Project 3/Compiled/switches.r43
+Project 3/Compiled/timersB0.r43
+Project 3/Debug/Exe/Homework_03.d43
+Project 3/Debug/Exe/Project 3.d43
+Project 3/Debug/List/clocks.lst
+Project 3/Debug/List/drive.lst
+Project 3/Debug/List/Homework_03.map
+Project 3/Debug/List/init.lst
+Project 3/Debug/List/led.lst
+Project 3/Debug/List/main.lst
+Project 3/Debug/List/ports.lst
+Project 3/Debug/List/Project 3.map
+Project 3/Debug/List/system.lst
+Project 3/Debug/Obj/.ninja_deps
+Project 3/Debug/Obj/.ninja_log
+Project 3/Debug/Obj/build.ninja
+Project 3/Debug/Obj/clocks.pbi
+Project 3/Debug/Obj/clocks.pbi.dep
+Project 3/Debug/Obj/clocks.r43
+Project 3/Debug/Obj/clocks.xcl
+Project 3/Debug/Obj/drive.pbi
+Project 3/Debug/Obj/drive.pbi.dep
+Project 3/Debug/Obj/drive.r43
+Project 3/Debug/Obj/drive.xcl
+Project 3/Debug/Obj/Homework_03.pbd
+Project 3/Debug/Obj/Homework_03.pbd.browse
+Project 3/Debug/Obj/Homework_03.pbw
+Project 3/Debug/Obj/Homework_03_part0.pbi
+Project 3/Debug/Obj/Homework_03_part1.pbi
+Project 3/Debug/Obj/Homework_03_part2.pbi
+Project 3/Debug/Obj/init.pbi
+Project 3/Debug/Obj/init.pbi.dep
+Project 3/Debug/Obj/init.r43
+Project 3/Debug/Obj/init.xcl
+Project 3/Debug/Obj/led.pbi
+Project 3/Debug/Obj/led.pbi.dep
+Project 3/Debug/Obj/led.r43
+Project 3/Debug/Obj/led.xcl
+Project 3/Debug/Obj/main.pbi
+Project 3/Debug/Obj/main.pbi.dep
+Project 3/Debug/Obj/main.r43
+Project 3/Debug/Obj/main.xcl
+Project 3/Debug/Obj/ports.pbi
+Project 3/Debug/Obj/ports.pbi.dep
+Project 3/Debug/Obj/ports.r43
+Project 3/Debug/Obj/ports.xcl
+Project 3/Debug/Obj/Project 3.pbd
+Project 3/Debug/Obj/Project 3.pbd.browse
+Project 3/Debug/Obj/Project 3.pbw
+Project 3/Debug/Obj/Project 3_part0.pbi
+Project 3/Debug/Obj/Project 3_part1.pbi
+Project 3/Debug/Obj/Project 3_part2.pbi
+Project 3/Debug/Obj/system.pbi
+Project 3/Debug/Obj/system.pbi.dep
+Project 3/Debug/Obj/system.r43
+Project 3/Debug/Obj/system.xcl
