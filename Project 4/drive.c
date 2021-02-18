@@ -10,21 +10,10 @@
 #include "msp430.h"
 #include "macros.h"
 
-
-#define C_TRAVEL      3700
-#define MAX_COUNT     10
-
-#define CCW_R_COUNT     10
-#define CCW_L_COUNT      5
-
-#define CCCW_R_COUNT     5
-#define CCCW_L_COUNT     10
-
-
 //globals
 extern char start_cycle_time;
 extern unsigned int cycle_time;
-extern unsigned char motor_count;
+extern unsigned int motor_count;
 
 extern char next_state;
 extern char state;
@@ -52,7 +41,7 @@ void stop(void){
   P6OUT &= ~L_FORWARD;
 }
 
-void circle_cw(void){
+void circle(void){
   start_cycle_time = TRUE;
   if(cycle_time < C_TRAVEL){
     if(motor_count > CCW_R_COUNT){
@@ -70,42 +59,13 @@ void circle_cw(void){
   }else{
     start_cycle_time = FALSE;
     cycle_time = RESET_STATE;
-    //state = 0; update the the next shape here
+    next_state = FIGURE_8;
+    state= WAIT;
     stop();
     //circle is finished
   }
 }
 
-void circle_ccw(void){
-  start_cycle_time = TRUE;
-  if(cycle_time < C_TRAVEL){
-    if(motor_count > CCCW_L_COUNT){
-      P6OUT &= ~R_FORWARD;
-    }
-    if(motor_count > CCCW_R_COUNT){
-      P6OUT &= ~L_FORWARD;
-    }
-
-    if(motor_count > MAX_COUNT){
-      forward();
-      motor_count=RESET_STATE;
-      }
-
-  }else{
-    start_cycle_time = FALSE;
-    cycle_time = 0;
-    next_state = 0;
-    stop();
-    //circle is finished
-  }
-}
-
-#define FIRST_CW    0
-#define FIRST_CCW   1
-#define SECOND_CW   2
-#define SECOND_CCW  3
-#define DONE        4
-#define FIG8_CYCLE  1800
 
 void figure_eight(void){
   switch (fig_8_state){
@@ -135,10 +95,10 @@ void figure_eight(void){
     case FIRST_CCW:
       start_cycle_time = TRUE;
       if(cycle_time < FIG8_CYCLE){
-        if(motor_count > CCCW_L_COUNT){
+        if(motor_count > CCCW_R_COUNT){
           P6OUT &= ~R_FORWARD;
         }
-        if(motor_count > CCCW_R_COUNT){
+        if(motor_count > CCCW_L_COUNT){
           P6OUT &= ~L_FORWARD;
         }
 
@@ -182,10 +142,10 @@ void figure_eight(void){
       case SECOND_CCW:
         start_cycle_time = TRUE;
         if(cycle_time < FIG8_CYCLE){
-          if(motor_count > CCCW_L_COUNT){
+          if(motor_count > CCCW_R_COUNT){
             P6OUT &= ~R_FORWARD;
           }
-          if(motor_count > CCCW_R_COUNT){
+          if(motor_count > CCCW_L_COUNT){
             P6OUT &= ~L_FORWARD;
           }
 
@@ -203,24 +163,20 @@ void figure_eight(void){
         }
         break;
       case DONE:
-        //update the state to the next shape
-        state = 0;
+        state= WAIT;
+        next_state = TRIANGLE;
+        break;
     default:break;
   }
 }
 
-#define STRAIGHT 200
-#define NUM_TURNS 6
-#define TURN_TIME 50
 
-#define TURNING 1
-#define STRAIGHT 0
 
 void triangle(void){
   switch (triangle_state) {
     case STRAIGHT:
       start_cycle_time = TRUE;
-      if(cycle_time < STRAIGHT){
+      if(cycle_time < STRAIGHT_TIME){
         forward();
       }else{
         start_cycle_time = FALSE;
@@ -233,7 +189,8 @@ void triangle(void){
     case TURNING:
       start_cycle_time = TRUE;
       if(cycle_time < TURN_TIME){
-        6OUT &= ~L_FORWARD;
+        P6OUT |= R_FORWARD;
+        P6OUT &= ~L_FORWARD;
       }else{
 
         start_cycle_time = FALSE;
@@ -249,7 +206,8 @@ void triangle(void){
       }
       break;
     case DONE:
-      //update the next state here
+      state= WAIT;
+      next_state = CIRCLE;
       break;
     default: break;
   }

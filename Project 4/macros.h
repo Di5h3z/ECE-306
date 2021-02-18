@@ -8,6 +8,43 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
+//Drive macros 
+//------------------------------------------------------------------------------
+
+//STATES
+#define WAIT 0
+#define CIRCLE 1
+#define FIGURE_8 2
+#define TRIANGLE 3
+
+//WHEEL COUNTS
+#define C_TRAVEL      1500
+#define MAX_COUNT     1000
+
+#define CCW_R_COUNT     1000
+#define CCW_L_COUNT      70
+
+#define CCCW_R_COUNT     70
+#define CCCW_L_COUNT    1000
+
+
+//FIGURE 8
+#define FIRST_CW    0
+#define FIRST_CCW   1
+#define SECOND_CW   2
+#define SECOND_CCW  3
+#define DONE        4
+#define FIG8_CYCLE  700
+
+//TRIANGLE
+#define STRAIGHT_TIME 150
+#define NUM_TURNS 6
+#define TURN_TIME 225
+
+#define TURNING 1
+#define STRAIGHT 0
+
+//------------------------------------------------------------------------------
 //General macros
 //------------------------------------------------------------------------------
 #define TRUE 1

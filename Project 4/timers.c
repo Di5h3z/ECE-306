@@ -20,7 +20,7 @@ unsigned char switch2_reset_time; //max time of 255
 //for shape/drive control
 char start_cycle_time;
 unsigned int cycle_time;
-unsigned char motor_count;
+unsigned int motor_count;
 
 //updating the timers every time time sequence increment
 //TODO: bitmask case statment to toggle different timer on and off to decrease overhead of many timer (this is most likely not neccessary as the over head to increment is low)

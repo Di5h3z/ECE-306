@@ -25,6 +25,7 @@ char switch2_state;
 
 //external globals the the switches trigger
 extern char state;
+extern char next_state;
 
 //updates both switches
 void Switches_Process(void){
@@ -41,7 +42,7 @@ void Switch1_Process(void){
       switch1_state = PRESSED;
 
       //what to do
-      state = 1;
+      state = next_state;
 
     }else{
       switch1_state = RELEASED;

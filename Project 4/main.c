@@ -13,11 +13,6 @@
 #include <string.h>
 #include "macros.h"
 
-#define WAIT 0
-#define CIRCLE 1
-#define FIGURE_8 2
-#define TRIANGLE 3
-
 
 // Function Prototypes
 void main(void);
@@ -31,6 +26,7 @@ void Timers_Process(void);
 
 void circle(void);
 void figure_eight(void);
+void triangle(void);
 // Global Variables
 extern char display_line[4][11];
 extern char *display[4];
@@ -42,7 +38,7 @@ extern volatile char one_time;
 
 extern unsigned int cycle_time;
 
-char next_state
+char next_state;
 char state;
 
 
@@ -66,26 +62,33 @@ void main(void){
 // Limited to 10 characters per line
 //
 
-  strcpy(display_line[0], "   NCSU   ");
+  strcpy(display_line[0], "  CIRCLE  ");
   update_string(display_line[0], 0);
-  strcpy(display_line[1], " WOLFPACK ");
+  strcpy(display_line[1], " FIGURE_8 ");
   update_string(display_line[1], 1);
-  strcpy(display_line[2], "  ECE306  ");
+  strcpy(display_line[2], " TRIANGLE ");
   update_string(display_line[3], 3);
   enable_display_update();
 //  Display_Update(3,1,0,0);
 
 
+  display_changed=1;
+  update_display=1;
+  
   cycle_time=0;
-
+  next_state = CIRCLE;
 
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------
   while(ALWAYS) {                      // Can the Operating system run
 
-    if(state){
-      figure_eight();
+    switch(state){
+    case WAIT:break;
+    case CIRCLE: circle();break;
+    case FIGURE_8: figure_eight();break;
+    case TRIANGLE: triangle();break;
+    default:break;
     }
 
     Switches_Process();                // Check for switch state change
