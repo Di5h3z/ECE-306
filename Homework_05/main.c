@@ -1,33 +1,25 @@
 //------------------------------------------------------------------------------
-// Description: This file contains the Main Routine - "While" Operating System
+//
+//  Description: This file contains the Main Routine - "While" Operating System
 //
 //
-//By:           Nathan Carels
-//Date:         2/6/2021
-//Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
+//  Jim Carlson
+//  Jan 2018
+//  Built with IAR Embedded Workbench Version: V4.10A/W32 (7.11.2)
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-#include "functions.h"
-#include "msp430.h"
+#include  "functions.h"
+#include  "msp430.h"
 #include <string.h>
 #include "macros.h"
-
 
 // Function Prototypes
 void main(void);
 void Init_Conditions(void);
 void Init_LEDs(void);
-void forward(void);
-void stop(void);
-void Switches_Process(void);
 void Timers_Process(void);
-
-
-void circle(void);
-void figure_eight(void);
-void triangle(void);
-// Global Variables
+  // Global Variables
 extern char display_line[4][11];
 extern char *display[4];
 unsigned char display_mode;
@@ -35,12 +27,6 @@ extern volatile unsigned char display_changed;
 extern volatile unsigned char update_display;
 extern volatile unsigned int Time_Sequence;
 extern volatile char one_time;
-
-extern unsigned int cycle_time;
-
-char next_state;
-char state;
-char first_run = 1;
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -62,61 +48,55 @@ void main(void){
 // Limited to 10 characters per line
 //
 
-  strcpy(display_line[0], "  CIRCLE  ");
+  strcpy(display_line[0], "          ");
   update_string(display_line[0], 0);
-
+  strcpy(display_line[1], "Homework 5");
+  update_string(display_line[1], 1);
+  strcpy(display_line[2], "          ");
+  update_string(display_line[3], 3);
   enable_display_update();
+  display_changed = 1;
+  update_display = 1;
 //  Display_Update(3,1,0,0);
 
-
-  display_changed=1;
-  update_display=1;
   
-  cycle_time=0;
-  next_state = CIRCLE;
-
+  
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------
   while(ALWAYS) {                      // Can the Operating system run
-
-    switch(state){
-    case WAIT:break;
-    case CIRCLE: circle();break;
-    case FIGURE_8:
-      if(first_run){
-      strcpy(display_line[0], "          ");
-      update_string(display_line[0], 0);
-      strcpy(display_line[1], " FIGURE_8 ");
-      update_string(display_line[1], 1);
-      display_changed=1;
-      update_display=1;
-      first_run = 0;
-      }
-      figure_eight();break;
-    case TRIANGLE: 
-      if(first_run){
-      strcpy(display_line[1], "          ");
-      update_string(display_line[1], 1);
-      strcpy(display_line[2], " TRIANGLE ");
-      update_string(display_line[3], 3);
-      display_changed=1;
-      update_display=1;
-      first_run = 0;
-      }
-      triangle();break;
+    switch(Time_Sequence){
+      case 200:                        //
+        
+          P6OUT |= GRN_LED;            // Change State of LED 5
+        
+        
+        break;
+      case 150:                         //
+        
+          P1OUT |= RED_LED;            // Change State of LED 4
+          P6OUT &= ~GRN_LED;           // Change State of LED 5
+          
+        
+        break;
+      case 100:                         //
       
-    default:break;
+          P6OUT |= GRN_LED;            // Change State of LED 5
+          
+        
+        break;
+      case  50:                        //
+          P1OUT &= ~RED_LED;           // Change State of LED 4
+          P6OUT &= ~GRN_LED;           // Change State of LED 5
+          
+        break;                         //
+      default: break;
     }
-
+    
+    Timers_Process();
     Switches_Process();                // Check for switch state change
     Display_Process();
-    Timers_Process();
 
-
-
-
-
-  } // End of While Always
+  }
 //------------------------------------------------------------------------------
-} // End of main();
+}

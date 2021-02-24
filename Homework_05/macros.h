@@ -8,56 +8,24 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//Drive macros 
+//switch macros
 //------------------------------------------------------------------------------
-
-//STATES
-#define WAIT 0
-#define CIRCLE 1
-#define FIGURE_8 2
-#define TRIANGLE 3
-
-//WHEEL COUNTS
-#define C_TRAVEL      1100
-#define MAX_COUNT     1000
-
-#define CCW_R_COUNT     1000
-#define CCW_L_COUNT      70
-
-#define CCCW_R_COUNT     60
-#define CCCW_L_COUNT    1000
-
-
-//FIGURE 8
-#define FIRST_CW    0
-#define FIRST_CCW   1
-#define SECOND_CW   2
-#define SECOND_CCW  3
-#define DONE        4
-#define FIG8_CYCLE  550
-
-//TRIANGLE
-#define STRAIGHT_TIME 100
-#define NUM_TURNS 5
-#define TURN_TIME 170
-
-#define TURNING 1
-#define STRAIGHT 0
-
-//------------------------------------------------------------------------------
-//General macros
-//------------------------------------------------------------------------------
+#define SWITCH_RESET_TIME 50
+#define PRESSED  1
+#define RELEASED 0
+#define FALSE  0
 #define TRUE 1
-#define FALSE 0
-#define ALWAYS                  (1)
-#define RESET_STATE             (0)
-
 
 //------------------------------------------------------------------------------
 //Port macros
 //------------------------------------------------------------------------------
+
+// clock select
+#define USE_GPIO (0x00)
+#define USE_SMCLK (0x01)
+
 //Port 1
-#define RED_LED               (0x01)
+#define RedLED               (0x01)
 #define A1_SEEED             (0x02)
 #define V_DETECT_L           (0x04)
 #define V_DETECT_R           (0x08)
@@ -112,16 +80,17 @@
 #define P6_5                 (0x20)
 #define GRN_LED              (0x40)
 
+//------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+//from main.c
+#define ALWAYS                  (1)
+#define RESET_STATE             (0)
+#define RED_LED              (0x01) // RED LED 0 (move these later after ports is finished)
+#define GRN_LED              (0x40) // GREEN LED 1
+
 //from clocks.c
-//------------------------------------------------------------------------------
 #define MCLK_FREQ_MHZ 8             // MCLK = 8MHz
+#define DIVS_16            (0x0040)
 #define CLEAR_REGISTER     (0X0000)
 
-//------------------------------------------------------------------------------
-//switch macros
-//------------------------------------------------------------------------------
-#define SWITCH_RESET_TIME 20
-#define PRESSED  1
-#define RELEASED 0
+//

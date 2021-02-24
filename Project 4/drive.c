@@ -17,7 +17,7 @@ extern unsigned int motor_count;
 
 extern char next_state;
 extern char state;
-
+extern char first_run;
 char fig_8_state;
 char triangle_state;
 
@@ -60,6 +60,7 @@ void circle(void){
     start_cycle_time = FALSE;
     cycle_time = RESET_STATE;
     next_state = FIGURE_8;
+    first_run = 1;
     state= WAIT;
     stop();
     //circle is finished
@@ -88,6 +89,7 @@ void figure_eight(void){
         start_cycle_time = FALSE;
         cycle_time = RESET_STATE;
         fig_8_state = FIRST_CCW;
+        
         stop();
         //circle is finished
       }
@@ -165,6 +167,7 @@ void figure_eight(void){
       case DONE:
         state= WAIT;
         next_state = TRIANGLE;
+        first_run = 1;
         break;
     default:break;
   }
