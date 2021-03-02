@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
-//Description:  This file contains the initialization functions and configurations 
-//              for all the ports. This file handles the calling of each individual 
+//Description:  This file contains the initialization functions and configurations
+//              for all the ports. This file handles the calling of each individual
 //              port and the configuration. Pin Defines are stored in macros.h
 //
 //By:           Nathan Carels
@@ -11,19 +11,16 @@
 #include "macros.h"
 #include  "msp430.h"
 
-
-char port3_select = USE_GPIO;
-
 void Init_Port1(void){                  //Configure PORT 1
 
 P1OUT = 0x00;                           //P1 set Low
 P1DIR = 0x00;                           //Set P1 direction to input
 
 //P1 PIN 0
-P1SEL0 &= ~RedLED;                      //RedLED G I/O operation
-P1SEL1 &= ~RedLED;                      //RedLED G I/O operation
-P1OUT &= ~RedLED;                       //Set RedLED Low
-P1DIR |= RedLED;                        //Set RedLED Output
+P1SEL0 &= ~RED_LED;                      //RedLED G I/O operation
+P1SEL1 &= ~RED_LED;                      //RedLED G I/O operation
+P1OUT &= ~RED_LED;                       //Set RedLED Low
+P1DIR |= RED_LED;                        //Set RedLED Output
 
 //P1 PIN 1
 P1SEL0 |= A1_SEEED;                     //A1_SEEED FUNC operation
@@ -104,7 +101,7 @@ P2SEL1 |= XIN;                          //XIN FUNC operation
 
 }
 
-void Init_Port3(char select){                  //Configure PORT 3
+void Init_Port3(void){                  //Configure PORT 3
 
 P3OUT = 0x00;                           //P3 set Low
 P3DIR = 0x00;                           //Set P3 direction to input
@@ -112,7 +109,8 @@ P3DIR = 0x00;                           //Set P3 direction to input
 //P3 PIN 0
 P3SEL0 &= ~TEST_PROBE;                  //TEST_PROBE G I/O operation
 P3SEL1 &= ~TEST_PROBE;                  //TEST_PROBE G I/O operation
-P3DIR &= ~TEST_PROBE;                   //Set TEST_PROBE Input
+P3OUT &= ~TEST_PROBE;
+P3DIR |= TEST_PROBE;                   //Set TEST_PROBE Input
 
 //P3 PIN 1
 P3SEL0 &= ~OPT_INT;                     //OPT_INT G I/O operation
@@ -128,15 +126,9 @@ P3SEL0 |= OA2P;                         //OA2P FUNC operation
 P3SEL1 |= OA2P;                         //OA2P FUNC operation
 
 //P3 PIN 4
-if(select == USE_SMCLK){
-  P3SEL0 |= SMCLK;                        //SMCLK FUNC operation
-  P3SEL1 &= ~SMCLK;                       //SMCLK FUNC operation
-  P3DIR |= SMCLK; 
-}else{
-  P3SEL0 &= ~SMCLK;                        //SMCLK G I/O operation
-  P3SEL1 &= ~SMCLK;                       //SMCLK G I/O operation
-  P3DIR &= ~SMCLK;
-}
+P3SEL0 |= SMCLK;                        //SMCLK FUNC operation
+P3SEL1 &= ~SMCLK;                       //SMCLK FUNC operation
+P3DIR |= SMCLK;
 
 //P3 PIN 5
 P3SEL0 &= ~DAC_CNTL;                    //DAC_CNTL G I/O operation

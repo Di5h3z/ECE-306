@@ -239,3 +239,77 @@ Homework_05/settings/Homework_05.dnx
 Homework_05/settings/Homework_05.wsdt
 Homework_05/Homework_05.ewp
 Homework_05/Homework_05.dep
+Project 5/Compiled/LCD.r43
+Project 5/Compiled/timersB0.r43
+Project 5/Debug/Exe/Project 5.d43
+Project 5/Debug/List/clocks.lst
+Project 5/Debug/List/display.lst
+Project 5/Debug/List/drive.lst
+Project 5/Debug/List/init.lst
+Project 5/Debug/List/led.lst
+Project 5/Debug/List/main.lst
+Project 5/Debug/List/ports.lst
+Project 5/Debug/List/Project 5.map
+Project 5/Debug/List/switch.lst
+Project 5/Debug/List/system.lst
+Project 5/Debug/List/timers.lst
+Project 5/Debug/Obj/.ninja_deps
+Project 5/Debug/Obj/.ninja_log
+Project 5/Debug/Obj/build.ninja
+Project 5/Debug/Obj/clocks.pbi
+Project 5/Debug/Obj/clocks.pbi.dep
+Project 5/Debug/Obj/clocks.r43
+Project 5/Debug/Obj/clocks.xcl
+Project 5/Debug/Obj/display.pbi
+Project 5/Debug/Obj/display.pbi.dep
+Project 5/Debug/Obj/display.r43
+Project 5/Debug/Obj/display.xcl
+Project 5/Debug/Obj/drive.pbi
+Project 5/Debug/Obj/drive.pbi.dep
+Project 5/Debug/Obj/drive.r43
+Project 5/Debug/Obj/drive.xcl
+Project 5/Debug/Obj/init.pbi
+Project 5/Debug/Obj/init.pbi.dep
+Project 5/Debug/Obj/init.r43
+Project 5/Debug/Obj/init.xcl
+Project 5/Debug/Obj/led.pbi
+Project 5/Debug/Obj/led.pbi.dep
+Project 5/Debug/Obj/led.r43
+Project 5/Debug/Obj/led.xcl
+Project 5/Debug/Obj/main.pbi
+Project 5/Debug/Obj/main.pbi.dep
+Project 5/Debug/Obj/main.r43
+Project 5/Debug/Obj/main.xcl
+Project 5/Debug/Obj/ports.pbi
+Project 5/Debug/Obj/ports.pbi.dep
+Project 5/Debug/Obj/ports.r43
+Project 5/Debug/Obj/ports.xcl
+Project 5/Debug/Obj/Project 5.pbd
+Project 5/Debug/Obj/Project 5.pbd.browse
+Project 5/Debug/Obj/Project 5.pbw
+Project 5/Debug/Obj/Project 5_part0.pbi
+Project 5/Debug/Obj/Project 5_part1.pbi
+Project 5/Debug/Obj/Project 5_part2.pbi
+Project 5/Debug/Obj/Project 5_part3.pbi
+Project 5/Debug/Obj/switch.pbi
+Project 5/Debug/Obj/switch.pbi.dep
+Project 5/Debug/Obj/switch.r43
+Project 5/Debug/Obj/switch.xcl
+Project 5/Debug/Obj/system.pbi
+Project 5/Debug/Obj/system.pbi.dep
+Project 5/Debug/Obj/system.r43
+Project 5/Debug/Obj/system.xcl
+Project 5/Debug/Obj/timers.pbi
+Project 5/Debug/Obj/timers.pbi.dep
+Project 5/Debug/Obj/timers.r43
+Project 5/Debug/Obj/timers.xcl
+Project 5/Project 5.dep
+Project 5/Project 5.ewd
+Project 5/Project 5.ewt
+Project 5/settings/Project 5.dbgdt
+Project 5/settings/Project 5.Debug.cspy.bat
+Project 5/settings/Project 5.Debug.cspy.ps1
+Project 5/settings/Project 5.Debug.driver.xcl
+Project 5/settings/Project 5.Debug.general.xcl
+Project 5/settings/Project 5.dnx
+Project 5/settings/Project 5.wsdt

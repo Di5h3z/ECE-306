@@ -64,32 +64,27 @@ void main(void){
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------
-  while(ALWAYS) {                      // Can the Operating system run
-    switch(Time_Sequence){
-      case 200:                        //
-        
-          P6OUT |= GRN_LED;            // Change State of LED 5
-        
-        
+  while(ALWAYS) {                    // Can the Operating system run
+    
+    switch(Time_Sequence){           //this makes the led's blink... wheeee
+      case 200:
+        P6OUT |= GRN_LED;            // Change State of LED 5
         break;
-      case 150:                         //
         
-          P1OUT |= RED_LED;            // Change State of LED 4
-          P6OUT &= ~GRN_LED;           // Change State of LED 5
-          
-        
+      case 150:
+        P1OUT |= RED_LED;            // Change State of LED 4
+        P6OUT &= ~GRN_LED;           // Change State of LED 5
         break;
-      case 100:                         //
-      
-          P6OUT |= GRN_LED;            // Change State of LED 5
-          
         
+      case 100:
+        P6OUT |= GRN_LED;            // Change State of LED 5
         break;
-      case  50:                        //
-          P1OUT &= ~RED_LED;           // Change State of LED 4
-          P6OUT &= ~GRN_LED;           // Change State of LED 5
-          
-        break;                         //
+        
+      case  50:
+        P1OUT &= ~RED_LED;           // Change State of LED 4
+        P6OUT &= ~GRN_LED;           // Change State of LED 5
+        break;
+        
       default: break;
     }
     
