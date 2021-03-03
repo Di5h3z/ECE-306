@@ -10,67 +10,52 @@
 #include "msp430.h"
 #include "functions.h"
 
-//declarations
-
-
-//globals that define the switch reset and operation state
-extern unsigned char switch1_reset_time; //max time of 255
 char switch1_readable;
-char switch1_state;
+char switch1_pressed;
+char switch1_count;
 
-extern unsigned char switch2_reset_time; //max time of 255
 char switch2_readable;
-char switch2_state;
+char switch2_pressed;
+char switch2_count;
 
-//external globals the the switches trigger
 extern char state;
 
-//updates both switches
-void Switches_Process(void){
-  Switch1_Process();
-  Switch2_Process();
+#pragma vector=PORT4_VECTOR
+__interrupt void switchP4_interrupt(void) {
+  // Switch 1
+  if (P4IFG & SW1) {
+    P4IE &= ~SW1;
+    P4IFG &= ~SW1;
+    switch1_pressed = TRUE;
+    switch1_readable = FALSE;
+    switch1_count = RESET_STATE;
+    state = WAIT_1;
+    
+    //enables and increments the interupt timer
+    TB0CCTL1 &= ~CCIFG;  
+    TB0CCR1 += TB0CCR1_INTERVAL;
+    TB0CCTL1 |= CCIE;
+  }
+  
 }
 
-// updates the first switch
-void Switch1_Process(void){
-  if(switch1_readable){
-    if(!(P4IN & SW1)){
-      switch1_reset_time = RESET_STATE;
-      switch1_readable = FALSE;
-      switch1_state = PRESSED;
 
-      //what to do
-      state = 1;
-
-    }else{
-      switch1_state = RELEASED;
-    }
-
-  }else{
-    if(switch1_reset_time > SWITCH_RESET_TIME){
-      switch1_readable = TRUE;
-    }
+#pragma vector=PORT2_VECTOR
+__interrupt void switchP2_interrupt(void) {
+// Switch 2
+  if (P2IFG & SW2) {
+    P2IE &= ~SW2;
+    P2IFG &= ~SW2; // IFG SW1 cleared
+    switch2_pressed = TRUE;
+    switch2_readable = FALSE;
+    switch2_count = RESET_STATE;
+    
+    P6OUT ^= LCD_BACKLITE;
+    
+    //enables and increments the interupt timer
+    TB0CCTL2 &= ~CCIFG;  
+    TB0CCR2 += TB0CCR2_INTERVAL;
+    TB0CCTL2 |= CCIE;
   }
-}
 
-//updates the second switch
-void Switch2_Process(void){
-  if(switch2_readable){
-    if(!(P2IN & SW2)){
-      switch2_reset_time = RESET_STATE;
-      switch2_readable = FALSE;
-      switch2_state = PRESSED;
-
-      //what to do
-      
-
-    }else{
-      switch2_state = RELEASED;
-    }
-
-  }else{
-    if(switch2_reset_time > SWITCH_RESET_TIME){
-      switch2_readable = TRUE;
-    }
-  }
 }

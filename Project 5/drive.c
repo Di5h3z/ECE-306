@@ -10,12 +10,6 @@
 #include "msp430.h"
 #include "macros.h"
 
-#define FORWARD 1
-#define REVERSE 0
-#define CHANGE_COUNT 10
-#define MAX_SPEED 1000;
-
-
 //globals
 char right_wheel_state;
 char right_wheel_count;

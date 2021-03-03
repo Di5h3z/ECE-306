@@ -2302,9 +2302,6 @@
         <file>
             <name>$PROJ_DIR$\Compiled\LCD.r43</name>
         </file>
-        <file>
-            <name>$PROJ_DIR$\Compiled\timersB0.r43</name>
-        </file>
     </group>
     <file>
         <name>$PROJ_DIR$\clocks.c</name>

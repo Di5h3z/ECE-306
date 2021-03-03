@@ -42,15 +42,6 @@
 extern volatile unsigned int Time_Sequence;
 
 //others
-
-#define WAIT_1 1
-#define FORWARD_1 2
-#define REVERSE_1 3
-#define FORWARD_2 4
-#define CLOCKWISE 5
-#define COUNTER_CLOCKWISE 6
-
-
 #define ONE_SECOND 200
 #define TWO_SECONDS 400
 #define THREE_SECONDS 600
@@ -75,7 +66,6 @@ void main(void){
   Init_Ports();                        // Initialize Ports
   Init_Clocks();                       // Initialize Clock System
   Init_Conditions();                   // Initialize Variables and Initial Conditions
-  P6OUT |= LCD_BACKLITE;               // Turn on backlight
   Init_Timers();                       // Initialize Timers
   Init_LCD();                          // Initialize LCD
 
@@ -214,7 +204,7 @@ void main(void){
     default:state = RESET_STATE;break;
     }
 
-    Switches_Process();                // Check for switch state change
+    //Switches_Process();                // Check for switch state change
     Timers_Process();
 
 

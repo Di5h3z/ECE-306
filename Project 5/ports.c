@@ -79,6 +79,9 @@ P2SEL1 &= ~SW2;                         //SW2 G I/O operation
 P2OUT |= SW2;                           //Set SW2 High
 P2DIR &= ~SW2;                          //Set SW2 Input
 P2REN |= SW2;                           //Set SW2 Pull up resistor
+P2IES |= SW2;                           //SW2 Hi/Lo edge interrupt
+P2IFG &= ~SW2;                          //IFG SW2 cleared
+P2IE |= SW2;                            //SW2 interrupt Enabled
 
 //P2 PIN 4
 P2SEL0 &= ~IOT_PROGRAM_SELECT;          //IOT_PROGRAM_SELECT G I/O operation
@@ -167,6 +170,9 @@ P4SEL1 &= ~SW1;                         //SW1 G I/O operation
 P4OUT |= SW1;                           //Set SW1 High
 P4DIR &= ~SW1;                          //Set SW1 Input
 P4REN |= SW1;                           //Set SW1 Pull up resistor
+P4IES |= SW1;                           //SW1 Hi/Lo edge interrupt
+P4IFG &= ~SW1;                          //IFG SW1 cleared
+P4IE |= SW1;                            //SW1 interrupt Enabled
 
 //P4 PIN 2
 P4SEL0 |= UCA1RXD;                      //UCA1RXD FUNC operation
