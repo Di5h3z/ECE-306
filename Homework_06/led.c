@@ -1,5 +1,4 @@
 //------------------------------------------------------------------------------
-//
 //Description:  This file contains all code related to the initilization and
 //              function of leds
 //

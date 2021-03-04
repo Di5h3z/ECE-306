@@ -173,7 +173,7 @@ switch(__even_in_range(TB0IV,14)){
 
 
             TB1CCTL0 &= ~CCIFG;           // Clear possible pending interrupt
-            TB1CCR0 += TB1CCR0_INTERVAL;
+            TB1CCR0 =TB1R + TB1CCR0_INTERVAL;
             TB1CCTL0 |= CCIE;             // TB1 CCR0 toggle interrupt
             P6OUT |= LCD_BACKLITE;
             switch1debounce = 0;
@@ -187,7 +187,7 @@ switch(__even_in_range(TB0IV,14)){
             //TB0CCR2 += TB0CCR2_INTERVAL;  // Add Offset to TBCCR2
 
             TB1CCTL0 &= ~CCIFG;           // Clear possible pending interrupt
-            TB1CCR0 += TB1CCR0_INTERVAL;
+            TB1CCR0  = TB1R + TB1CCR0_INTERVAL;
             TB1CCTL0 |= CCIE;             // TB1 CCR0 toggle interrupt
             P6OUT |= LCD_BACKLITE;
             switch2debounce = 0;

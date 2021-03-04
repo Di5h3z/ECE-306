@@ -41,7 +41,7 @@ __interrupt void switchP4_interrupt(void) {
 
     //enables and increments the interupt timer
     TB0CCTL1 &= ~CCIFG;
-    TB0CCR1 += TB0CCR1_INTERVAL;
+    TB0CCR1 = TB0R + TB0CCR1_INTERVAL;
     TB0CCTL1 |= CCIE;
   }
 
@@ -66,7 +66,7 @@ __interrupt void switchP2_interrupt(void) {
 
     //enables and increments the interupt timer
     TB0CCTL2 &= ~CCIFG;
-    TB0CCR2 += TB0CCR2_INTERVAL;
+    TB0CCR2 = TB0R + TB0CCR2_INTERVAL;
     TB0CCTL2 |= CCIE;
   }
 
