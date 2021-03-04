@@ -34,14 +34,17 @@ __interrupt void switchP4_interrupt(void) {
     switch1_readable = FALSE;
     switch1_count = RESET_STATE;
     state = WAIT_1;
-    
+
+    TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
+    TB1CCTL0 &= ~CCIE;                    // TB1 CCR0 toggle interrupt
     P6OUT &= ~LCD_BACKLITE;
+
     //enables and increments the interupt timer
-    TB0CCTL1 &= ~CCIFG;  
+    TB0CCTL1 &= ~CCIFG;
     TB0CCR1 += TB0CCR1_INTERVAL;
     TB0CCTL1 |= CCIE;
   }
-  
+
 }
 
 //------------------------------------------------------------------------------
@@ -56,14 +59,13 @@ __interrupt void switchP2_interrupt(void) {
     switch2_pressed = TRUE;
     switch2_readable = FALSE;
     switch2_count = RESET_STATE;
-    
+
     TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
-    TB1CCR0 += TB1CCR0_INTERVAL;
-    TB1CCTL0 ^= CCIE;                     // CCR2 toggle interrupt
-      
+    TB1CCTL0 &= ~CCIE;                     // TB1 CCR0 toggle interrupt
     P6OUT &= ~LCD_BACKLITE;
+
     //enables and increments the interupt timer
-    TB0CCTL2 &= ~CCIFG;  
+    TB0CCTL2 &= ~CCIFG;
     TB0CCR2 += TB0CCR2_INTERVAL;
     TB0CCTL2 |= CCIE;
   }
