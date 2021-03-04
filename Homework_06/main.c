@@ -163,7 +163,8 @@ void main(void){
         lcd_line2(cw);
       }
       
-      L_reverse(250);R_forward(250);
+      
+      L_forward(250);R_reverse(250);
       if(state_count > THREE_SECONDS){
         L_stop();R_stop();
         if(set_lcd_wait){
@@ -185,7 +186,7 @@ void main(void){
         lcd_line2(ccw);
       }
       
-      L_forward(250);R_reverse(250);
+      L_reverse(250);R_forward(250);
       if(state_count > THREE_SECONDS){
         L_stop();R_stop();
         if(set_lcd_wait){

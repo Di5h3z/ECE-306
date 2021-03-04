@@ -20,6 +20,10 @@ char switch2_count;
 
 extern char state;
 
+
+//------------------------------------------------------------------------------
+//Port 4 ISR: switch1                                                           switchP4_interrupt
+//------------------------------------------------------------------------------
 #pragma vector=PORT4_VECTOR
 __interrupt void switchP4_interrupt(void) {
   // Switch 1
@@ -31,6 +35,7 @@ __interrupt void switchP4_interrupt(void) {
     switch1_count = RESET_STATE;
     state = WAIT_1;
     
+    P6OUT &= ~LCD_BACKLITE;
     //enables and increments the interupt timer
     TB0CCTL1 &= ~CCIFG;  
     TB0CCR1 += TB0CCR1_INTERVAL;
@@ -39,7 +44,9 @@ __interrupt void switchP4_interrupt(void) {
   
 }
 
-
+//------------------------------------------------------------------------------
+//Port 2 ISR: switch2                                                           switchP2_interrupt
+//------------------------------------------------------------------------------
 #pragma vector=PORT2_VECTOR
 __interrupt void switchP2_interrupt(void) {
 // Switch 2
@@ -50,8 +57,11 @@ __interrupt void switchP2_interrupt(void) {
     switch2_readable = FALSE;
     switch2_count = RESET_STATE;
     
-    P6OUT ^= LCD_BACKLITE;
-    
+    TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
+    TB1CCR0 += TB1CCR0_INTERVAL;
+    TB1CCTL0 ^= CCIE;                     // CCR2 toggle interrupt
+      
+    P6OUT &= ~LCD_BACKLITE;
     //enables and increments the interupt timer
     TB0CCTL2 &= ~CCIFG;  
     TB0CCR2 += TB0CCR2_INTERVAL;

@@ -22,9 +22,13 @@
 //Timer macros 
 //------------------------------------------------------------------------------
 
+//timer 1
 #define TB0CCR0_INTERVAL 625
 #define TB0CCR1_INTERVAL 62500
 #define TB0CCR2_INTERVAL 62500
+//timer 2
+#define TB1CCR0_INTERVAL 4000
+
 
 //------------------------------------------------------------------------------
 //Drive macros 
