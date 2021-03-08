@@ -36,8 +36,15 @@
 #define FORWARD 1
 #define REVERSE 0
 #define CHANGE_COUNT 10
-#define MAX_SPEED 1000
+#define MAX_SPEED 50000
 
+#define WHEEL_PERIOD 50000
+#define WHEEL_OFF 0
+
+#define RIGHT_FORWARD_SPEED (TB3CCR1)
+#define LEFT_FORWARD_SPEED (TB3CCR2)
+#define RIGHT_REVERSE_SPEED (TB3CCR3)
+#define LEFT_REVERSE_SPEED (TB3CCR4)
 //------------------------------------------------------------------------------
 //from display.c
 //------------------------------------------------------------------------------

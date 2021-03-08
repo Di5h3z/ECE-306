@@ -42,4 +42,3 @@ void lcd_line4(char* line){
   update_string(line,LINE4);
   Display_Update(CHAR_0,CHAR_0,CHAR_0,CHAR_0);
 }
-

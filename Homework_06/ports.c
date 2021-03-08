@@ -239,26 +239,26 @@ P6OUT = 0x00;                           //P6 set Low
 P6DIR = 0x00;                           //Set P6 direction to input
 
 //P6 PIN 0
-P6SEL0 &= ~R_FORWARD;                   //R_FORWARD G I/O operation
-P6SEL1 &= ~R_FORWARD;                   //R_FORWARD G I/O operation
+P6SEL0 |= R_FORWARD;                    //R_FORWARD PWM
+P6SEL1 &= ~R_FORWARD;                   //R_FORWARD PWM
 P6OUT &= ~R_FORWARD;                    //Set R_FORWARD Low
 P6DIR |= R_FORWARD;                     //Set R_FORWARD Output
 
 //P6 PIN 1
-P6SEL0 &= ~L_FORWARD;                   //L_FORWARD G I/O operation
-P6SEL1 &= ~L_FORWARD;                   //L_FORWARD G I/O operation
+P6SEL0 |= L_FORWARD;                    //L_FORWARD PWM
+P6SEL1 &= ~L_FORWARD;                   //L_FORWARD PWM
 P6OUT &= ~L_FORWARD;                    //Set L_FORWARD Low
 P6DIR |= L_FORWARD;                     //Set L_FORWARD Output
 
 //P6 PIN 2
-P6SEL0 &= ~R_REVERSE;                   //R_REVERSE G I/O operation
-P6SEL1 &= ~R_REVERSE;                   //R_REVERSE G I/O operation
+P6SEL0 |= R_REVERSE;                    //R_REVERSE PWM
+P6SEL1 &= ~R_REVERSE;                   //R_REVERSE PWM
 P6OUT &= ~R_REVERSE;                    //Set R_REVERSE Low
 P6DIR |= R_REVERSE;                     //Set R_REVERSE Output
 
 //P6 PIN 3
-P6SEL0 &= ~L_REVERSE;                   //L_REVERSE G I/O operation
-P6SEL1 &= ~L_REVERSE;                   //L_REVERSE G I/O operation
+P6SEL0 |= L_REVERSE;                    //L_REVERSE PWM
+P6SEL1 &= ~L_REVERSE;                   //L_REVERSE PWM
 P6OUT &= ~L_REVERSE;                    //Set L_REVERSE Low
 P6DIR |= L_REVERSE;                     //Set L_REVERSE Output
 

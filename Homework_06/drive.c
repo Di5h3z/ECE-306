@@ -22,25 +22,26 @@ char left_forward_flag = FALSE;
 char left_reverse_flag = FALSE;
 
 unsigned int speed_count;
-//#define R_FORWARD            (0x01)
-//#define L_FORWARD            (0x02)
-//#define R_REVERSE            (0x04)
-//#define L_REVERSE            (0x08)
 
 
-// Turns the left wheel off
+//------------------------------------------------------------------------------
+// Turns the left wheel off                                                     L_stop
+//------------------------------------------------------------------------------
 void L_stop(void){
-  P6OUT &= ~L_FORWARD;
-  P6OUT &= ~L_REVERSE;
+  LEFT_FORWARD_SPEED = WHEEL_OFF;
+  LEFT_REVERSE_SPEED = WHEEL_OFF;
 }
-
-//Turns the right wheel off
+//------------------------------------------------------------------------------
+//Turns the right wheel off                                                     R_stop
+//------------------------------------------------------------------------------
 void R_stop(void){
-  P6OUT &= ~R_FORWARD;
-  P6OUT &= ~R_REVERSE;
+  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+  RIGHT_REVERSE_SPEED = WHEEL_OFF;
 }
 
-//speed is out of 1000
+//------------------------------------------------------------------------------
+//Turns the wheel forward checks to make sure proper time since reverse         L_forward
+//------------------------------------------------------------------------------
 void L_forward(unsigned int speed){
   
   //check to see state is reverse if not proceed as normal
@@ -58,18 +59,21 @@ void L_forward(unsigned int speed){
     }
 
     //if the flag is set and verification that L_reverse is zero
-    if(left_forward_flag && speed_count < speed && !(P6OUT & L_REVERSE)){ 
-      P6OUT |= L_FORWARD;
+    if(left_forward_flag && !(P6OUT & L_REVERSE)){ 
+      LEFT_FORWARD_SPEED = speed;
     }else{
-      P6OUT &= ~L_FORWARD;
+      LEFT_FORWARD_SPEED = WHEEL_OFF;
     }
   }
  
 }
 
+//------------------------------------------------------------------------------
+//Turns the wheel forward checks to make sure proper time since reverse         R_forward
+//------------------------------------------------------------------------------
 void R_forward(unsigned int speed){
   
- //check to see state is reverse if not proceed as normal
+ //check to see state is reverse if not proceed as normal 
  if(right_wheel_state==REVERSE){
   R_stop();
   right_wheel_state = FORWARD;
@@ -78,21 +82,24 @@ void R_forward(unsigned int speed){
   right_reverse_flag = FALSE;
  }else{
  
-   // if the count is done set the flag to allow drive
+   // if the count is done set the flag to allow drive 
    if(right_wheel_count > CHANGE_COUNT){ 
     right_forward_flag = TRUE;
    }
    
-   //if the flag is set and verification that R_reverse is zero
-   if(right_forward_flag && speed_count < speed && !(P6OUT & R_REVERSE)){ 
-    P6OUT |= R_FORWARD;
+   //if the flag is set and verification that R_reverse is zero 
+   if(right_forward_flag && !(P6OUT & R_REVERSE)){ 
+    RIGHT_FORWARD_SPEED = speed;
    }else{
-    P6OUT &= ~R_FORWARD;
+    RIGHT_FORWARD_SPEED =WHEEL_OFF;
    }
  }
 
 }
 
+//------------------------------------------------------------------------------
+//Turns the wheel reverse checks to make sure proper time since forward         L_reverse
+//------------------------------------------------------------------------------
 void L_reverse(unsigned int speed){
   
   //check to see state is reverse if not proceed as normal
@@ -110,14 +117,17 @@ void L_reverse(unsigned int speed){
     }
     
     //if the flag is set and verification that L_forward is zero
-    if(left_reverse_flag && speed_count < speed && !(P6OUT & L_FORWARD)){
-      P6OUT |= L_REVERSE;
+    if(left_reverse_flag && !(P6OUT & L_FORWARD)){
+      LEFT_REVERSE_SPEED = speed;
     }else{
-      P6OUT &= ~L_REVERSE;
+      LEFT_REVERSE_SPEED = WHEEL_OFF;
     }
   }
 }
 
+//------------------------------------------------------------------------------
+//Turns the wheel reverse checks to make sure proper time since forward         R_reverse
+//------------------------------------------------------------------------------
 void R_reverse(unsigned int speed){
    
      //check to see state is reverse if not proceed as normal
@@ -134,10 +144,10 @@ void R_reverse(unsigned int speed){
       right_reverse_flag = TRUE;
      }
      //if the flag is set and verification that R_forward is zero
-     if(right_reverse_flag && speed_count < speed && !(P6OUT & R_FORWARD)){ 
-      P6OUT |= R_REVERSE;
+     if(right_reverse_flag && !(P6OUT & R_FORWARD)){ 
+      RIGHT_REVERSE_SPEED = speed;
      }else{
-      P6OUT &= ~R_REVERSE;
+      RIGHT_REVERSE_SPEED = WHEEL_OFF;
      }
    }
 

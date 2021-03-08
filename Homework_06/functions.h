@@ -1,15 +1,40 @@
-//******************************************************************************
+ //******************************************************************************
 //  Description: This file contains the Function prototypes
 //
 //  Jim Carlson
 //  Aug 2013
 //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
 //******************************************************************************
-// Functions
-
+//------------------------------------------------------------------------------
+// My Functions
+//------------------------------------------------------------------------------
+//LCD
+  void clear_lcd(void);
+  void lcd_line1(char* line);
+  void lcd_line2(char* line);
+  void lcd_line3(char* line);
+  void lcd_line4(char* line);
+//Drive
+  void L_stop(void);
+  void R_stop(void);
+  void L_forward(unsigned int speed);
+  void R_forward(unsigned int speed);
+  void L_reverse(unsigned int speed);
+  void R_reverse(unsigned int speed);
+//Timers
+  void Timers_Process(void);
+  void Init_Timers(void);
+  void Init_Timer_B0(void);
+  void Init_Timer_B1(void);
+  
 // Initialization
-void Init_Conditions(void);
+  void Init_Conditions(void);
+  void Init_LEDs(void);
 
+  
+//------------------------------------------------------------------------------
+// Other Functions
+//------------------------------------------------------------------------------  
 // Interrupts
 void enable_interrupts(void);
 __interrupt void Timer0_B0_ISR(void);
@@ -21,7 +46,6 @@ __interrupt void switch_interrupt(void);
 void Init_Clocks(void);
 
 // LED Configurations
-void Init_LEDs(void);
 void IR_LED_control(char selection);
 void Backlite_control(char selection);
 
@@ -109,9 +133,6 @@ void menu_act(void);
 void menu_select(void);
 
 // Timers
-void Init_Timers(void);
-void Init_Timer_B0(void);
-void Init_Timer_B1(void);
 void Init_Timer_B2(void);
 void Init_Timer_B3(void);
 

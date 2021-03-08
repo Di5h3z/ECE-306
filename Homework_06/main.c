@@ -16,25 +16,7 @@
 
 // Function Prototypes
   void main(void);
-  void Init_Conditions(void);
-  void Init_LEDs(void);
-  void Switches_Process(void);
-  void Timers_Process(void);
-  
-  //Display Functions
-  void clear_lcd(void);
-  void lcd_line1(char* line);
-  void lcd_line2(char* line);
-  void lcd_line3(char* line);
-  void lcd_line4(char* line);
-  
-  //drive functions
-  void L_stop(void);
-  void R_stop(void);
-  void L_forward(unsigned int speed);
-  void R_forward(unsigned int speed);
-  void L_reverse(unsigned int speed);
-  void R_reverse(unsigned int speed);
+
   
 // Global Variables
 
@@ -70,7 +52,7 @@ void main(void){
   Init_LCD();                          // Initialize LCD
 
 
-  // diplays
+  // Display
   char wait[11] = "WAIT";
   char reverse[11] = "REVERSE";
   char forward[11] = "FORWARD";
@@ -78,13 +60,16 @@ void main(void){
   char ccw[11] = "ROTATE CCW";
   clear_lcd();
   lcd_line2(wait);
+  
 
 
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------
-  while(ALWAYS) {                      // Can the Operating system run
+  while(ALWAYS) {                      // Can the Operating system run? Yes, yes it can
 
+    //slap some error checking function in this bad boi
+    
     switch(state){
     case WAIT_1: 
       state_count = RESET_STATE; 
@@ -97,7 +82,6 @@ void main(void){
         lcd_line2(forward);
       }
       
-      L_forward(250);R_forward(250);
       if(state_count > ONE_SECOND){
         L_stop();R_stop();
         if(set_lcd_wait){
@@ -111,7 +95,9 @@ void main(void){
           change_display = TRUE;
           set_lcd_wait = TRUE;
         }
-      }  
+      }else{
+        L_forward(25000);R_forward(25000);
+      }
       break;
     case REVERSE_1:
       if(change_display){
@@ -119,7 +105,7 @@ void main(void){
         lcd_line2(reverse);
       }
       
-      L_reverse(250);R_reverse(250);
+      
       if(state_count > TWO_SECONDS){
         L_stop();R_stop();
         if(set_lcd_wait){
@@ -133,6 +119,8 @@ void main(void){
           change_display = TRUE;
           set_lcd_wait = TRUE;
         }
+      }else{
+        L_reverse(25000);R_reverse(25000);
       }
       break;
     case FORWARD_2:
@@ -141,7 +129,7 @@ void main(void){
         lcd_line2(forward);
       }
       
-      L_forward(250);R_forward(250);
+      
       if(state_count > ONE_SECOND){
         L_stop();R_stop();
         if(set_lcd_wait){
@@ -155,6 +143,8 @@ void main(void){
           change_display = TRUE;
           set_lcd_wait = TRUE;
         }
+      }else{
+        L_forward(25000);R_forward(25000);
       }
       break;
     case CLOCKWISE:
@@ -164,7 +154,6 @@ void main(void){
       }
       
       
-      L_forward(250);R_reverse(250);
       if(state_count > THREE_SECONDS){
         L_stop();R_stop();
         if(set_lcd_wait){
@@ -178,6 +167,8 @@ void main(void){
           change_display = TRUE;
           set_lcd_wait = TRUE;
         }
+      }else{
+        L_forward(25000);R_reverse(25000);
       }
       break;
     case COUNTER_CLOCKWISE:
@@ -186,7 +177,7 @@ void main(void){
         lcd_line2(ccw);
       }
       
-      L_reverse(250);R_forward(250);
+      
       if(state_count > THREE_SECONDS){
         L_stop();R_stop();
         if(set_lcd_wait){
@@ -200,9 +191,11 @@ void main(void){
           change_display = TRUE;
           set_lcd_wait = TRUE;
         }
+      }else{
+        L_reverse(25000);R_forward(25000);
       }
       break;
-    default:state = RESET_STATE;break;
+    default:break;
     }
 
     //Switches_Process();                // Check for switch state change
