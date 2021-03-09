@@ -149,7 +149,7 @@ void Init_Timers(void){
 #pragma vector = TIMER1_B0_VECTOR
 __interrupt void Timer1_B0_ISR(void){
   Second_Count++;
-  P6OUT ^= LCD_BACKLITE;
+  LCD_TOGGLE;
   TB1CCR0 += TB1CCR0_INTERVAL;
 }
 
@@ -201,13 +201,11 @@ switch(__even_in_range(TB0IV,14)){
             TB0CCTL1 &= ~CCIE;            //disable capture control reg 1 interupt
             P4IFG &= ~SW1;                //clear SW1 interupts
             P4IE |= SW1;                  //enable SW1 interupt
-            //TB0CCR1 += TB0CCR1_INTERVAL;// Add Offset to TBCCR1
-
 
             TB1CCTL0 &= ~CCIFG;           // Clear possible pending interrupt
             TB1CCR0 =TB1R + TB1CCR0_INTERVAL;
             TB1CCTL0 |= CCIE;             // TB1 CCR0 toggle interrupt
-            P6OUT |= LCD_BACKLITE;
+            LCD_ON;
             switch1debounce = 0;
           }
           break;
@@ -216,19 +214,18 @@ switch(__even_in_range(TB0IV,14)){
             TB0CCTL2 &= ~CCIE;            //disable capture control reg 2 interupt
             P2IFG &= ~SW2;                //clear SW2 interupts
             P2IE |= SW2;                  //enable SW2 interupt
-            //TB0CCR2 += TB0CCR2_INTERVAL;  // Add Offset to TBCCR2
 
             TB1CCTL0 &= ~CCIFG;           // Clear possible pending interrupt
             TB1CCR0  = TB1R + TB1CCR0_INTERVAL;
             TB1CCTL0 |= CCIE;             // TB1 CCR0 toggle interrupt
-            P6OUT |= LCD_BACKLITE;
+            LCD_ON;                       //turn on backlight
             switch2debounce = 0;
           }
 
             break;
   case 14:
           update_display = TRUE;
-          P6OUT |= LCD_BACKLITE;        // Turn on backlight
+          LCD_ON;                       // Turn on backlight
           TB0CTL &= ~TBIE;              //disable interupt
           TB0CTL &= ~TBIFG;             // Clear Overflow Interrupt flag
           break;

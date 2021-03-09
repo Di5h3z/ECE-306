@@ -37,7 +37,7 @@ __interrupt void switchP4_interrupt(void) {
 
     TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
     TB1CCTL0 &= ~CCIE;                    // TB1 CCR0 toggle interrupt
-    P6OUT &= ~LCD_BACKLITE;
+    LCD_OFF;
 
     //enables and increments the interupt timer
     TB0CCTL1 &= ~CCIFG;
@@ -62,7 +62,7 @@ __interrupt void switchP2_interrupt(void) {
 
     TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
     TB1CCTL0 &= ~CCIE;                     // TB1 CCR0 toggle interrupt
-    P6OUT &= ~LCD_BACKLITE;
+    LCD_OFF;
 
     //enables and increments the interupt timer
     TB0CCTL2 &= ~CCIFG;

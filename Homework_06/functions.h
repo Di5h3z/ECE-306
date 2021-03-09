@@ -1,10 +1,9 @@
- //******************************************************************************
+//------------------------------------------------------------------------------
 //  Description: This file contains the Function prototypes
 //
-//  Jim Carlson
-//  Aug 2013
-//  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
-//******************************************************************************
+//By:           Nathan Carels
+//Date:         3/9/2021
+//Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
 // My Functions
 //------------------------------------------------------------------------------
@@ -26,15 +25,15 @@
   void Init_Timers(void);
   void Init_Timer_B0(void);
   void Init_Timer_B1(void);
-  
+
 // Initialization
   void Init_Conditions(void);
   void Init_LEDs(void);
 
-  
+
 //------------------------------------------------------------------------------
 // Other Functions
-//------------------------------------------------------------------------------  
+//------------------------------------------------------------------------------
 // Interrupts
 void enable_interrupts(void);
 __interrupt void Timer0_B0_ISR(void);
