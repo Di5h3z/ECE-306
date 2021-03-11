@@ -27,19 +27,6 @@
 
 
 //------------------------------------------------------------------------------
-//updating timer every cycle                                                    Timers_Process
-//------------------------------------------------------------------------------
-void Timers_Process(void){
-  //as fast as possible
-
-  //this will get replaced with PWM
-  if(speed_count++ > MAX_SPEED){
-    speed_count = RESET_STATE;
-  }
-}
-
-
-//------------------------------------------------------------------------------
 //Initilizes the B0 timer that controls time sequence and switch debounce       Init_Timer_B0
 //------------------------------------------------------------------------------
 void Init_Timer_B0(void){
@@ -149,8 +136,7 @@ void Init_Timers(void){
 #pragma vector = TIMER1_B0_VECTOR
 __interrupt void Timer1_B0_ISR(void){
   Second_Count++;
-  LCD_TOGGLE;
-  TB1CCR0 += TB1CCR0_INTERVAL;
+  TB1CCR0 = TB1R + TB1CCR0_INTERVAL;
 }
 
 //------------------------------------------------------------------------------
@@ -183,46 +169,27 @@ __interrupt void Timer0_B0_ISR(void){
   right_wheel_count++;
   left_wheel_count++;
 
-TB0CCR0 += TB0CCR0_INTERVAL;            // Add Offset to TBCCR0
+  TB0CCR0 = TB0R + TB0CCR0_INTERVAL;            // Add Offset to TBCCR0
 }
 
 //------------------------------------------------------------------------------
 //TimerB0 CCR1-2 interrupt                                                      TIMER0_B1_ISR
 //------------------------------------------------------------------------------
-char switch1debounce;
-char switch2debounce;
 #pragma vector=TIMER0_B1_VECTOR
 __interrupt void TIMER0_B1_ISR(void){
                                         // TimerB0 1-2, Overflow Interrupt Vector (TBIV) handler
 switch(__even_in_range(TB0IV,14)){
   case 0: break;                        // No interrupt
   case 2:                               // CCR1 Used for SW1 Debounce
-          if(switch1debounce++ > 2){
-            TB0CCTL1 &= ~CCIE;            //disable capture control reg 1 interupt
-            P4IFG &= ~SW1;                //clear SW1 interupts
-            P4IE |= SW1;                  //enable SW1 interupt
-
-            TB1CCTL0 &= ~CCIFG;           // Clear possible pending interrupt
-            TB1CCR0 =TB1R + TB1CCR0_INTERVAL;
-            TB1CCTL0 |= CCIE;             // TB1 CCR0 toggle interrupt
-            LCD_ON;
-            switch1debounce = 0;
-          }
+          TB0CCTL1 &= ~CCIE;            //disable capture control reg 1 interupt
+          P4IFG &= ~SW1;                //clear SW1 interupts
+          P4IE |= SW1;                  //enable SW1 interupt
           break;
   case 4: // CCR2 Used for SW2 Debounce
-          if(switch2debounce++ > 2){
-            TB0CCTL2 &= ~CCIE;            //disable capture control reg 2 interupt
-            P2IFG &= ~SW2;                //clear SW2 interupts
-            P2IE |= SW2;                  //enable SW2 interupt
-
-            TB1CCTL0 &= ~CCIFG;           // Clear possible pending interrupt
-            TB1CCR0  = TB1R + TB1CCR0_INTERVAL;
-            TB1CCTL0 |= CCIE;             // TB1 CCR0 toggle interrupt
-            LCD_ON;                       //turn on backlight
-            switch2debounce = 0;
-          }
-
-            break;
+          TB0CCTL2 &= ~CCIE;            //disable capture control reg 2 interupt
+          P2IFG &= ~SW2;                //clear SW2 interupts
+          P2IE |= SW2;                  //enable SW2 interupt
+          break;
   case 14:
           update_display = TRUE;
           LCD_ON;                       // Turn on backlight

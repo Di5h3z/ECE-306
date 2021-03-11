@@ -35,9 +35,6 @@ __interrupt void switchP4_interrupt(void) {
     switch1_count = RESET_STATE;
     state = WAIT_1;
 
-    TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
-    TB1CCTL0 &= ~CCIE;                    // TB1 CCR0 toggle interrupt
-    LCD_OFF;
 
     //enables and increments the interupt timer
     TB0CCTL1 &= ~CCIFG;
@@ -60,9 +57,6 @@ __interrupt void switchP2_interrupt(void) {
     switch2_readable = FALSE;
     switch2_count = RESET_STATE;
 
-    TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
-    TB1CCTL0 &= ~CCIE;                     // TB1 CCR0 toggle interrupt
-    LCD_OFF;
 
     //enables and increments the interupt timer
     TB0CCTL2 &= ~CCIFG;
