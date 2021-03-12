@@ -8,12 +8,11 @@
 //------------------------------------------------------------------------------
 #include  "msp430.h"
 #include "macros.h"
-
+#include "functions.h"
 
 //Refrencing the global timer variables
   unsigned int Second_Count;
-  unsigned int Time_Sequence;
-                                        
+  unsigned int Time_Sequence;                                     
                                         //for shape/drive control
   extern char right_wheel_count;
   extern char left_wheel_count;
@@ -136,6 +135,9 @@ void Init_Timers(void){
 #pragma vector = TIMER1_B0_VECTOR
 __interrupt void Timer1_B0_ISR(void){
   Second_Count++;
+  
+  display_averages();
+  
   TB1CCR0 = TB1R + TB1CCR0_INTERVAL;
 }
 
@@ -169,6 +171,11 @@ __interrupt void Timer0_B0_ISR(void){
   right_wheel_count++;
   left_wheel_count++;
 
+  //takes an ADC measurement every five ms
+  ADCCTL0 |= ADCENC; // Enable Conversions
+  ADCCTL0 |= ADCSC; 
+  
+  
   TB0CCR0 = TB0R + TB0CCR0_INTERVAL;            // Add Offset to TBCCR0
 }
 

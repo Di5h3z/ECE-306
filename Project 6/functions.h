@@ -29,7 +29,12 @@
 // Initialization
   void Init_Conditions(void);
   void Init_LEDs(void);
-
+//ADC
+  void Init_ADC(void);
+  void display_averages(void);
+  void HEXtoBCD(int hex_value);
+//Error
+  void wheel_polarity_error(void);
 
 //------------------------------------------------------------------------------
 // Other Functions

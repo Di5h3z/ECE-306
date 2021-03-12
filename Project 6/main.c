@@ -10,9 +10,8 @@
 //------------------------------------------------------------------------------
 #include "functions.h"
 #include "msp430.h"
-#include <string.h>
 #include "macros.h"
-
+#include <string.h>
 
 // Function Prototypes
   void main(void);
@@ -50,6 +49,7 @@ void main(void){
   Init_Conditions();                   // Initialize Variables and Initial Conditions
   Init_Timers();                       // Initialize Timers
   Init_LCD();                          // Initialize LCD
+  Init_ADC();                          // Initialize ADC
 
 
   // Display
@@ -59,7 +59,7 @@ void main(void){
   char cw[11] = "ROTATE CW";
   char ccw[11] = "ROTATE CCW";
   clear_lcd();
-  lcd_line2(wait);
+  lcd_line1("L,R,Thumb");
   
 
 
@@ -68,7 +68,7 @@ void main(void){
 //------------------------------------------------------------------------------
   while(ALWAYS) {                      // Can the Operating system run? Yes, yes it can
 
-    //slap some error checking function in this bad boi
+    wheel_polarity_error();             //slap some error checking function in this bad boi
     
     switch(state){
     case WAIT_1: 
@@ -197,9 +197,6 @@ void main(void){
       break;
     default:break;
     }
-
-    //Switches_Process();                // Check for switch state change
-    Timers_Process();
 
 
   } // End of While Always

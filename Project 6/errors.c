@@ -5,6 +5,11 @@
 //Date:         3/9/2021
 //Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
+#include "functions.h"
+#include "msp430.h"
+#include "macros.h"
+
+extern unsigned int Time_Sequence;
 
 void wheel_polarity_error(void){
   //checks to see if the same wheel is being driven in oposite directions
@@ -15,7 +20,7 @@ void wheel_polarity_error(void){
     LEFT_REVERSE_SPEED = WHEEL_OFF;
     lcd_line4("WHEEL ERR");
     while(ALWAYS){
-      if(Time_Sequence = 250){
+      if(Time_Sequence == 250){
         LCD_TOGGLE;
       }
     }
@@ -28,7 +33,7 @@ void wheel_polarity_error(void){
     P6OUT &= ~L_REVERSE;
     lcd_line4("WHEEL ERR");
     while(ALWAYS){
-      if(Time_Sequence = 250){
+      if(Time_Sequence == 250){
         LCD_TOGGLE;
       }
     }

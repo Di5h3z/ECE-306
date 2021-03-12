@@ -57,7 +57,7 @@ __interrupt void switchP2_interrupt(void) {
     switch2_readable = FALSE;
     switch2_count = RESET_STATE;
 
-
+    P2OUT ^= IR_LED;
     //enables and increments the interupt timer
     TB0CCTL2 &= ~CCIFG;
     TB0CCR2 = TB0R + TB0CCR2_INTERVAL;

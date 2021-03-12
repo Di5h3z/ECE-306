@@ -23,24 +23,19 @@ P1OUT &= ~RED_LED;                       //Set RedLED Low
 P1DIR |= RED_LED;                        //Set RedLED Output
 
 //P1 PIN 1
-P1SEL0 |= A1_SEEED;                     //A1_SEEED FUNC operation
-P1SEL1 |= A1_SEEED;                     //A1_SEEED FUNC operation
+P1SELC |= A1_SEEED;                     //A1_SEEED FUNC operation
 
 //P1 PIN 2
-P1SEL0 |= V_DETECT_L;                   //V_DETECT_L FUNC operation
-P1SEL1 |= V_DETECT_L;                   //V_DETECT_L FUNC operation
+P1SELC |= V_DETECT_L;                   //V_DETECT_L FUNC operation
 
 //P1 PIN 3
-P1SEL0 |= V_DETECT_R;                   //V_DETECT_R FUNC operation
-P1SEL1 |= V_DETECT_R;                   //V_DETECT_R FUNC operation
+P1SELC |= V_DETECT_R;                   //V_DETECT_R FUNC operation
 
 //P1 PIN 4
-P1SEL0 |= A4_SEEED;                     //A4_SEEED FUNC operation
-P1SEL1 |= A4_SEEED;                     //A4_SEEED FUNC operation
+P1SELC |= A4_SEEED;                     //A4_SEEED FUNC operation
 
 //P1 PIN 5
-P1SEL0 |= V_THUMB;                      //V_THUMB FUNC operation
-P1SEL1 |= V_THUMB;                      //V_THUMB FUNC operation
+P1SELC |= V_THUMB;                      //V_THUMB FUNC operation
 
 //P1 PIN 6
 P1SEL0 |= UCA0RXD;                      //UCA0RXD FUNC operation
@@ -65,7 +60,7 @@ P2DIR &= ~P2_0;                         //Set P2_0 Input
 //P2 PIN 1
 P2SEL0 &= ~IR_LED;                      //IR_LED G I/O operation
 P2SEL1 &= ~IR_LED;                      //IR_LED G I/O operation
-P2OUT &= ~IR_LED;                       //Set IR_LED Low
+P2OUT |= IR_LED;                       //Set IR_LED Low
 P2DIR |= IR_LED;                        //Set IR_LED Output
 
 //P2 PIN 2
@@ -214,16 +209,13 @@ P5OUT &= ~CHECK_BAT;                    //Set CHECK_BAT Low
 P5DIR |= CHECK_BAT;                     //Set CHECK_BAT Output
 
 //P5 PIN 1
-P5SEL0 |= V_BAT;                        //V_BAT FUNC operation
-P5SEL1 |= V_BAT;                        //V_BAT FUNC operation
+P5SELC |= V_BAT;                        //V_BAT FUNC operation
 
 //P5 PIN 2
-P5SEL0 |= V_DAC;                        //V_DAC FUNC operation
-P5SEL1 |= V_DAC;                        //V_DAC FUNC operation
+P5SELC |= V_DAC;                        //V_DAC FUNC operation
 
 //P5 PIN 3
-P5SEL0 |= V_3_3;                        //V_3_3 FUNC operation
-P5SEL1 |= V_3_3;                        //V_3_3 FUNC operation
+P5SELC |= V_3_3;                        //V_3_3 FUNC operation
 
 //P5 PIN 4
 P5SEL0 &= ~IOT_PROGRAM_SELECT;          //IOT_PROGRAM_SELECT G I/O operation

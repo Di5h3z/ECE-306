@@ -2304,6 +2304,9 @@
         </file>
     </group>
     <file>
+        <name>$PROJ_DIR$\adc.c</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\clocks.c</name>
     </file>
     <file>
@@ -2311,6 +2314,9 @@
     </file>
     <file>
         <name>$PROJ_DIR$\drive.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\errors.c</name>
     </file>
     <file>
         <name>$PROJ_DIR$\functions.h</name>
