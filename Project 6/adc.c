@@ -35,6 +35,7 @@ void display_averages(void){
     v_right_total += v_right_average[i];
     v_thumb_total += v_thumb_average[i];
   }
+  
   lcd_line1("L,R,Thumb");
   HEXtoBCD(v_left_total>>3);
   lcd_line2(adc_char);
@@ -42,6 +43,36 @@ void display_averages(void){
   lcd_line3(adc_char);
   HEXtoBCD(v_thumb_total>>3);
   lcd_line4(adc_char);
+}
+
+int return_vleft_average(void){
+  int v_left_total=0;
+  
+  for(int i = 0; i< 8; i++){
+    v_left_total += v_left_average[i];
+  }
+  
+  return v_left_total>>3;
+}
+
+int return_vright_average(void){
+  int v_right_total=0;
+  
+  for(int i = 0; i< 8; i++){
+    v_right_total += v_right_average[i];
+  }
+  
+  return v_right_total>>3;
+}
+
+int return_vthumb_average(void){
+  int v_thumb_total=0;
+  
+  for(int i = 0; i< 8; i++){
+    v_thumb_total += v_thumb_average[i];
+  }
+  
+  return v_thumb_total>>3;
 }
 
 

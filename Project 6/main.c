@@ -23,16 +23,11 @@
 extern volatile unsigned int Time_Sequence;
 
 //others
-#define ONE_SECOND 200
-#define TWO_SECONDS 400
-#define THREE_SECONDS 600
-#define FOUR_SECONDS 800
-#define FIVE_SECONDS 1000
+
 
 char change_display;
 char state;
 unsigned int state_count;
-char set_lcd_wait = TRUE;
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -53,11 +48,6 @@ void main(void){
 
 
   // Display
-  char wait[11] = "WAIT";
-  char reverse[11] = "REVERSE";
-  char forward[11] = "FORWARD";
-  char cw[11] = "ROTATE CW";
-  char ccw[11] = "ROTATE CCW";
   clear_lcd();
   lcd_line1("L,R,Thumb");
   
@@ -71,128 +61,35 @@ void main(void){
     wheel_polarity_error();             //slap some error checking function in this bad boi
     
     switch(state){
-    case WAIT_1: 
-      state_count = RESET_STATE; 
-      change_display = TRUE; 
-      state = FORWARD_1;
+    case WAIT:
+      state_count =0;
       break;
-    case FORWARD_1:
-      if(change_display){
-        change_display = FALSE;
-        lcd_line2(forward);
-      }
-      
-      if(state_count > ONE_SECOND){
-        L_stop();R_stop();
-        if(set_lcd_wait){
-          set_lcd_wait = FALSE;
-          clear_lcd();
-          lcd_line2(wait);
-        }
-        if(state_count > TWO_SECONDS){
-          state_count = RESET_STATE;
-          state = REVERSE_1;
-          change_display = TRUE;
-          set_lcd_wait = TRUE;
-        }
+    case DRIVE:
+      if(state_count < ONE_SECOND)
+        break;
+      if((return_vleft_average() > BLACK_LINE) && (return_vleft_average() > BLACK_LINE)){
+        R_stop();L_stop();
+        state = REVERSE_STATE;
+        state_count =0;
       }else{
-        L_forward(25000);R_forward(25000);
+        R_forward(10000);L_forward(10000);
       }
       break;
-    case REVERSE_1:
-      if(change_display){
-        change_display = FALSE;
-        lcd_line2(reverse);
-      }
-      
-      
-      if(state_count > TWO_SECONDS){
-        L_stop();R_stop();
-        if(set_lcd_wait){
-          set_lcd_wait = FALSE;
-          clear_lcd();
-          lcd_line2(wait);
-        }
-        if(state_count > THREE_SECONDS){
-          state_count = RESET_STATE;
-          state = FORWARD_2;
-          change_display = TRUE;
-          set_lcd_wait = TRUE;
-        }
+    case REVERSE_STATE:
+       if(state_count > 30){
+        R_stop();L_stop();
+        state = BLACK_LINE_DETECTED;
       }else{
-        L_reverse(25000);R_reverse(25000);
+        R_reverse(10000);L_reverse(10000);
       }
       break;
-    case FORWARD_2:
-      if(change_display){
-        change_display = FALSE;
-        lcd_line2(forward);
-      }
       
-      
-      if(state_count > ONE_SECOND){
-        L_stop();R_stop();
-        if(set_lcd_wait){
-          set_lcd_wait = FALSE;
-          clear_lcd();
-          lcd_line2(wait);
-        }
-        if(state_count > TWO_SECONDS){
-          state_count = RESET_STATE;
-          state = CLOCKWISE;
-          change_display = TRUE;
-          set_lcd_wait = TRUE;
-        }
+    case BLACK_LINE_DETECTED:
+      if(state_count > 280){
+        R_stop();L_stop();
+        state = WAIT;
       }else{
-        L_forward(25000);R_forward(25000);
-      }
-      break;
-    case CLOCKWISE:
-      if(change_display){
-        change_display = FALSE;
-        lcd_line2(cw);
-      }
-      
-      
-      if(state_count > THREE_SECONDS){
-        L_stop();R_stop();
-        if(set_lcd_wait){
-          set_lcd_wait = FALSE;
-          clear_lcd();
-          lcd_line2(wait);
-        }
-        if(state_count > FIVE_SECONDS){
-          state_count = RESET_STATE;
-          state = COUNTER_CLOCKWISE;
-          change_display = TRUE;
-          set_lcd_wait = TRUE;
-        }
-      }else{
-        L_forward(25000);R_reverse(25000);
-      }
-      break;
-    case COUNTER_CLOCKWISE:
-      if(change_display){
-        change_display = FALSE;
-        lcd_line2(ccw);
-      }
-      
-      
-      if(state_count > THREE_SECONDS){
-        L_stop();R_stop();
-        if(set_lcd_wait){
-          set_lcd_wait = FALSE;
-          clear_lcd();
-          lcd_line2(wait);
-        }
-        if(state_count > FIVE_SECONDS){
-          state_count = RESET_STATE;
-          state = RESET_STATE;
-          change_display = TRUE;
-          set_lcd_wait = TRUE;
-        }
-      }else{
-        L_reverse(25000);R_forward(25000);
+        R_forward(10000);L_reverse(10000);
       }
       break;
     default:break;

@@ -33,7 +33,7 @@ __interrupt void switchP4_interrupt(void) {
     switch1_pressed = TRUE;
     switch1_readable = FALSE;
     switch1_count = RESET_STATE;
-    state = WAIT_1;
+    state = DRIVE;
 
 
     //enables and increments the interupt timer

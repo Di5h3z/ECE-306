@@ -32,6 +32,9 @@
 //ADC
   void Init_ADC(void);
   void display_averages(void);
+  int return_vleft_average(void);
+  int return_vright_average(void);
+  int return_vthumb_average(void);
   void HEXtoBCD(int hex_value);
 //Error
   void wheel_polarity_error(void);

@@ -10,14 +10,19 @@
 //------------------------------------------------------------------------------
 //Main macros
 //------------------------------------------------------------------------------
+#define ONE_SECOND 200
+#define TWO_SECONDS 400
+#define THREE_SECONDS 600
+#define FOUR_SECONDS 800
+#define FIVE_SECONDS 1000
 
+#define WAIT 1
+#define DRIVE 2
+#define BLACK_LINE_DETECTED 3
+#define SPIN 4
+#define REVERSE_STATE 5
+#define BLACK_LINE 0x0B68
 
-#define WAIT_1 1
-#define FORWARD_1 2
-#define REVERSE_1 3
-#define FORWARD_2 4
-#define CLOCKWISE 5
-#define COUNTER_CLOCKWISE 6
 
 //------------------------------------------------------------------------------
 //Timer macros
@@ -74,7 +79,7 @@
 //Port macros
 //------------------------------------------------------------------------------
 //Port 1
-#define RED_LED               (0x01)
+#define RED_LED              (0x01)
 #define A1_SEEED             (0x02)
 #define V_DETECT_L           (0x04)
 #define V_DETECT_R           (0x08)
