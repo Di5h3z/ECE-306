@@ -2168,6 +2168,9 @@
         <name>$PROJ_DIR$\clocks.c</name>
     </file>
     <file>
+        <name>$PROJ_DIR$\dac.c</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\display.c</name>
     </file>
     <file>
@@ -2183,9 +2186,6 @@
         <name>$PROJ_DIR$\init.c</name>
     </file>
     <file>
-        <name>$PROJ_DIR$\led.c</name>
-    </file>
-    <file>
         <name>$PROJ_DIR$\macros.h</name>
     </file>
     <file>
@@ -2193,6 +2193,9 @@
     </file>
     <file>
         <name>$PROJ_DIR$\menu.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\navigation.c</name>
     </file>
     <file>
         <name>$PROJ_DIR$\ports.c</name>

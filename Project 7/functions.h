@@ -12,6 +12,11 @@
 //------------------------------------------------------------------------------
 // My Functions
 //------------------------------------------------------------------------------
+//Init
+  void Init_REF(void);
+  void Init_Conditions(void);
+  void Init_LEDs(void);
+  
 //LCD
   void clear_lcd(void);
   void lcd_line1(char* line);
@@ -31,9 +36,7 @@
   void Init_Timer_B0(void);
   void Init_Timer_B1(void);
 
-// Initialization
-  void Init_Conditions(void);
-  void Init_LEDs(void);
+  extern unsigned int Second_Count;
 //ADC
   void Init_ADC(void);
   void display_averages(void);
@@ -54,6 +57,27 @@
   extern char* screen1_line3;
   extern char* screen1_line4;
   
+  extern char* screen2_line1;
+  extern char* screen2_line2;
+  extern char* screen2_line3;
+  extern char* screen2_line4;
+  
+  extern char* screen3_line1;
+  extern char* screen3_line2;
+  extern char* screen3_line3;
+  extern char* screen3_line4;
+  
+  extern char* screen4_line1;
+  extern char* screen4_line2;
+  extern char* screen4_line3;
+  extern char* screen4_line4;
+
+//DAC
+  void Init_DAC(void);
+//PID NAV
+  int pid_process(void);
+  void pid_display(void);
+  void line_nav(int speed);
   
 //------------------------------------------------------------------------------
 // Other Functions

@@ -13,11 +13,13 @@
 //Refrencing the global timer variables
   unsigned int Second_Count;
   unsigned int Time_Sequence;                                     
-                                        //for shape/drive control
+  unsigned char pid_count;        
+  
+                              //for shape/drive control
   extern char right_wheel_count;
   extern char left_wheel_count;
   extern unsigned int speed_count;
-
+  extern char pid_enable;
                                         //for updating state machine in main (will get replaced with a timer interrupt)
    extern unsigned int state_count;
 
@@ -166,6 +168,11 @@ __interrupt void Timer0_B0_ISR(void){
   if(Time_Sequence++ > 250)
     Time_Sequence = RESET_STATE;
 
+  if(pid_count++ > 20){
+    pid_enable = TRUE;
+  }
+  
+  
   //other 5ms timers
   state_count++;
   right_wheel_count++;

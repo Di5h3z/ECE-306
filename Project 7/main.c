@@ -19,7 +19,7 @@
 // Global Variables
 
 //LCD Display
-extern volatile unsigned int Time_Sequence;
+extern unsigned int Time_Sequence;
 
 //others
 
@@ -44,7 +44,8 @@ void main(void){
   Init_Timers();                       // Initialize Timers
   Init_LCD();                          // Initialize LCD
   Init_ADC();                          // Initialize ADC
-
+  Init_REF();                          // Initialize internal voltage refrence to 2.5V
+  Init_DAC();                          // Initialize DAC
 
   // Display
   clear_lcd();
@@ -87,10 +88,13 @@ void main(void){
     case BLACK_LINE_DETECTED:
       if(state_count > 150){
         R_stop();L_stop();
-        state = WAIT;
+        state = NAVIGATION;
       }else{
         R_forward(10000);L_reverse(10000);
       }
+      break;
+    case NAVIGATION:
+      line_nav(15000);
       break;
     default:break;
     }

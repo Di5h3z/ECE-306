@@ -131,7 +131,7 @@ void Init_ADC(void){
   // ADCCTL2 Register
   ADCCTL2 = 0;                          // Reset
   ADCCTL2 |= ADCPDIV0;                  // ADC pre-divider 00b = Pre-divide by 1
-  ADCCTL2 |= ADCRES_2;                  // ADC resolution 10b = 12 bit (14 clock cycle conversion time) //mabye change this to 10 bits
+  ADCCTL2 |= ADCRES_1;                  // ADC resolution 0x01b 10bit
   ADCCTL2 &= ~ADCDF;                    // ADC data read-back format 0b = Binary unsigned.
   ADCCTL2 &= ~ADCSR;                    // ADC sampling rate 0b = ADC buffer supports up to 200 ksps
   // ADCMCTL0 Register
@@ -170,12 +170,18 @@ __interrupt void ADC_ISR(void){
             ADCMCTL0 |= ADCINCH_3;      // Enable Next channel A3
                                         // adds the value to the circular buffer
             v_left_average[v_left_next++ & eight_count_mask] = ADCMEM0; 
+            
+            ADCCTL0 |= ADCENC; // Enable Conversions
+            ADCCTL0 |= ADCSC; 
             break;
           case 0x01:
             ADCMCTL0 &= ~ADCINCH_3;     // Disable Last channel A2
             ADCMCTL0 |= ADCINCH_5;      // Enable Next channel A3
                                         // adds the value to the circular buffer           
             v_right_average[v_right_next++ & eight_count_mask] = ADCMEM0;
+            
+            ADCCTL0 |= ADCENC; // Enable Conversions
+            ADCCTL0 |= ADCSC; 
             break;
           case 0x02:
             
@@ -183,12 +189,13 @@ __interrupt void ADC_ISR(void){
             ADCMCTL0 |= ADCINCH_2;      // Enable Next channel A3
                                         // adds the value to the circular buffer           
             v_thumb_average[v_thumb_next++ & eight_count_mask] = ADCMEM0;
-            
+          
             ADC_Channel=0;
             break;
           default:
             break;
         }
+
       break;
     default:
       break;

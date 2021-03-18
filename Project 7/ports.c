@@ -129,10 +129,12 @@ P3SEL1 &= ~SMCLK;                       //SMCLK FUNC operation
 P3DIR |= SMCLK;
 
 //P3 PIN 5
-P3SEL0 &= ~DAC_CNTL;                    //DAC_CNTL G I/O operation
-P3SEL1 &= ~DAC_CNTL;                    //DAC_CNTL G I/O operation
-P3OUT &= ~DAC_CNTL;                     //Set DAC_CNTL Low
-P3DIR |= DAC_CNTL;                      //Set DAC_CNTL Output
+P3SELC |= DAC_CNTL;
+
+//P3SEL0 &= ~DAC_CNTL;                     //DAC_CNTL OA3O 
+//P3SEL1 &= ~DAC_CNTL;
+//P3OUT |= DAC_CNTL;  
+//P3DIR |= DAC_CNTL;
 
 //P3 PIN 6
 P3SEL0 &= ~IOT_LINK;                    //IOT_LINK G I/O operation
