@@ -65,36 +65,40 @@ void main(void){
     case WAIT:
       state_count =0;
       break;
-    case DRIVE:
+//    case DRIVE:
+//      if(state_count < ONE_SECOND)
+//        break;
+//      if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
+//        R_stop();L_stop();
+//        state = REVERSE_STATE;
+//        state_count =0;
+//      }else{
+//        R_forward(2000);L_forward(2000);
+//      }
+//      break;
+//    case REVERSE_STATE:
+//       if(state_count > 80){
+//        R_stop();L_stop();
+//        state = BLACK_LINE_DETECTED;
+//      }else{
+//        R_reverse(2000);L_reverse(2000);
+//      }
+//      break;
+//      
+//    case BLACK_LINE_DETECTED:
+//      if(state_count > 220){
+//        R_stop();L_stop();
+//        state = NAVIGATION;
+//      }else{
+//        R_forward(2000);L_reverse(2000);
+//      }
+//      break;
+    case NAVIGATION:
       if(state_count < ONE_SECOND)
         break;
-      if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
-        R_stop();L_stop();
-        state = REVERSE_STATE;
-        state_count =0;
-      }else{
-        R_forward(10000);L_forward(10000);
-      }
-      break;
-    case REVERSE_STATE:
-       if(state_count > 40){
-        R_stop();L_stop();
-        state = BLACK_LINE_DETECTED;
-      }else{
-        R_reverse(10000);L_reverse(10000);
-      }
-      break;
-      
-    case BLACK_LINE_DETECTED:
-      if(state_count > 150){
-        R_stop();L_stop();
-        state = NAVIGATION;
-      }else{
-        R_forward(10000);L_reverse(10000);
-      }
-      break;
-    case NAVIGATION:
-      line_nav(15000);
+
+      line_nav(1850);
+  
       break;
     default:break;
     }

@@ -39,5 +39,4 @@ void Init_DAC(void){
   SAC3OA |= OAPM; // Select low speed and low power mode
   SAC3PGA = MSEL_1; // Set OA as buffer mode
   SAC3OA |= SACEN; // Enable SAC
-  SAC3OA |= OAEN; // Enable OA
 }

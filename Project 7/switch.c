@@ -19,7 +19,7 @@ char switch2_pressed;
 char switch2_count;
 
 extern char state;
-
+extern unsigned int state_count;
 
 //------------------------------------------------------------------------------
 //Port 4 ISR: switch1                                                           switchP4_interrupt
@@ -33,7 +33,7 @@ __interrupt void switchP4_interrupt(void) {
     switch1_pressed = TRUE;
     switch1_readable = FALSE;
     switch1_count = RESET_STATE;
-    state = DRIVE;
+    state = NAVIGATION;
 
 
     //enables and increments the interupt timer
@@ -57,7 +57,8 @@ __interrupt void switchP2_interrupt(void) {
     switch2_readable = FALSE;
     switch2_count = RESET_STATE;
 
-    P2OUT ^= IR_LED;
+ 
+    P2OUT ^= IR_LED;  //toggles IR LED
     
     //enables and increments the interupt timer
     TB0CCTL2 &= ~CCIFG;

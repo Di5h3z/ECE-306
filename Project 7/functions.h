@@ -78,6 +78,7 @@
   int pid_process(void);
   void pid_display(void);
   void line_nav(int speed);
+  char get_state(void);
   
 //------------------------------------------------------------------------------
 // Other Functions

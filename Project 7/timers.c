@@ -20,6 +20,8 @@
   extern char left_wheel_count;
   extern unsigned int speed_count;
   extern char pid_enable;
+  extern unsigned int recovery_count;
+  extern unsigned int off_line_count;
                                         //for updating state machine in main (will get replaced with a timer interrupt)
    extern unsigned int state_count;
 
@@ -65,7 +67,7 @@ void Init_Timer_B0(void){
 }
 
 //------------------------------------------------------------------------------
-//Initilizes the B1 timer that controls human timers .25-8 seconds              Init_Timer_B0
+//Initilizes the B1 timer that controls human timers .25ms-8 seconds              Init_Timer_B0
 //------------------------------------------------------------------------------
 void Init_Timer_B1(void){
   TB1CTL = TBSSEL__ACLK;                //ACLK 32Khz
@@ -79,8 +81,9 @@ void Init_Timer_B1(void){
   TB1CCTL0 &= ~CCIFG;                   // Clear possible pending interrupt
   TB1CCTL0 |= CCIE;                     // CCR2 enable interrupt
 
+  TB1CCR1 = TB1CCR1_INTERVAL;
   TB1CCTL1 &= ~CCIFG;                   // Clear possible pending interrupt
-  TB1CCTL1 &= ~CCIE;                    // CCR2 disable interrupt
+  TB1CCTL1 |= CCIE;                     // CCR2 enable interrupt
 
   TB1CCTL2 &= ~CCIFG;                   // Clear possible pending interrupt
   TB1CCTL2 &= ~CCIE;                    // CCR2 disable interrupt
@@ -151,7 +154,12 @@ __interrupt void TIMER1_B1_ISR(void){
                                         // TimerB0 1-2, Overflow Interrupt Vector (TBIV) handler
 switch(__even_in_range(TB1IV,14)){
   case 0: break;
-  case 2: break;
+  case 2: 
+    //takes an ADC measurement every .25 ms
+    ADCCTL0 |= ADCENC; // Enable Conversions
+    ADCCTL0 |= ADCSC; 
+    TB1CCR1 = TB1R + TB1CCR1_INTERVAL;
+    break;
   case 4: break;
   case 14:break;
   default: break;
@@ -168,8 +176,15 @@ __interrupt void Timer0_B0_ISR(void){
   if(Time_Sequence++ > 250)
     Time_Sequence = RESET_STATE;
 
-  if(pid_count++ > 20){
+  
+  
+  if(pid_count++ > 2){ //every 10 ms
     pid_enable = TRUE;
+    pid_count = 0;
+  }
+  
+  if(SAC3OA & OAEN && SAC3DAT > 1200){ 
+    SAC3DAT -= 3;
   }
   
   
@@ -177,10 +192,9 @@ __interrupt void Timer0_B0_ISR(void){
   state_count++;
   right_wheel_count++;
   left_wheel_count++;
+  recovery_count++;
+  off_line_count++;
 
-  //takes an ADC measurement every five ms
-  ADCCTL0 |= ADCENC; // Enable Conversions
-  ADCCTL0 |= ADCSC; 
   
   
   TB0CCR0 = TB0R + TB0CCR0_INTERVAL;            // Add Offset to TBCCR0
@@ -206,6 +220,7 @@ switch(__even_in_range(TB0IV,14)){
           break;
   case 14:
           update_display = TRUE;
+          SAC3OA |= OAEN;               // Enable DAC
           LCD_ON;                       // Turn on backlight
           TB0CTL &= ~TBIE;              //disable interupt
           TB0CTL &= ~TBIFG;             // Clear Overflow Interrupt flag

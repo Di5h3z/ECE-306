@@ -24,7 +24,12 @@
 #define NAVIGATION 6
 #define BLACK_LINE 500
 
+//------------------------------------------------------------------------------
+//ADC macros
+//------------------------------------------------------------------------------
 
+
+#define VRIGHT_CALIBRATION 3
 //------------------------------------------------------------------------------
 //Timer macros
 //------------------------------------------------------------------------------
@@ -35,17 +40,17 @@
 #define TB0CCR2_INTERVAL 62500
 //timer 2
 #define TB1CCR0_INTERVAL 4000
-
+#define TB1CCR1_INTERVAL 1
 
 //------------------------------------------------------------------------------
 //Drive macros
 //------------------------------------------------------------------------------
 #define FORWARD 1
 #define REVERSE 0
-#define CHANGE_COUNT 10
-#define MAX_SPEED 50000
+#define CHANGE_COUNT 5
+#define MAX_SPEED 10000
 
-#define WHEEL_PERIOD 50000
+#define WHEEL_PERIOD 10000
 #define WHEEL_OFF 0
 
 #define RIGHT_FORWARD_SPEED (TB3CCR1)

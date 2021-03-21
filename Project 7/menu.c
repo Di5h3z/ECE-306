@@ -45,7 +45,7 @@
 void menu(void){
   if(update_menu){
     //Updating Values once a second
-    pid_display();
+    
     
     
     lcd_line4("        ");

@@ -14,17 +14,17 @@ char eight_count_mask = 0x07;
 
 int v_left_average[8];
 char v_left_next;
-char adc_char_left[5];
+char adc_char_left[6];
 
 int v_right_average[8];
 char v_right_next;
-char adc_char_right[5];
+char adc_char_right[6];
 
 int v_thumb_average[8];
 char v_thumb_next;
-char adc_char_thumb[5];
+char adc_char_thumb[6];
 
-char adc_char[5];
+char adc_char[6];
 char ADC_Channel;
 
 int test;
@@ -84,27 +84,37 @@ int return_vthumb_average(void){
 }
 
 
-void HEXtoBCD(int hex_value){
+void HEXtoBCD(int init_val){
   int value=0;
+  int hex_value;
+  if( init_val>=0){
+    adc_char[0] = '+';
+    hex_value = init_val;
+  }else{
+    adc_char[0] = '-';
+    hex_value = 0-init_val;
+  }
+    
+  
   while (hex_value > 999){
     hex_value = hex_value - 1000;
     value = value + 1;
   }
-  adc_char[0] = 0x30 + value;
+  adc_char[1] = 0x30 + value;
   value = 0;
   while (hex_value > 99){
     hex_value = hex_value - 100;
     value = value + 1;
   }
-  adc_char[1] = 0x30 + value;
+  adc_char[2] = 0x30 + value;
   value = 0;
   while (hex_value > 9){
     hex_value = hex_value - 10;
     value = value + 1;
   }
-  adc_char[2] = 0x30 + value;
-  adc_char[3] = 0x30 + hex_value;
-  adc_char[4] = '\0';
+  adc_char[3] = 0x30 + value;
+  adc_char[4] = 0x30 + hex_value;
+  adc_char[5] = '\0';
 }
 
 void Init_ADC(void){
@@ -178,7 +188,7 @@ __interrupt void ADC_ISR(void){
             ADCMCTL0 &= ~ADCINCH_3;     // Disable Last channel A2
             ADCMCTL0 |= ADCINCH_5;      // Enable Next channel A3
                                         // adds the value to the circular buffer           
-            v_right_average[v_right_next++ & eight_count_mask] = ADCMEM0;
+            v_right_average[v_right_next++ & eight_count_mask] = ADCMEM0 + VRIGHT_CALIBRATION;
             
             ADCCTL0 |= ADCENC; // Enable Conversions
             ADCCTL0 |= ADCSC; 
