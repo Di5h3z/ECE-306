@@ -10,8 +10,6 @@
 #include "msp430.h"
 #include "macros.h"
 
-int DAC_data = 0x0fff; // Value between 0x000 and 0x0FFF
-
 
 void Init_REF(void){
   // Configure reference module
@@ -27,7 +25,7 @@ void Init_REF(void){
 }
 
 void Init_DAC(void){
-  SAC3DAT = DAC_data; // Initial DAC data
+  SAC3DAT = MIN_DAC; // Initial DAC data
   SAC3DAC = DACSREF_1; // Select int Vref as DAC reference
   SAC3DAC |= DACLSEL_0; // DAC latch loads when DACDAT written
   // SAC3DAC |= DACIE; // generate an interrupt

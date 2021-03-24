@@ -12,10 +12,10 @@
 #include "msp430.h"
 #include "macros.h"
 
-// Function Prototypes
-  void main(void);
 
-  
+#define TWO_CIRCLE_TIME 1010
+
+
 // Global Variables
 
 //LCD Display
@@ -65,40 +65,65 @@ void main(void){
     case WAIT:
       state_count =0;
       break;
-//    case DRIVE:
-//      if(state_count < ONE_SECOND)
-//        break;
-//      if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
-//        R_stop();L_stop();
-//        state = REVERSE_STATE;
-//        state_count =0;
-//      }else{
-//        R_forward(2000);L_forward(2000);
-//      }
-//      break;
-//    case REVERSE_STATE:
-//       if(state_count > 80){
-//        R_stop();L_stop();
-//        state = BLACK_LINE_DETECTED;
-//      }else{
-//        R_reverse(2000);L_reverse(2000);
-//      }
-//      break;
-//      
-//    case BLACK_LINE_DETECTED:
-//      if(state_count > 220){
-//        R_stop();L_stop();
-//        state = NAVIGATION;
-//      }else{
-//        R_forward(2000);L_reverse(2000);
-//      }
-//      break;
-    case NAVIGATION:
+    case DRIVE:
       if(state_count < ONE_SECOND)
         break;
-
-      line_nav(1850);
-  
+      if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
+        R_stop();L_stop();
+        state = REVERSE_STATE;
+        state_count =0;
+      }else{
+        R_forward(2000);L_forward(2000);
+      }
+      break;
+    case REVERSE_STATE:
+       if(state_count > 60){
+        R_stop();L_stop();
+        state = SPIN_BLACK_LINE;
+        state_count =0;
+      }else{
+        R_reverse(2000);L_reverse(2000);
+      }
+      break;
+      
+    case SPIN_BLACK_LINE:
+      if(state_count > 220){
+        enable_clock();
+        set_clock(0);
+        R_stop();L_stop();
+        state_count =0;
+        state = NAVIGATION;
+      }else{
+        R_reverse(2000);L_forward(2000);
+      }
+      break;
+    case NAVIGATION:
+      if(get_clock_time() < 1010){
+        line_nav(1850);
+      }else{
+        R_stop();L_stop();
+        state_count =0;
+        state = SPIN_CENTER;
+      }
+        
+      break;
+    case SPIN_CENTER:
+      if(state_count > 300){
+        R_stop();L_stop();
+        state_count =0;
+        state = DRIVE_CETNER;
+      }else{
+        R_reverse(2000);L_forward(2000);
+      }
+      break;
+    case DRIVE_CETNER:
+      if(state_count < 350){
+        R_forward(2000);L_forward(2000);
+      }else{
+        disable_clock();
+        R_stop();L_stop();
+        state = WAIT;
+      }
       break;
     default:break;
     }

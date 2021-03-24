@@ -18,29 +18,64 @@
 
 #define WAIT 1
 #define DRIVE 2
-#define BLACK_LINE_DETECTED 3
-#define SPIN 4
+#define SPIN_BLACK_LINE 3
 #define REVERSE_STATE 5
 #define NAVIGATION 6
+#define SPIN_CENTER 7
+#define DRIVE_CETNER 8
+
+
 #define BLACK_LINE 500
+
+//------------------------------------------------------------------------------
+//Navigation macros
+//------------------------------------------------------------------------------
+#define VLEFT_AVERAGE return_vleft_average()
+#define VRIGHT_AVERAGE return_vright_average()
+
+#define MIN_SPEED 0
+#define MAX_SPEED_NAV 5000
+#define BLACK_LINE_VALUE 621
+#define WHITE_VALUE_MAX 150
+
+#define OFF_SPEED 1600
+#define RECOVERY_TIME 150
+
+#define KP 25
+
+#define WHITE_STATE 0
+#define LEFT_STATE 1
+#define RIGHT_STATE 2
+#define LINE_STATE 3
+
 
 //------------------------------------------------------------------------------
 //ADC macros
 //------------------------------------------------------------------------------
-
-
 #define VRIGHT_CALIBRATION 3
+
+//------------------------------------------------------------------------------
+//DAC macros
+//------------------------------------------------------------------------------
+#define MIN_DAC 0x0fff
+#define DAC_6V 1200
+
 //------------------------------------------------------------------------------
 //Timer macros
 //------------------------------------------------------------------------------
 
-//timer 1
+#define MAX_SCREEN_CLOCK_VALUE 9998
+
+//timer 0
 #define TB0CCR0_INTERVAL 625
 #define TB0CCR1_INTERVAL 62500
 #define TB0CCR2_INTERVAL 62500
-//timer 2
-#define TB1CCR0_INTERVAL 4000
-#define TB1CCR1_INTERVAL 1
+//timer 1
+#define TB1CCR0_INTERVAL 4096
+#define TB1CCR1_INTERVAL 2048
+#define TB1CCR2_INTERVAL 819
+//time 2
+#define TB2CCR1_INTERVAL 2000
 
 //------------------------------------------------------------------------------
 //Drive macros

@@ -27,7 +27,6 @@ char adc_char_thumb[6];
 char adc_char[6];
 char ADC_Channel;
 
-int test;
 
 void display_averages(void){
 

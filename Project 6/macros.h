@@ -24,6 +24,8 @@
 #define BLACK_LINE 0x0B68
 
 
+#define REVERSE_TIME 40
+#define SPIN_TIME 110
 //------------------------------------------------------------------------------
 //Timer macros
 //------------------------------------------------------------------------------
@@ -46,6 +48,9 @@
 
 #define WHEEL_PERIOD 50000
 #define WHEEL_OFF 0
+
+#define RESET_COUNT 0
+#define SLOW 10000
 
 #define RIGHT_FORWARD_SPEED (TB3CCR1)
 #define LEFT_FORWARD_SPEED (TB3CCR2)

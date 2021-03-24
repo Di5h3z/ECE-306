@@ -2,7 +2,7 @@
 // Description: This file contains the Main Routine - "While" Operating System
 //
 //
-//By:           Nathan Carels
+//File Name:    main.c
 //Date:         2/6/2021
 //Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
@@ -18,15 +18,10 @@
   
 // Global Variables
 
-//LCD Display
-extern volatile unsigned int Time_Sequence;
-
-//others
-
-
-char change_display;
-char state = WAIT;
-unsigned int state_count;
+  //LCD Display
+  char state = WAIT;            //sets the default state to WAIT
+  unsigned int state_count;     //the state counter that will get updated every 5ms 
+                                //a timer interrupt
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -46,50 +41,52 @@ void main(void){
   Init_ADC();                          // Initialize ADC
 
 
-  // Display
-  clear_lcd();
-  lcd_line1("L,R,Thumb1");
+  // Static Display text
+  clear_lcd();                          //clears the LCD screen
+  lcd_line1("L,R,Thumb1");              //Puts "L,R,Thumb1" to the screen
   
 
 
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------
-  while(ALWAYS) {                      // Can the Operating system run? Yes, yes it can
+  while(ALWAYS) {                      // Operating system
 
     menu();
-    wheel_polarity_error();             //slap some error checking function in this bad boi
+    wheel_polarity_error();             //Error checking for wheel direction to prevent FET damage.
     
     switch(state){
-    case WAIT:
-      state_count =0;
+    case WAIT:                          //Waiting for switch to trigger the state machine.
+      state_count = RESET_COUNT;
       break;
-    case DRIVE:
+    case DRIVE:                         //Drive until black line is intercepted.
       if(state_count < ONE_SECOND)
         break;
+                                        //Detection of the black line.
       if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
-        R_stop();L_stop();
-        state = REVERSE_STATE;
-        state_count =0;
-      }else{
-        R_forward(10000);L_forward(10000);
+        R_stop();L_stop();              //Stop the wheels and advance the state and reset the count.
+        state = REVERSE_STATE;          
+        state_count = RESET_COUNT;
+      }else{            
+        R_forward(SLOW);L_forward(SLOW);//Not detected so continue forward.
       }
       break;
-    case REVERSE_STATE:
-       if(state_count > 40){
+    case REVERSE_STATE:                 //Once detected pulse reverse to stop forward progress.
+       if(state_count > REVERSE_TIME){
         R_stop();L_stop();
-        state = BLACK_LINE_DETECTED;
+        state = BLACK_LINE_DETECTED;    //Once reverse time is up advnace state and reset count.
+        state_count = RESET_COUNT;
       }else{
-        R_reverse(10000);L_reverse(10000);
+        R_reverse(SLOW);L_reverse(SLOW);
       }
       break;
       
-    case BLACK_LINE_DETECTED:
-      if(state_count > 150){
+    case BLACK_LINE_DETECTED:           //Car is now on the black line and must orient itself
+      if(state_count > SPIN_TIME){      //If the car is done spinning stop and enter wait state
         R_stop();L_stop();
         state = WAIT;
       }else{
-        R_forward(10000);L_reverse(10000);
+        R_forward(SLOW);L_reverse(SLOW);//Otherwise spin to orient.
       }
       break;
     default:break;

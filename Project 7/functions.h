@@ -50,6 +50,13 @@
   void str_cpy(char* str_copy, char* str_orig);
   void menu(void);
   
+  void display_state(void);
+  
+  void display_clock(void);
+  void set_clock(int setting);
+  int get_clock_time(void);
+  void disable_clock(void);
+  void enable_clock(void);
   
   extern char update_menu;
   extern char* screen1_line1;

@@ -15,9 +15,17 @@
 #define SCREEN_THREE 2
 #define SCREEN_FOUR 3
 //Globals
+  extern char adc_char[6];
+  char clock[7];
+  int screen_clock;
+  char clock_enable;
+  
   char update_menu;
   char menu_screen;
   char null[] = "";
+  
+  extern char state;
+  
 //Screen 1
   char* screen1_line1 = null;
   char* screen1_line2 = null;
@@ -44,9 +52,9 @@
 //------------------------------------------------------------------------------
 void menu(void){
   if(update_menu){
-    //Updating Values once a second
-    
-    
+    //Updating Values once ecery 200ms
+    display_clock();
+    display_state();
     
     lcd_line4("        ");
     display_averages();
@@ -95,6 +103,74 @@ void menu(void){
 
 }
 
+
+#define WAIT 1
+#define DRIVE 2
+#define SPIN_BLACK_LINE 3
+#define REVERSE_STATE 5
+#define NAVIGATION 6
+#define SPIN_CENTER 7
+#define DRIVE_CENTER 8
+
+void display_state(void){
+  switch(state){
+  case WAIT:
+    screen4_line1 = "Stopped";
+    break;
+  case DRIVE:
+    screen4_line1 = "Intercep";
+    break;
+  case SPIN_BLACK_LINE:
+    screen4_line1 = "Turning";
+    break;
+  case NAVIGATION:
+    screen4_line1 = "Circling";
+    break;
+  case SPIN_CENTER:
+    screen4_line1 = "Turning";
+    break;
+  default:break;
+  }
+}
+
+
+
+//------------------------------------------------------------------------------
+// CLOCK functions all the functions that control the clock                     display_clock, set_clock, get_clock_time, disable_clock, enable_clock
+//------------------------------------------------------------------------------
+void display_clock(){
+  if(screen_clock > MAX_SCREEN_CLOCK_VALUE)
+    screen_clock = 0;
+  
+  if(clock_enable){
+    HEXtoBCD(screen_clock);
+    str_cpy(clock, adc_char);
+    clock[6] = clock[5];
+    clock[5] = clock[4];
+    clock[4] = '.';
+  }
+  screen4_line4 = clock;
+}
+
+void set_clock(int setting){
+  screen_clock = setting;
+}
+
+int get_clock_time(void){
+  return screen_clock;
+}
+
+void disable_clock(void){
+  clock_enable = FALSE;
+}
+
+void enable_clock(void){
+  clock_enable = TRUE;
+}
+
+//------------------------------------------------------------------------------
+// String copy, copies one string to another                                    str_cpy
+//------------------------------------------------------------------------------
 void str_cpy(char* str_copy, char* str_orig){
   int i = RESET_STATE;
   while(str_orig[i]!= '\0'){

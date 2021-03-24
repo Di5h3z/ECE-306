@@ -825,7 +825,7 @@
                 <expressions>
                     <item>screen1_line4</item>
                     <item>screen1_line1</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>
