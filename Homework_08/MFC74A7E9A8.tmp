@@ -74,7 +74,7 @@ char get_state(void){
 
 
 //------------------------------------------------------------------------------
-// Handles the tracking an navigation of a line                                 line_nav
+// Handels the tracking an navigation of a line                                 line_nav
 //------------------------------------------------------------------------------
 void line_nav(int speed){
   
@@ -140,11 +140,11 @@ void line_nav(int speed){
     
     }else{
                                                         //the recovery functions for it is has deviated from the line when it finds the line again
-      if(recovery_state == LEFT_STATE && recovery_count < RECOVERY_TIME){            
+      if(recovery_state = LEFT_STATE && recovery_count < RECOVERY_TIME){            
         rspeed = speed;
         lspeed = MIN_SPEED;
         screen4_line2 = "L_RECOVER";
-      }else if(recovery_state == RIGHT_STATE && recovery_count < RECOVERY_TIME){//has an issue hitting this recovery i.e it doesnt do it
+      }else if(recovery_state = RIGHT_STATE && recovery_count < RECOVERY_TIME){//possible has an issue hitting this recovery
         rspeed = MIN_SPEED;
         lspeed = speed;
         screen4_line2 = "R_RECOVER";
