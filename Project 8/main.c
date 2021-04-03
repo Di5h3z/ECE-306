@@ -14,7 +14,8 @@
 
 
 #define TWO_CIRCLE_TIME 1010
-
+#define RX 2
+#define TX 3
 
 // Global Variables
 //timers
@@ -58,6 +59,41 @@ void main(void){
 
     menu();
     wheel_polarity_error();             //slap some error checking function in this bad boi
+    
+    
+    
+    switch(state){
+    case WAIT:
+        screen3_line1 = "Wait";
+        if(IOT_message_ready){
+          screen3_line4 = "          ";
+          screen3_line2 = "          ";
+          state = RX;
+          Second_Count = 0;
+        }
+        break;
+    case RX:
+        screen3_line1 = "RX  ";
+        if(Second_Count >= 1){
+        screen3_line4 = IOT_rx();
+        screen3_line2 = screen3_line4;
+        IOT_tx(screen3_line4);
+        state = TX;
+        Second_Count = 0;
+        }
+        break;
+    case TX:
+        screen3_line1 = "TX  ";
+        if(Second_Count >= 1){
+           state = WAIT;
+        }
+        break;
+    default:break;
+      
+    }
+      
+
+    
     
 //    if(Second_Count >= 2){
 //      USB_tx("testUSB");

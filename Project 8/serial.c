@@ -9,45 +9,34 @@
 #include "msp430.h"
 #include "macros.h"
 
-// #defines
-#define BEGINNING (0)
-#define SMALL_RING_SIZE (16)
-#define SMALL_BUFFER_MASK 0x0f
-#define SMALL_BUFFER_REV_MASK 0xf0
+//GLOBALS
+  //USB
+    //RX
+    volatile unsigned char USB_rxbuf_index;
+    volatile char USB_rxbuf[SMALL_RING_SIZE];
+    volatile char USB_message_ready;
+    
+    volatile char USB_message_index;
+    char USB_message[SMALL_RING_SIZE];
+    
+    //TX
+    unsigned char USB_txbuf_index;
+    char USB_txbuf[SMALL_RING_SIZE];
+    volatile char USB_transmitting;
 
-#define TRANSMIT_STATE 0x00
-#define CARRIAGE_RETURN_STATE 0x10
-#define NEWLINE_STATE 0x20
-#define DISABLE_TX_INTERRUPT 0x30
+  //IOT
+    //RX
+    volatile unsigned char IOT_rxbuf_index;
+    volatile char IOT_rxbuf[SMALL_RING_SIZE];
+    volatile char IOT_message_ready;
 
-#define CARRIAGE_RETURN_CHAR '\r'
-#define NULL_CHAR '\0'
-#define NEWLINE_CHAR '\n'
+    volatile char IOT_message_index;
+    char IOT_message[SMALL_RING_SIZE];
 
-volatile unsigned char USB_rxbuf_index;
-volatile char USB_rxbuf[SMALL_RING_SIZE];
-volatile char USB_recieving;
-
-volatile char USB_message_index;
-char USB_message[SMALL_RING_SIZE];
-
-unsigned char USB_txbuf_index;
-char USB_txbuf[SMALL_RING_SIZE];
-
-
-volatile unsigned char IOT_rxbuf_index;
-volatile char IOT_rxbuf[SMALL_RING_SIZE];
-volatile char IOT_recieving;
-
-volatile char IOT_message_index;
-char IOT_message[SMALL_RING_SIZE];
-
-unsigned char OIT_txbuf_index;
-char OIT_txbuf[SMALL_RING_SIZE];
-//this goes in main
-//UCA0_index = 0;
-//
-//UCA0TXBUF = test_command[0];
+    //TX
+    unsigned char IOT_txbuf_index;
+    char IOT_txbuf[SMALL_RING_SIZE];
+    volatile char IOT_transmitting;
 
 //------------------------------------------------------------------------------
 // Inits all of the serial ports @ 115200                                       Init_Serial
@@ -98,52 +87,61 @@ UCA0IE |= UCTXIE;                       // Enable TX interrupt
 //------------------------------------------------------------------------------
 // Begins the transmission of a command to the IOT                              OIT_tx
 //------------------------------------------------------------------------------
-void OIT_tx(char* command){
-  char* temp = OIT_txbuf;               
+void IOT_tx(char* command){
+  if(IOT_transmitting){
+    return;
+  }
+  
+  IOT_transmitting = TRUE;
+  char* temp = IOT_txbuf;               
   str_cpy(temp, command);               //copys the command into the USB_tx buffer
-  OIT_txbuf_index = 0;                  //sets index to zero (gets incremented before 2nd char is sent)
+  IOT_txbuf_index = BEGINNING;          //sets index to zero (gets incremented before 2nd char is sent)
   UCA0IE |= UCTXIE;                     // Enable TX interrupt
-  UCA0TXBUF = OIT_txbuf[BEGINNING];     //kicks off the sending
+  UCA0TXBUF = IOT_txbuf[BEGINNING];     //kicks off the sending
 }
 
 //------------------------------------------------------------------------------
 // gets the last IOT command recieved                                           IOT_rx
 //------------------------------------------------------------------------------
 char* IOT_rx(void){
-  if(IOT_recieving){
-    return IOT_message;
+  if(!IOT_message_ready){
+    return NULL_PTR;
   }      
   
   char temp = IOT_message_index;        //holds IOT_message_index
   char index = 0;                       //will places the recieved command at the beginning of IOT_message
                                         //loops from the start of the command to the end
-  while(IOT_rxbuf[temp & SMALL_BUFFER_MASK] != NULL_CHAR && index < (SMALL_RING_SIZE-1)){
-    char iot_char = IOT_rxbuf[temp++];  //hold volatile
+  while(IOT_rxbuf[temp & SMALL_BUFFER_MASK] != CARRIAGE_RETURN_CHAR && index < (SMALL_RING_SIZE-1)){
+    char iot_char = IOT_rxbuf[temp++ & SMALL_BUFFER_MASK];  //hold volatile
     IOT_message[index++] = iot_char;    //stores it in the message
   }
   IOT_message[index] = NULL_CHAR;       //appends null
+  
+  IOT_message_ready = FALSE;            //message has been read wait for next
   return IOT_message;                   //returns the pointer for convient access
+  
 }
 
 #pragma vector=EUSCI_A0_VECTOR
 __interrupt void eUSCI_A0_ISR(void){
   unsigned int temp;
+  char IOT_rx_char;
   switch(__even_in_range(UCA0IV,0x08)){
     case 0: // Vector 0 - no interrupt
       break;
     case 2: // Vector 2 – RXIFG
       
-      temp = IOT_rxbuf_index++;
-                                        //saves the char in a 16byte circular buffer
-      IOT_rxbuf[temp & SMALL_BUFFER_MASK] = UCA0RXBUF;
+      temp = IOT_rxbuf_index++;         //saves the voltile and post increments
+      IOT_rx_char = UCA0RXBUF;          //gets the char from the recieve buffer
       
-                                        //Finds the beginning of the message(when it occurs) and saves the location
-      if(IOT_rxbuf[temp & SMALL_BUFFER_MASK] == NEWLINE_CHAR)
-        IOT_recieving = FALSE;
-      else
-        IOT_recieving = TRUE;
-   
-
+                                        //saves the char in a 16byte circular buffer
+      IOT_rxbuf[temp & SMALL_BUFFER_MASK] = IOT_rx_char;
+      
+                                        //detects when the message is done finished
+      if(IOT_rx_char == NEWLINE_CHAR)
+        IOT_message_ready = TRUE;
+      
+                                        //detects when a new message is being recieved and saves the location
       if(IOT_rxbuf[(temp-1) & SMALL_BUFFER_MASK] == NEWLINE_CHAR){
         IOT_message_index = temp & SMALL_BUFFER_MASK;
       }                      
@@ -152,22 +150,23 @@ __interrupt void eUSCI_A0_ISR(void){
     case 4: // Vector 4 – TXIFG
       
       
-      switch(OIT_txbuf_index++ & SMALL_BUFFER_REV_MASK){
+      switch(IOT_txbuf_index++ & SMALL_BUFFER_REV_MASK){
         case TRANSMIT_STATE:            //transmits the first 16 character unless a null is found
-          UCA0TXBUF = OIT_txbuf[OIT_txbuf_index];
-          if(OIT_txbuf[OIT_txbuf_index] == NULL_CHAR){
-            OIT_txbuf_index = CARRIAGE_RETURN_STATE;
+          UCA0TXBUF = IOT_txbuf[IOT_txbuf_index];
+          if(IOT_txbuf[IOT_txbuf_index] == NULL_CHAR){
+            IOT_txbuf_index = CARRIAGE_RETURN_STATE;
           }
           break;
         case CARRIAGE_RETURN_STATE:     //carriage return
           UCA0TXBUF = CARRIAGE_RETURN_CHAR;
-          OIT_txbuf_index = NEWLINE_STATE;
+          IOT_txbuf_index = NEWLINE_STATE;
           break;
         case NEWLINE_STATE:            //line feed
           UCA0TXBUF = NEWLINE_CHAR;
-          OIT_txbuf_index = DISABLE_TX_INTERRUPT;
+          IOT_txbuf_index = DISABLE_TX_INTERRUPT;
           break;
         default:
+          IOT_transmitting = FALSE;
           UCA0IE &= ~UCTXIE;           // Disable TX interrupt
           break;
       }
@@ -217,9 +216,14 @@ UCA1IE |= UCTXIE;                       // Enable TX interrupt
 // Begins the transmission of a command to the USB                              USB_tx
 //------------------------------------------------------------------------------
 void USB_tx(char* command){
+  if(USB_transmitting){
+    return;
+  }
+  
+  USB_transmitting = TRUE;
   char* temp = USB_txbuf;  
   str_cpy(temp, command);               //copys the command into the USB_tx buffer
-  USB_txbuf_index = 0;                  //sets index to zero (gets incremented before 2nd char is sent)
+  USB_txbuf_index = BEGINNING;          //sets index to zero (gets incremented before 2nd char is sent)
   UCA1IE |= UCTXIE;                     // Enable TX interrupt
   UCA1TXBUF = USB_txbuf[BEGINNING];     //kicks off the sending
 }
@@ -230,8 +234,8 @@ void USB_tx(char* command){
 // gets the last USB command recieved                                           USB_rx
 //------------------------------------------------------------------------------
 char* USB_rx(void){
-  if(USB_recieving){
-    return USB_message;
+  if(!USB_message_ready){
+    return NULL_PTR;
   }
   
   char temp = USB_message_index;        //holds IOT_message_index
@@ -242,6 +246,7 @@ char* USB_rx(void){
     USB_message[index++] = usb_char;    //stores it in the message
   }
   USB_message[index] = NULL_CHAR;       //appends null
+  USB_message_ready = FALSE;
   return USB_message;                   //returns the pointer for convient access
 }
 
@@ -249,18 +254,20 @@ char* USB_rx(void){
 #pragma vector=EUSCI_A1_VECTOR
 __interrupt void eUSCI_A1_ISR(void){
   unsigned int temp;
+  char USB_rx_char;
   switch(__even_in_range(UCA1IV,0x08)){
     case 0: // Vector 0 - no interrupt
       break;
     case 2: // Vector 2 – RXIFG
       temp = USB_rxbuf_index++;
+      USB_rx_char = UCA1RXBUF;
                                         //saves the char in a 16byte circular buffer
-      USB_rxbuf[temp & SMALL_BUFFER_MASK] = UCA1RXBUF;
+      USB_rxbuf[temp & SMALL_BUFFER_MASK] = USB_rx_char;
       
-      if(USB_rxbuf[temp & SMALL_BUFFER_MASK] == NEWLINE_CHAR)
-        USB_recieving = FALSE;
-      else
-        USB_recieving = TRUE;
+                                        //detects when a messaage it done being recieved
+      if(USB_rx_char == NEWLINE_CHAR)
+        USB_message_ready = TRUE;
+   
                                         //Finds the beginning of the message(when it occurs) and saves the location
       if(USB_rxbuf[(temp-1) & SMALL_BUFFER_MASK] == NEWLINE_CHAR){
         USB_message_index = temp & SMALL_BUFFER_MASK;
@@ -286,6 +293,7 @@ __interrupt void eUSCI_A1_ISR(void){
           USB_txbuf_index = DISABLE_TX_INTERRUPT;
           break;
         default:
+          USB_transmitting = FALSE;
           UCA1IE &= ~UCTXIE;            // Disable TX interrupt
           break;
       }

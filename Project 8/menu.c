@@ -58,7 +58,7 @@
   char* screen2_line3 = null;
   char* screen2_line4 = null;
 //Screen 3
-  char* screen3_line1 = "Voltages";
+  char* screen3_line1 = "Screen 3";
   char* screen3_line2 = null;
   char* screen3_line3 = null;
   char* screen3_line4 = null;
@@ -96,10 +96,10 @@ void menu(void){
 
 }
 void assign_static_strings(void){
-  screen3_line1 = "Voltages";
   screen4_line1 = "States+Clk";
   screen2_line1 = "TGL Baud";
   screen2_line3 = "Send MSG";
+  
 }
 
 
@@ -110,25 +110,25 @@ toggle_selected ^= TRUE;            //Toggles the variable
                                         //commented out lines mean the screen should not have selection indicators
       switch(line_selected){
         case LINE_ONE:
-            screen1_line1 = clear_line;
+            //screen1_line1 = clear_line;
             screen2_line1 = clear_line;
             screen3_line1 = clear_line;
             screen4_line1 = clear_line;
           break;
         case LINE_TWO:
-            screen1_line2 = clear_line;
+            //screen1_line2 = clear_line;
             //screen2_line2 = clear_line;
             screen3_line2 = clear_line;
             screen4_line2 = clear_line;
           break;
         case LINE_THREE:
-            screen1_line3 = clear_line;
+            //screen1_line3 = clear_line;
             screen2_line3 = clear_line;
             screen3_line3 = clear_line;
             screen4_line3 = clear_line;
           break;
         case LINE_FOUR:
-            screen1_line4 = clear_line;
+            //screen1_line4 = clear_line;
             screen2_line4 = clear_line;
             screen3_line4 = clear_line;
             screen4_line4 = clear_line;

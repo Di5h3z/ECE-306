@@ -17,9 +17,15 @@
   void Init_Serial_UCA1(void);
   void Init_Serial_UCA0(void);
   void USB_tx(char* command);
-  void OIT_tx(char* command);
+  void IOT_tx(char* command);
   char* USB_rx(void);
   char* IOT_rx(void);
+  
+  extern volatile char USB_message_ready;
+  extern volatile char USB_transmitting;
+  extern volatile char IOT_message_ready;
+  extern volatile char IOT_transmitting;
+  
 //Init
   void Init_REF(void);
   void Init_Conditions(void);
