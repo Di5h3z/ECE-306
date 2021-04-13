@@ -757,3 +757,162 @@ Project 8/settings/Project 8.Debug.general.xcl
 Project 8/settings/Project 8.dnx
 Project 8/settings/Project 8.wsdt
 Project 8/Project 8.dep
+Homework_09/Debug/Exe/Homework_09.d43
+Homework_09/Debug/List/adc.lst
+Homework_09/Debug/List/clocks.lst
+Homework_09/Debug/List/dac.lst
+Homework_09/Debug/List/display.lst
+Homework_09/Debug/List/drive.lst
+Homework_09/Debug/List/errors.lst
+Homework_09/Debug/List/Homework_09.map
+Homework_09/Debug/List/init.lst
+Homework_09/Debug/List/main.lst
+Homework_09/Debug/List/menu.lst
+Homework_09/Debug/List/navigation.lst
+Homework_09/Debug/List/ports.lst
+Homework_09/Debug/List/serial.lst
+Homework_09/Debug/List/switch.lst
+Homework_09/Debug/List/system.lst
+Homework_09/Debug/List/timers.lst
+Homework_09/Debug/Obj/.ninja_deps
+Homework_09/Debug/Obj/.ninja_log
+Homework_09/Debug/Obj/adc.pbi
+Homework_09/Debug/Obj/adc.pbi.dep
+Homework_09/Debug/Obj/adc.xcl
+Homework_09/Debug/Obj/build.ninja
+Homework_09/Debug/Obj/clocks.pbi
+Homework_09/Debug/Obj/clocks.pbi.dep
+Homework_09/Debug/Obj/clocks.xcl
+Homework_09/Debug/Obj/dac.pbi
+Homework_09/Debug/Obj/dac.pbi.dep
+Homework_09/Debug/Obj/dac.xcl
+Homework_09/Debug/Obj/display.pbi
+Homework_09/Debug/Obj/display.pbi.dep
+Homework_09/Debug/Obj/display.xcl
+Homework_09/Debug/Obj/drive.pbi
+Homework_09/Debug/Obj/drive.pbi.dep
+Homework_09/Debug/Obj/drive.xcl
+Homework_09/Debug/Obj/errors.pbi
+Homework_09/Debug/Obj/errors.pbi.dep
+Homework_09/Debug/Obj/errors.xcl
+Homework_09/Debug/Obj/Homework_09.pbd
+Homework_09/Debug/Obj/Homework_09.pbd.browse
+Homework_09/Debug/Obj/Homework_09.pbw
+Homework_09/Debug/Obj/Homework_09_part0.pbi
+Homework_09/Debug/Obj/Homework_09_part1.pbi
+Homework_09/Debug/Obj/Homework_09_part2.pbi
+Homework_09/Debug/Obj/Homework_09_part3.pbi
+Homework_09/Debug/Obj/init.pbi
+Homework_09/Debug/Obj/init.pbi.dep
+Homework_09/Debug/Obj/init.xcl
+Homework_09/Debug/Obj/main.pbi
+Homework_09/Debug/Obj/main.pbi.dep
+Homework_09/Debug/Obj/main.xcl
+Homework_09/Debug/Obj/menu.pbi
+Homework_09/Debug/Obj/menu.pbi.dep
+Homework_09/Debug/Obj/menu.xcl
+Homework_09/Debug/Obj/navigation.pbi
+Homework_09/Debug/Obj/navigation.pbi.dep
+Homework_09/Debug/Obj/navigation.xcl
+Homework_09/Debug/Obj/ports.pbi
+Homework_09/Debug/Obj/ports.pbi.dep
+Homework_09/Debug/Obj/ports.xcl
+Homework_09/Debug/Obj/serial.pbi
+Homework_09/Debug/Obj/serial.pbi.dep
+Homework_09/Debug/Obj/serial.xcl
+Homework_09/Debug/Obj/switch.pbi
+Homework_09/Debug/Obj/switch.pbi.dep
+Homework_09/Debug/Obj/switch.xcl
+Homework_09/Debug/Obj/system.pbi
+Homework_09/Debug/Obj/system.pbi.dep
+Homework_09/Debug/Obj/system.xcl
+Homework_09/Debug/Obj/timers.pbi
+Homework_09/Debug/Obj/timers.pbi.dep
+Homework_09/Debug/Obj/timers.xcl
+Homework_09/Homework_09.dep
+Homework_09/Homework_09.ewd
+Homework_09/Homework_09.ewp
+Homework_09/Homework_09.ewt
+Homework_09/Homework_09.eww
+Homework_09/settings/Homework_09.Debug.cspy.bat
+Homework_09/settings/Homework_09.Debug.cspy.ps1
+Homework_09/settings/Homework_09.Debug.driver.xcl
+Homework_09/settings/Homework_09.Debug.general.xcl
+Homework_09/settings/Homework_09.dnx
+Homework_09/settings/Homework_09.wsdt
+Project 9/Debug/Exe/Project 8.d43
+Project 9/Debug/List/adc.lst
+Project 9/Debug/List/clocks.lst
+Project 9/Debug/List/dac.lst
+Project 9/Debug/List/display.lst
+Project 9/Debug/List/drive.lst
+Project 9/Debug/List/errors.lst
+Project 9/Debug/List/init.lst
+Project 9/Debug/List/main.lst
+Project 9/Debug/List/menu.lst
+Project 9/Debug/List/navigation.lst
+Project 9/Debug/List/ports.lst
+Project 9/Debug/List/Project 8.map
+Project 9/Debug/List/serial.lst
+Project 9/Debug/List/switch.lst
+Project 9/Debug/List/system.lst
+Project 9/Debug/List/timers.lst
+Project 9/Debug/Obj/.ninja_deps
+Project 9/Debug/Obj/.ninja_log
+Project 9/Debug/Obj/adc.pbi
+Project 9/Debug/Obj/adc.pbi.dep
+Project 9/Debug/Obj/adc.xcl
+Project 9/Debug/Obj/build.ninja
+Project 9/Debug/Obj/clocks.pbi
+Project 9/Debug/Obj/clocks.pbi.dep
+Project 9/Debug/Obj/clocks.xcl
+Project 9/Debug/Obj/dac.pbi
+Project 9/Debug/Obj/dac.pbi.dep
+Project 9/Debug/Obj/dac.xcl
+Project 9/Debug/Obj/display.pbi
+Project 9/Debug/Obj/display.pbi.dep
+Project 9/Debug/Obj/display.xcl
+Project 9/Debug/Obj/drive.pbi
+Project 9/Debug/Obj/drive.pbi.dep
+Project 9/Debug/Obj/drive.xcl
+Project 9/Debug/Obj/errors.pbi
+Project 9/Debug/Obj/errors.pbi.dep
+Project 9/Debug/Obj/errors.xcl
+Project 9/Debug/Obj/init.pbi
+Project 9/Debug/Obj/init.pbi.dep
+Project 9/Debug/Obj/init.xcl
+Project 9/Debug/Obj/main.pbi
+Project 9/Debug/Obj/main.pbi.dep
+Project 9/Debug/Obj/main.xcl
+Project 9/Debug/Obj/menu.pbi
+Project 9/Debug/Obj/menu.pbi.dep
+Project 9/Debug/Obj/menu.xcl
+Project 9/Debug/Obj/navigation.pbi
+Project 9/Debug/Obj/navigation.pbi.dep
+Project 9/Debug/Obj/navigation.xcl
+Project 9/Debug/Obj/ports.pbi
+Project 9/Debug/Obj/ports.pbi.dep
+Project 9/Debug/Obj/ports.xcl
+Project 9/Debug/Obj/Project 8.pbd
+Project 9/Debug/Obj/Project 8.pbd.browse
+Project 9/Debug/Obj/Project 8.pbw
+Project 9/Debug/Obj/Project 8_part0.pbi
+Project 9/Debug/Obj/Project 8_part1.pbi
+Project 9/Debug/Obj/Project 8_part2.pbi
+Project 9/Debug/Obj/Project 8_part3.pbi
+Project 9/Debug/Obj/serial.pbi
+Project 9/Debug/Obj/serial.pbi.dep
+Project 9/Debug/Obj/serial.xcl
+Project 9/Debug/Obj/switch.pbi
+Project 9/Debug/Obj/switch.pbi.dep
+Project 9/Debug/Obj/switch.xcl
+Project 9/Debug/Obj/system.pbi
+Project 9/Debug/Obj/system.pbi.dep
+Project 9/Debug/Obj/system.xcl
+Project 9/Debug/Obj/timers.pbi
+Project 9/Debug/Obj/timers.pbi.dep
+Project 9/Debug/Obj/timers.xcl
+Project 9/Project 9.ewd
+Project 9/Project 9.ewp
+Project 9/Project 9.ewt
+Project 9/Project 9.eww
