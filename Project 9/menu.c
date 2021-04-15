@@ -80,15 +80,17 @@ void menu(void){
     
     //lcd_line4("        ");
     display_averages();
-      
     screen2_line4 = USB_rx();
+    
+    screen3_line2 = get_upper_IP();
+    screen3_line3 = get_lower_IP();
     
     
     //these handle selection functionality
     blink_selected();
     handle_select();
     put_screen();               //puts the string to the dispaly
-
+    
     
 
   update_menu = 0;
@@ -99,6 +101,7 @@ void assign_static_strings(void){
   screen4_line1 = "States+Clk";
   screen2_line1 = "TGL Baud";
   screen2_line3 = "Send MSG";
+  screen3_line1 = "ncsu";
   
 }
 
@@ -112,25 +115,25 @@ toggle_selected ^= TRUE;            //Toggles the variable
         case LINE_ONE:
             //screen1_line1 = clear_line;
             screen2_line1 = clear_line;
-            screen3_line1 = clear_line;
+            //screen3_line1 = clear_line;
             screen4_line1 = clear_line;
           break;
         case LINE_TWO:
             //screen1_line2 = clear_line;
             //screen2_line2 = clear_line;
-            screen3_line2 = clear_line;
+            //screen3_line2 = clear_line;
             screen4_line2 = clear_line;
           break;
         case LINE_THREE:
             //screen1_line3 = clear_line;
             screen2_line3 = clear_line;
-            screen3_line3 = clear_line;
+            //screen3_line3 = clear_line;
             screen4_line3 = clear_line;
           break;
         case LINE_FOUR:
             //screen1_line4 = clear_line;
             screen2_line4 = clear_line;
-            screen3_line4 = clear_line;
+            //screen3_line4 = clear_line;
             screen4_line4 = clear_line;
           break;
       }

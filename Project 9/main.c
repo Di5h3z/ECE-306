@@ -23,8 +23,16 @@
 
 
 //others
+
 char state = WAIT;
+char command_state;
 unsigned int state_count;
+extern int command_timer;
+int command_time = 0;
+void (*command)(int) = &forward;
+
+
+
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -60,40 +68,58 @@ void main(void){
     menu();
     wheel_polarity_error();             //slap some error checking function in this bad boi
     
-    
-    
-    switch(state){
-    case WAIT:
-        screen3_line1 = "Wait";
-        if(IOT_message_ready){
-          screen3_line4 = "          ";
-          screen3_line2 = "          ";
-          state = RX;
-          Second_Count = 0;
-        }
-        break;
-    case RX:
-        screen3_line1 = "RX  ";
-        if(Second_Count >= 1){
-        screen3_line4 = IOT_rx();
-        screen3_line2 = screen3_line4;
-        IOT_tx(screen3_line4);
-        state = TX;
-        Second_Count = 0;
-        }
-        break;
-    case TX:
-        screen3_line1 = "TX  ";
-        if(Second_Count >= 1){
-           state = WAIT;
-        }
-        break;
-    default:break;
+    switch(USB_rx()[1]){ //this will run 1x per command recieved
+    case 'F': //FAST IOT baud
       
+      UCA0BRW = 4; // 115,200 baud
+      UCA0MCTLW = 0x5551;
+      
+      USB_tx("115200 IOT Baud");
+      break;
+    case 'S': // SLOW IOT baud
+      
+      UCA0BRW = 52; // 9,600 baud
+      UCA0MCTLW = 0x4911;
+      
+      USB_tx("9600 IOT Baud");
+      break;
+    case '$': //Test command
+      USB_tx("ECHO TEST");
+      break;
+    default: break;
     }
-      
-
     
+    
+    
+    char* IOT_command = verify_pin(&IOT_rx()[1]);
+    switch(IOT_command[0]){
+      case 'F':
+        command_timer = 0;
+        command = &forward;
+        command_time = str_to_int(&IOT_command[1]);
+        break;
+      case 'B': 
+        command_timer = 0;
+        command = &reverse;
+        command_time = str_to_int(&IOT_command[1]);
+        break;
+        
+      case 'L': 
+        command_timer = 0;
+        command = &left_turn;
+        command_time = str_to_int(&IOT_command[1]);
+        break;
+        
+      case 'R': 
+        command_timer = 0;
+        command = &right_turn;
+        command_time = str_to_int(&IOT_command[1]);
+        break;
+        
+      default:break;
+    }
+    
+    (*command)(command_time);
     
 //    if(Second_Count >= 2){
 //      USB_tx("testUSB");

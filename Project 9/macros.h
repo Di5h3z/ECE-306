@@ -15,10 +15,14 @@
 #define SMALL_BUFFER_MASK 0x0f          // 0b 0000_1111
 #define SMALL_BUFFER_REV_MASK 0xf0      // 0b 1111_0000
 
-#define TRANSMIT_STATE 0x00             //TX state machine
-#define CARRIAGE_RETURN_STATE 0x10
-#define NEWLINE_STATE 0x20
-#define DISABLE_TX_INTERRUPT 0x30
+
+#define MEDIUM_RING_SIZE 32
+#define MEDIUM_BUFFER_REV_MASK 0xff00      // 0b 1111_0000
+
+#define TRANSMIT_STATE 0x000             //TX state machine
+#define CARRIAGE_RETURN_STATE 0x100
+#define NEWLINE_STATE 0x200
+#define DISABLE_TX_INTERRUPT 0x300
 
 //------------------------------------------------------------------------------
 //Masks

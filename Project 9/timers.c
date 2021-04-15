@@ -35,7 +35,9 @@
    extern volatile unsigned char update_display;
    extern int screen_clock;
 
-
+   //IOT enable
+   int IOT_enable_count;
+   extern int command_timer;
 //------------------------------------------------------------------------------
 //Initilizes the B0 timer that controls time sequence and switch debounce       Init_Timer_B0
 //------------------------------------------------------------------------------
@@ -123,6 +125,9 @@ switch(__even_in_range(TB0IV,14)){
           P2IE |= SW2;                  //enable SW2 interupt
           break;
   case 14:
+    
+    
+          
           update_display = TRUE;
           SAC3OA |= OAEN;               // Enable DAC
           LCD_ON;                       // Turn on backlight
@@ -196,7 +201,7 @@ switch(__even_in_range(TB1IV,14)){
     
     break;
   case 4: 
-    
+    command_timer += 1;
     screen_clock += 2;
     update_menu = TRUE;
     TB1CCR2 = TB1R + TB1CCR2_INTERVAL;
@@ -230,7 +235,7 @@ TB2CCTL2 &= ~CCIFG;
 TB2CCTL2 &= ~CCIE;
 
 TB2CTL &= ~TBIFG;
-TB2CTL &= ~TBIE;
+TB2CTL |= TBIE;
 }
 
 #pragma vector = TIMER2_B0_VECTOR
@@ -238,6 +243,8 @@ __interrupt void Timer2_b0_isr(void){
 
 
 }
+
+#define IOT_ENABLE_COUNT_VAL 15
 
 #pragma vector = TIMER2_B1_VECTOR
 __interrupt void Timer2_b1_isr(void){
@@ -251,7 +258,17 @@ switch(__even_in_range(TB2IV,14)){
     TB2CCR1 = TB2R + TB2CCR1_INTERVAL;
     break;
   case 4: break;
-  case 14:break;
+  case 14:
+          if(IOT_enable_count++ > IOT_ENABLE_COUNT_VAL)
+              P3OUT |= IOT_RESET;                    //Set IOT_RESET high
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 700)
+            IOT_tx("\nAT+WSYNCINTRL=60000\r\r");
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 1000){
+            IOT_tx("\nAT+NSTCP=25565,1\r\r");
+            TB2CTL &= ~TBIE;
+          }
+          break;
+  
   default: break;
   }
 

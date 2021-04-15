@@ -81,8 +81,7 @@ P2IE |= SW2;                            //SW2 interrupt Enabled
 //P2 PIN 4
 P2SEL0 &= ~IOT_PROGRAM_SELECT;          //IOT_PROGRAM_SELECT G I/O operation
 P2SEL1 &= ~IOT_PROGRAM_SELECT;          //IOT_PROGRAM_SELECT G I/O operation
-P2OUT &= ~IOT_PROGRAM_SELECT;           //Set IOT_PROGRAM_SELECT Low
-P2DIR |= IOT_PROGRAM_SELECT;            //Set IOT_PROGRAM_SELECT Output
+P2DIR &= ~IOT_PROGRAM_SELECT;            //Set IOT_PROGRAM_SELECT Input
 
 //P2 PIN 5
 P2SEL0 &= ~P5_5;                        //P5_5 G I/O operation
@@ -222,8 +221,7 @@ P5SELC |= V_3_3;                        //V_3_3 FUNC operation
 //P5 PIN 4
 P5SEL0 &= ~IOT_PROGRAM_SELECT;          //IOT_PROGRAM_SELECT G I/O operation
 P5SEL1 &= ~IOT_PROGRAM_SELECT;          //IOT_PROGRAM_SELECT G I/O operation
-P5OUT &= ~IOT_PROGRAM_SELECT;           //Set IOT_PROGRAM_SELECT Low
-P5DIR |= IOT_PROGRAM_SELECT;            //Set IOT_PROGRAM_SELECT Output
+P5DIR &= ~IOT_PROGRAM_SELECT;           //Set IOT_PROGRAM_SELECT Input
 
 }
 
