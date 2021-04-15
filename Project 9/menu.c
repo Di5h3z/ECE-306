@@ -75,8 +75,7 @@ void menu(void){
   if(update_menu){
     //Updating Values once ecery 200ms
     assign_static_strings();
-    display_clock();
-    display_state();
+
     
     //lcd_line4("        ");
     display_averages();
@@ -98,7 +97,6 @@ void menu(void){
 
 }
 void assign_static_strings(void){
-  screen4_line1 = "States+Clk";
   screen2_line1 = "TGL Baud";
   screen2_line3 = "Send MSG";
   screen3_line1 = "ncsu";
@@ -239,24 +237,28 @@ void put_screen(void){
     //Putting string to the correct display
     switch(menu_screen){
       case SCREEN_ONE:
+          lcd_4line();
           lcd_line1(screen1_line1);
           lcd_line2(screen1_line2);
           lcd_line3(screen1_line3);
           lcd_line4(screen1_line4);
           break;
       case SCREEN_TWO:
+          lcd_4line();
           lcd_line1(screen2_line1);
           lcd_line2(screen2_line2);
           lcd_line3(screen2_line3);
           lcd_line4(screen2_line4);
           break;
       case SCREEN_THREE:
+          lcd_4line();
           lcd_line1(screen3_line1);
           lcd_line2(screen3_line2);
           lcd_line3(screen3_line3);
           lcd_line4(screen3_line4);
           break;
       case SCREEN_FOUR:
+          lcd_BIG_mid();
           lcd_line1(screen4_line1);
           lcd_line2(screen4_line2);
           lcd_line3(screen4_line3);
@@ -276,27 +278,6 @@ void put_screen(void){
 #define NAVIGATION 6
 #define SPIN_CENTER 7
 #define DRIVE_CENTER 8
-
-void display_state(void){
-  switch(state){
-  case WAIT:
-    screen4_line1 = "Stopped";
-    break;
-  case DRIVE:
-    screen4_line1 = "Intercep";
-    break;
-  case SPIN_BLACK_LINE:
-    screen4_line1 = "Turning";
-    break;
-  case NAVIGATION:
-    screen4_line1 = "Circling";
-    break;
-  case SPIN_CENTER:
-    screen4_line1 = "Turning";
-    break;
-  default:break;
-  }
-}
 
 
 

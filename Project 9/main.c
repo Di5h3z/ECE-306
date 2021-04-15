@@ -29,10 +29,11 @@ char command_state;
 unsigned int state_count;
 extern int command_timer;
 int command_time = 0;
-void (*command)(int) = &forward;
-
-
-
+int next_command_time = 0;
+void (*command)(int) = &right_turn;
+void (*next_command)(int) = &right_turn;
+char curr_screen4_line2[10];
+char next_screen4_line2[10];
 
 void main(void){
 //------------------------------------------------------------------------------
@@ -93,32 +94,40 @@ void main(void){
     
     char* IOT_command = verify_pin(&IOT_rx()[1]);
     switch(IOT_command[0]){
-      case 'F':
+      case 'F': 
         command_timer = 0;
-        command = &forward;
-        command_time = str_to_int(&IOT_command[1]);
+        next_command = &forward;
+        next_command_time = str_to_int(&IOT_command[1]);
+        IOT_command[4] = '\0';
+        str_cpy(next_screen4_line2, IOT_command);
         break;
       case 'B': 
         command_timer = 0;
-        command = &reverse;
-        command_time = str_to_int(&IOT_command[1]);
+        next_command = &reverse;
+        next_command_time = str_to_int(&IOT_command[1]);
+        IOT_command[4] = '\0';
+        str_cpy(next_screen4_line2, IOT_command);
         break;
         
       case 'L': 
         command_timer = 0;
-        command = &left_turn;
-        command_time = str_to_int(&IOT_command[1]);
+        next_command = &left_turn;
+        next_command_time = str_to_int(&IOT_command[1]);
+        IOT_command[4] = '\0';
+        str_cpy(next_screen4_line2, IOT_command);
         break;
         
       case 'R': 
         command_timer = 0;
-        command = &right_turn;
-        command_time = str_to_int(&IOT_command[1]);
+        next_command = &right_turn;
+        next_command_time = str_to_int(&IOT_command[1]);
+        IOT_command[4] = '\0';
+        str_cpy(next_screen4_line2, IOT_command);
         break;
         
       default:break;
     }
-    
+    screen4_line2 = curr_screen4_line2;
     (*command)(command_time);
     
 //    if(Second_Count >= 2){

@@ -18,10 +18,12 @@
 #define IPEND 3
 
 int command_timer;
-
-
-
-
+extern int command_time;
+extern int next_command_time;
+extern void (*command)(int);
+extern void (*next_command)(int);
+extern char curr_screen4_line2[10];
+extern char next_screen4_line2[10];
 
 
 void right_turn(int time){
@@ -31,6 +33,11 @@ void right_turn(int time){
   }else{
     R_stop();
     L_stop();
+    command = next_command;
+    command_time = next_command_time;
+    command_timer = 0;
+    next_command_time = 0;
+    str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
 
@@ -41,6 +48,11 @@ void left_turn(int time){
   }else{
     R_stop();
     L_stop();
+    command = next_command;
+    command_time = next_command_time;
+    command_timer = 0;
+    next_command_time = 0;
+    str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
 
@@ -51,6 +63,11 @@ void reverse(int time){
   }else{
     R_stop();
     L_stop();
+    command = next_command;
+    command_time = next_command_time;
+    command_timer = 0;
+    next_command_time = 0;
+    str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
 
@@ -61,6 +78,11 @@ void forward(int time){
   }else{
     R_stop();
     L_stop();
+    command = next_command;
+    command_time = next_command_time;
+    command_timer = 0;
+    next_command_time = 0;
+    str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
 
