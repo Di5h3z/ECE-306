@@ -145,7 +145,7 @@ __interrupt void eUSCI_A0_ISR(void){
       
       
       IOT_rx_char = UCA0RXBUF;          //gets the char from the recieve buffer
-      //UCA1TXBUF = IOT_rx_char;
+      UCA1TXBUF = IOT_rx_char;
       
       
       if(IOT_rx_char == MESSAGE_BEGIN || IOT_recieving){
@@ -172,7 +172,7 @@ __interrupt void eUSCI_A0_ISR(void){
       
       capture_IP(IOT_rx_char);
       
-      //UCA1IE |= UCTXIE;           // Disable TX interrupt
+      UCA1IE |= UCTXIE;           // enable TX interrupt
   
       break;
     case 4: // Vector 4 – TXIFG
@@ -290,28 +290,28 @@ __interrupt void eUSCI_A1_ISR(void){
       break;
     case 2: // Vector 2 – RXIFG
       
-      USB_rx_char = UCA1RXBUF;
-      
-      if(USB_rx_char == MESSAGE_BEGIN || USB_recieving){ //command starts with a $
-        USB_recieving = TRUE;
-        temp = USB_rxbuf_index++;
-        
-        USB_rxbuf[temp & SMALL_BUFFER_MASK] = USB_rx_char;
-        
-                                          //detects when a messaage it done being recieved
-        if(USB_rx_char == MESSAGE_END){                 //terminates with a %
-          USB_message_ready = TRUE;
-          USB_recieving = FALSE;
-        }
-                                          //Finds the beginning of the message(when it occurs) and saves the location
-        if(USB_rxbuf[(temp-1) & SMALL_BUFFER_MASK] == MESSAGE_END){
-          USB_message_index = temp & SMALL_BUFFER_MASK;
-        }
-      }else{
-        
-        UCA0TXBUF = USB_rx_char;
-        UCA0IE |= UCTXIE; 
-      }
+//      USB_rx_char = UCA1RXBUF;
+//      
+//      if(USB_rx_char == MESSAGE_BEGIN || USB_recieving){ //command starts with a $
+//        USB_recieving = TRUE;
+//        temp = USB_rxbuf_index++;
+//        
+//        USB_rxbuf[temp & SMALL_BUFFER_MASK] = USB_rx_char;
+//        
+//                                          //detects when a messaage it done being recieved
+//        if(USB_rx_char == MESSAGE_END){                 //terminates with a %
+//          USB_message_ready = TRUE;
+//          USB_recieving = FALSE;
+//        }
+//                                          //Finds the beginning of the message(when it occurs) and saves the location
+//        if(USB_rxbuf[(temp-1) & SMALL_BUFFER_MASK] == MESSAGE_END){
+//          USB_message_index = temp & SMALL_BUFFER_MASK;
+//        }
+//      }else{
+//        
+//        UCA0TXBUF = USB_rx_char;
+//        UCA0IE |= UCTXIE; 
+//      }
       
       break;
     case 4: // Vector 4 – TXIFG

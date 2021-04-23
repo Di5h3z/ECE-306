@@ -262,9 +262,11 @@ switch(__even_in_range(TB2IV,14)){
           if(IOT_enable_count++ > IOT_ENABLE_COUNT_VAL)
               P3OUT |= IOT_RESET;                    //Set IOT_RESET high
           if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 700)
-            IOT_tx("\nAT+WSYNCINTRL=60000\r\r");
-          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 1000){
-            IOT_tx("\nAT+NSTCP=25565,1\r\r");
+            IOT_tx("\nAT+WSYNCINTRL=60000\r");
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 1000)
+            IOT_tx("\nAT+NSTCP=25565,1\r");
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 1200){
+            IOT_tx("\nAT+PING=8.8.8.8,1\r");
             TB2CTL &= ~TBIE;
           }
           break;

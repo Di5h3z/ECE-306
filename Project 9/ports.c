@@ -60,7 +60,7 @@ P2DIR &= ~P2_0;                         //Set P2_0 Input
 //P2 PIN 1
 P2SEL0 &= ~IR_LED;                      //IR_LED G I/O operation
 P2SEL1 &= ~IR_LED;                      //IR_LED G I/O operation
-P2OUT |= IR_LED;                       //Set IR_LED Low
+P2OUT |= IR_LED;                        //Set IR_LED high
 P2DIR |= IR_LED;                        //Set IR_LED Output
 
 //P2 PIN 2
