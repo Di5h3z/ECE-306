@@ -936,3 +936,86 @@ Project 9/Debug/List/Project 9.map
 Project 9/Debug/Obj/IOT.pbi
 Project 9/Debug/Obj/IOT.pbi.dep
 Project 9/Debug/Obj/IOT.xcl
+Project 10/Debug/Exe/Project 10.d43
+Project 10/Debug/List/adc.lst
+Project 10/Debug/List/clocks.lst
+Project 10/Debug/List/dac.lst
+Project 10/Debug/List/display.lst
+Project 10/Debug/List/drive.lst
+Project 10/Debug/List/errors.lst
+Project 10/Debug/List/init.lst
+Project 10/Debug/List/IOT.lst
+Project 10/Debug/List/main.lst
+Project 10/Debug/List/menu.lst
+Project 10/Debug/List/navigation.lst
+Project 10/Debug/List/ports.lst
+Project 10/Debug/List/Project 10.map
+Project 10/Debug/List/serial.lst
+Project 10/Debug/List/switch.lst
+Project 10/Debug/List/system.lst
+Project 10/Debug/List/timers.lst
+Project 10/Debug/Obj/.ninja_deps
+Project 10/Debug/Obj/.ninja_log
+Project 10/Debug/Obj/adc.pbi
+Project 10/Debug/Obj/adc.pbi.dep
+Project 10/Debug/Obj/adc.xcl
+Project 10/Debug/Obj/build.ninja
+Project 10/Debug/Obj/clocks.pbi
+Project 10/Debug/Obj/clocks.pbi.dep
+Project 10/Debug/Obj/clocks.xcl
+Project 10/Debug/Obj/dac.pbi
+Project 10/Debug/Obj/dac.pbi.dep
+Project 10/Debug/Obj/dac.xcl
+Project 10/Debug/Obj/display.pbi
+Project 10/Debug/Obj/display.pbi.dep
+Project 10/Debug/Obj/display.xcl
+Project 10/Debug/Obj/drive.pbi
+Project 10/Debug/Obj/drive.pbi.dep
+Project 10/Debug/Obj/drive.xcl
+Project 10/Debug/Obj/errors.pbi
+Project 10/Debug/Obj/errors.pbi.dep
+Project 10/Debug/Obj/errors.xcl
+Project 10/Debug/Obj/init.pbi
+Project 10/Debug/Obj/init.pbi.dep
+Project 10/Debug/Obj/init.xcl
+Project 10/Debug/Obj/IOT.pbi
+Project 10/Debug/Obj/IOT.pbi.dep
+Project 10/Debug/Obj/IOT.xcl
+Project 10/Debug/Obj/main.pbi
+Project 10/Debug/Obj/main.pbi.dep
+Project 10/Debug/Obj/main.xcl
+Project 10/Debug/Obj/menu.pbi
+Project 10/Debug/Obj/menu.pbi.dep
+Project 10/Debug/Obj/menu.xcl
+Project 10/Debug/Obj/navigation.pbi
+Project 10/Debug/Obj/navigation.pbi.dep
+Project 10/Debug/Obj/navigation.xcl
+Project 10/Debug/Obj/ports.pbi
+Project 10/Debug/Obj/ports.pbi.dep
+Project 10/Debug/Obj/ports.xcl
+Project 10/Debug/Obj/Project 10.pbd
+Project 10/Debug/Obj/Project 10.pbd.browse
+Project 10/Debug/Obj/Project 10.pbw
+Project 10/Debug/Obj/Project 10_part0.pbi
+Project 10/Debug/Obj/Project 10_part1.pbi
+Project 10/Debug/Obj/Project 10_part2.pbi
+Project 10/Debug/Obj/Project 10_part3.pbi
+Project 10/Debug/Obj/serial.pbi
+Project 10/Debug/Obj/serial.pbi.dep
+Project 10/Debug/Obj/serial.xcl
+Project 10/Debug/Obj/switch.pbi
+Project 10/Debug/Obj/switch.pbi.dep
+Project 10/Debug/Obj/switch.xcl
+Project 10/Debug/Obj/system.pbi
+Project 10/Debug/Obj/system.pbi.dep
+Project 10/Debug/Obj/system.xcl
+Project 10/Debug/Obj/timers.pbi
+Project 10/Debug/Obj/timers.pbi.dep
+Project 10/Debug/Obj/timers.xcl
+Project 10/Project 10.dep
+Project 10/settings/Project 10.Debug.cspy.bat
+Project 10/settings/Project 10.Debug.cspy.ps1
+Project 10/settings/Project 10.Debug.driver.xcl
+Project 10/settings/Project 10.Debug.general.xcl
+Project 10/settings/Project 10.dnx
+Project 10/settings/Project 10.wsdt
