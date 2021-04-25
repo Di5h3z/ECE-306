@@ -23,7 +23,8 @@
 //Globals
 //externals refrenced in menu.c
   extern char state;
-
+  extern char station_counter;
+  char screen4_line1_hold[11];
 //number display varaibles
   extern char adc_char[6];
   
@@ -46,7 +47,7 @@
   char toggle_selected;
   char line_selected;
   char clear_line[] = "          ";
-  
+  char ip_toggle;
 //Screen 1
   char* screen1_line1 = "Screen 1";
   char* screen1_line2 = null;
@@ -77,13 +78,23 @@ void menu(void){
     assign_static_strings();
 
     
-    //lcd_line4("        ");
+    iot_course_display();
+    display_clock(); //display the clock
     display_averages();
     screen2_line4 = USB_rx();
     
+    //get IP and display
     screen3_line2 = get_upper_IP();
     screen3_line3 = get_lower_IP();
     
+    ip_toggle++;
+    if(ip_toggle < 5){
+      screen4_line3 = screen3_line2;
+    }else if(ip_toggle >= 5 && ip_toggle < 10){
+      screen4_line3 = screen3_line3;
+    }else{
+      ip_toggle = 0;
+    }
     
     //these handle selection functionality
     blink_selected();
@@ -96,6 +107,39 @@ void menu(void){
   }
 
 }
+
+void iot_course_display(void){
+  
+  switch(state){
+  case WAIT:
+    screen4_line1_hold[0] = station_counter + 0x30;
+    screen4_line1 = screen4_line1_hold;
+    break;
+  case FIRST_FORWARD_LEG:
+    screen4_line1 = "BLstart";
+    break;
+  case FIRST_TURN_RIGHT:
+  case SECOND_FORWARD_LEG:
+  case SECOND_TURN_RIGHT:
+  case WHITE_DETECT:
+    screen4_line1 = "Intercept";
+    break;
+  case NAVIGATION:
+    screen4_line1 = "BL Travel";
+    break;
+  case CIRCLE: 
+    screen4_line1 = "BL Circle";
+    break;
+  case BL_EXIT:
+    screen4_line1 = "BL Exit";
+    break;
+  case STOP:
+    screen4_line1 = "Stop";
+    break;
+  default:break;
+  }
+}
+
 void assign_static_strings(void){
   screen2_line1 = "TGL Baud";
   screen2_line3 = "Send MSG";
@@ -114,25 +158,25 @@ toggle_selected ^= TRUE;            //Toggles the variable
             //screen1_line1 = clear_line;
             screen2_line1 = clear_line;
             //screen3_line1 = clear_line;
-            screen4_line1 = clear_line;
+            //screen4_line1 = clear_line;
           break;
         case LINE_TWO:
             //screen1_line2 = clear_line;
             //screen2_line2 = clear_line;
             //screen3_line2 = clear_line;
-            screen4_line2 = clear_line;
+            //screen4_line2 = clear_line;
           break;
         case LINE_THREE:
             //screen1_line3 = clear_line;
             screen2_line3 = clear_line;
             //screen3_line3 = clear_line;
-            screen4_line3 = clear_line;
+            //screen4_line3 = clear_line;
           break;
         case LINE_FOUR:
             //screen1_line4 = clear_line;
             screen2_line4 = clear_line;
             //screen3_line4 = clear_line;
-            screen4_line4 = clear_line;
+            //screen4_line4 = clear_line;
           break;
       }
     }
@@ -258,7 +302,6 @@ void put_screen(void){
           lcd_line4(screen3_line4);
           break;
       case SCREEN_FOUR:
-          lcd_BIG_mid();
           lcd_line1(screen4_line1);
           lcd_line2(screen4_line2);
           lcd_line3(screen4_line3);
@@ -284,16 +327,14 @@ void put_screen(void){
 //------------------------------------------------------------------------------
 // CLOCK functions all the functions that control the clock                     display_clock, set_clock, get_clock_time, disable_clock, enable_clock
 //------------------------------------------------------------------------------
-void display_clock(){
+void display_clock(void){
   if(screen_clock > MAX_SCREEN_CLOCK_VALUE)
     screen_clock = 0;
   
   if(clock_enable){
     HEXtoBCD(screen_clock);
     str_cpy(clock, adc_char);
-    clock[6] = clock[5];
-    clock[5] = clock[4];
-    clock[4] = '.';
+
   }
   screen4_line4 = clock;
 }

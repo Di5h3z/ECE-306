@@ -171,7 +171,7 @@ void Init_Timer_B1(void){
 #pragma vector = TIMER1_B0_VECTOR
 __interrupt void Timer1_B0_ISR(void){
   Second_Count++;
-  
+  screen_clock++;
   
   TB1CCR0 = TB1R + TB1CCR0_INTERVAL;
 }
@@ -202,7 +202,7 @@ switch(__even_in_range(TB1IV,14)){
     break;
   case 4: 
     command_timer += 1;
-    screen_clock += 2;
+    
     update_menu = TRUE;
     TB1CCR2 = TB1R + TB1CCR2_INTERVAL;
     break;

@@ -24,12 +24,127 @@ extern void (*command)(int);
 extern void (*next_command)(int);
 extern char curr_screen4_line2[10];
 extern char next_screen4_line2[10];
+extern int command_speed;
+
+
+char state = WAIT;
+char command_state;
+unsigned int state_count;
+
+void exit(int time){
+  if(command_timer < 20){
+    R_forward(command_speed);
+    L_forward(command_speed);
+  }else{
+    state = STOP;
+    R_stop();
+    L_stop();
+  }
+  
+}
+
+
+void navigate(int time){
+    command_timer = 0;
+    
+    switch(state){ //intercept and line follow not needed for HW 8 and Project 8
+    case WAIT:
+      state_count =0;
+      state = FIRST_FORWARD_LEG;
+      break;
+    case FIRST_FORWARD_LEG:
+      if(state_count > 800){
+        R_stop();L_stop();
+        state = FIRST_TURN_RIGHT;
+        state_count =0;
+      }else{
+        R_forward(2000);L_forward(1975);
+      }
+      break;
+    case FIRST_TURN_RIGHT:
+      if(state_count > 215){
+        R_stop();L_stop();
+        state = SECOND_FORWARD_LEG;
+        state_count =0;
+      }else{
+        R_reverse(2000);L_forward(2000);
+      }
+      break;
+    case SECOND_FORWARD_LEG:
+      if(state_count > 1400){
+        R_stop();L_stop();
+        state = SECOND_TURN_RIGHT;
+        state_count =0;
+      }else{
+        R_forward(2000);L_forward(1975);
+      }
+      break;
+    case SECOND_TURN_RIGHT:
+      if(state_count > 215){
+        R_stop();L_stop();
+        state = WHITE_DETECT;
+        state_count =0;
+      }else{
+        R_reverse(2000);L_forward(2000);
+      }
+      break;
+    case WHITE_DETECT:
+      if((return_vleft_average() < WHITE_VALUE_MAX) && (return_vright_average() < WHITE_VALUE_MAX)){
+        state = LINE_DETECT;
+      }else{
+        R_forward(2000);L_forward(1975);
+      }
+      
+      break;
+    case LINE_DETECT:
+      if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
+        R_stop();L_stop();
+        state = REVERSE_STATE;
+        state_count =0;
+      }else{
+        R_forward(2000);L_forward(1975);
+      }
+      break;
+    case REVERSE_STATE:
+       if(state_count > 60){
+        R_stop();L_stop();
+        state = SPIN_BLACK_LINE;
+        state_count =0;
+      }else{
+        R_reverse(2000);L_reverse(2000);
+      }
+      break;
+      
+    case SPIN_BLACK_LINE:
+      if(state_count > 220){
+        R_stop();L_stop();
+        state_count =0;
+        state = NAVIGATION;
+      }else{
+        L_reverse(2000);R_forward(2000);
+      }
+      break;
+    case NAVIGATION:
+      if(state_count < 400){
+        state_count =0;
+        state = CIRCLE;
+      }else{
+        line_nav(1800);
+      }
+      break;
+      
+    case CIRCLE:
+        line_nav(1800);
+        break;
+    default:break;
+    }
+}
 
 
 void right_turn(int time){
   if(command_timer < time){
-    R_reverse(2000);
-    L_forward(2000);
+    R_reverse(command_speed);
+    L_forward(command_speed);
   }else{
     R_stop();
     L_stop();
@@ -43,8 +158,8 @@ void right_turn(int time){
 
 void left_turn(int time){
   if(command_timer < time){
-    R_forward(2000);
-    L_reverse(2000);
+    R_forward(command_speed);
+    L_reverse(command_speed);
   }else{
     R_stop();
     L_stop();
@@ -58,8 +173,8 @@ void left_turn(int time){
 
 void reverse(int time){
   if(command_timer < time){
-    R_reverse(2000);
-    L_reverse(2000);
+    R_reverse(command_speed);
+    L_reverse(command_speed);
   }else{
     R_stop();
     L_stop();
@@ -73,8 +188,8 @@ void reverse(int time){
 
 void forward(int time){
   if(command_timer < time){
-    R_forward(2000);
-    L_forward(2000);
+    R_forward(command_speed);
+    L_forward(command_speed);
   }else{
     R_stop();
     L_stop();

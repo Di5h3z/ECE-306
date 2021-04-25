@@ -14,6 +14,8 @@
 //------------------------------------------------------------------------------
 
 //IOT
+void exit(int time);
+void navigate(int time);
 void reverse(int time);
 void left_turn(int time);
 void right_turn(int time);
@@ -76,6 +78,7 @@ char* get_lower_IP(void);
   void str_cpy(char* str_copy, char* str_orig);
   void menu(void);
 
+  void iot_course_display(void);
   void assign_static_strings(void);
   void put_screen(void);
   void display_state(void);

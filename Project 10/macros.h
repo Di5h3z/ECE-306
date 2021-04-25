@@ -35,12 +35,18 @@
 
 
 #define WAIT 1                          //state machine 
-#define DRIVE 2
+#define FIRST_FORWARD_LEG 10
+#define FIRST_TURN_RIGHT 11
+#define SECOND_FORWARD_LEG 12
+#define SECOND_TURN_RIGHT 13
+#define WHITE_DETECT 14
+#define LINE_DETECT 2
 #define SPIN_BLACK_LINE 3
 #define REVERSE_STATE 5
 #define NAVIGATION 6
-#define SPIN_CENTER 7
-#define DRIVE_CETNER 8
+#define CIRCLE 15
+#define BL_EXIT 7
+#define STOP 8
 
 
 #define BLACK_LINE 500                  //used to find the black line is made defunct below
@@ -52,10 +58,10 @@
 
 #define MIN_SPEED 0                     //smallest pwm period allowed
 #define MAX_SPEED_NAV 5000              //largest pwm period allowed
-#define BLACK_LINE_VALUE 621            //The value that the black line is above
+#define BLACK_LINE_VALUE 631            //The value that the black line is above (was 631)
 #define WHITE_VALUE_MAX 150             //the value the white line is below
 
-#define OFF_SPEED 1600                  //speed the wheel must be above to stop stalling
+#define OFF_SPEED 1650                  //speed the wheel must be above to stop stalling
 #define RECOVERY_TIME 150               //time needed to turn to get back on the line
 
 #define KP 25                           //the mutiplicative constant for the controller
@@ -109,7 +115,7 @@
 //------------------------------------------------------------------------------
 #define FORWARD 1
 #define REVERSE 0
-#define CHANGE_COUNT 5                  //the 25 ms between forward and reverse
+#define CHANGE_COUNT 10                  //the 50 ms between forward and reverse
 #define MAX_SPEED 10000                 
 
 #define WHEEL_PERIOD 10000              //max pwm period
