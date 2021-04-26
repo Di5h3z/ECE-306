@@ -61,7 +61,7 @@
 #define BLACK_LINE_VALUE 631            //The value that the black line is above (was 631)
 #define WHITE_VALUE_MAX 150             //the value the white line is below
 
-#define OFF_SPEED 1650                  //speed the wheel must be above to stop stalling
+#define OFF_SPEED 1750                  //speed the wheel must be above to stop stalling
 #define RECOVERY_TIME 150               //time needed to turn to get back on the line
 
 #define KP 25                           //the mutiplicative constant for the controller

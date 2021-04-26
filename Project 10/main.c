@@ -114,7 +114,6 @@ void main(void){
         next_command = &navigate;
         IOT_command[4] = '\0';
         str_cpy(next_screen4_line2, IOT_command);
-        set_clock(0);
         break;
         
     case 'E':

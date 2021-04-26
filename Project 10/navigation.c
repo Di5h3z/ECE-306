@@ -100,7 +100,7 @@ void line_nav(int speed){
     
     char state = get_state();                           //gets the current state
     
-    if(state == WHITE_STATE){                           //dertermins the direction if the car has deviated from the line
+    if(state == WHITE_STATE){                           //determines the direction if the car has deviated from the line
       recovery_count = 0;
       
       switch(prev_state){
@@ -119,21 +119,8 @@ void line_nav(int speed){
       default:
         
         Time_Sequence = 0;
-        char one_time =1;
-        while(ALWAYS){                                    //why did it get here debug (this breaks the code intentionally)
-            if(Time_Sequence < 15 && one_time){
-                  R_reverse(MAX_SPEED);
-                  L_reverse(MAX_SPEED);
-                  
-            }else{
-                  one_time = 0;
-                  R_stop();L_stop();
-            }
-            if(state == WHITE_STATE)
-              lcd_line1("WHITESTATE");
-           
-
-            }
+        rspeed = MIN_SPEED;
+        lspeed = speed;   
           break;
         
         }

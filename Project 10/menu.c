@@ -25,12 +25,12 @@
   extern char state;
   extern char station_counter;
   char screen4_line1_hold[11];
+  
 //number display varaibles
   extern char adc_char[6];
   
 //baud varaibles 
   char baud_state;
-  
   
 //clock variables
   char clock[7];
@@ -75,18 +75,19 @@
 void menu(void){
   if(update_menu){
     //Updating Values once ecery 200ms
-    assign_static_strings();
+    
+    clear_lcd();                //clears all characters        
+    assign_static_strings();    //display static strings
 
+    iot_course_display();       //display the IOT course information
+    display_clock();            //display the clock
+    display_averages();         //calculate sensor values
     
-    iot_course_display();
-    display_clock(); //display the clock
-    display_averages();
-    screen2_line4 = USB_rx();
-    
-    //get IP and display
+                                //get IP and display
     screen3_line2 = get_upper_IP();
     screen3_line3 = get_lower_IP();
     
+                                
     ip_toggle++;
     if(ip_toggle < 5){
       screen4_line3 = screen3_line2;
@@ -97,13 +98,13 @@ void menu(void){
     }
     
     //these handle selection functionality
-    blink_selected();
-    handle_select();
+    blink_selected();           //blinking to indicate line
+    handle_select();            //handles a button trigger for chosen line
     put_screen();               //puts the string to the dispaly
     
     
 
-  update_menu = 0;
+  update_menu = FALSE;
   }
 
 }

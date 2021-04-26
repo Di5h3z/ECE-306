@@ -32,9 +32,9 @@ char command_state;
 unsigned int state_count;
 
 void exit(int time){
-  if(command_timer < 20){
+  if(command_timer < 30){
     R_forward(command_speed);
-    L_forward(command_speed);
+    L_forward(command_speed-300);
   }else{
     state = STOP;
     R_stop();
@@ -50,49 +50,13 @@ void navigate(int time){
     switch(state){ //intercept and line follow not needed for HW 8 and Project 8
     case WAIT:
       state_count =0;
-      state = FIRST_FORWARD_LEG;
-      break;
-    case FIRST_FORWARD_LEG:
-      if(state_count > 800){
-        R_stop();L_stop();
-        state = FIRST_TURN_RIGHT;
-        state_count =0;
-      }else{
-        R_forward(2000);L_forward(1975);
-      }
-      break;
-    case FIRST_TURN_RIGHT:
-      if(state_count > 215){
-        R_stop();L_stop();
-        state = SECOND_FORWARD_LEG;
-        state_count =0;
-      }else{
-        R_reverse(2000);L_forward(2000);
-      }
-      break;
-    case SECOND_FORWARD_LEG:
-      if(state_count > 1400){
-        R_stop();L_stop();
-        state = SECOND_TURN_RIGHT;
-        state_count =0;
-      }else{
-        R_forward(2000);L_forward(1975);
-      }
-      break;
-    case SECOND_TURN_RIGHT:
-      if(state_count > 215){
-        R_stop();L_stop();
-        state = WHITE_DETECT;
-        state_count =0;
-      }else{
-        R_reverse(2000);L_forward(2000);
-      }
+      state = WHITE_DETECT;
       break;
     case WHITE_DETECT:
       if((return_vleft_average() < WHITE_VALUE_MAX) && (return_vright_average() < WHITE_VALUE_MAX)){
         state = LINE_DETECT;
       }else{
-        R_forward(2000);L_forward(1975);
+        R_forward(1700);L_forward(2500);
       }
       
       break;
@@ -102,7 +66,7 @@ void navigate(int time){
         state = REVERSE_STATE;
         state_count =0;
       }else{
-        R_forward(2000);L_forward(1975);
+        R_forward(1700);L_forward(2500);
       }
       break;
     case REVERSE_STATE:
@@ -116,25 +80,30 @@ void navigate(int time){
       break;
       
     case SPIN_BLACK_LINE:
-      if(state_count > 220){
-        R_stop();L_stop();
-        state_count =0;
-        state = NAVIGATION;
+      if(state_count > 250){
+        R_stop();L_stop();      
+        if(state_count > 1220){
+          state_count =0;
+          state = NAVIGATION;
+        }   
       }else{
         L_reverse(2000);R_forward(2000);
       }
       break;
     case NAVIGATION:
-      if(state_count < 400){
-        state_count =0;
-        state = CIRCLE;
+      if(state_count > 2200){
+        R_stop();L_stop();
+        if(state_count > 3200){
+          state_count =0;
+          state = CIRCLE;
+        }
       }else{
-        line_nav(1800);
+        line_nav(2050);
       }
       break;
       
     case CIRCLE:
-        line_nav(1800);
+        line_nav(2050);
         break;
     default:break;
     }
