@@ -13,9 +13,6 @@
 #include "macros.h"
 
 
-#define TWO_CIRCLE_TIME 1010
-#define RX 2
-#define TX 3
 
 // Global Variables
 //timers
@@ -26,13 +23,13 @@
 extern char state;
 
 extern int command_timer;
-int command_time = 0;
-int next_command_time = 0;
+int command_time = ZERO;
+int next_command_time = ZERO;
 void (*command)(int) = &right_turn;
 void (*next_command)(int) = &right_turn;
 char curr_screen4_line2[10];
 char next_screen4_line2[10];
-int command_speed = 2000;
+int command_speed = SLOW_SPEED;
 
 char station_counter;
 
@@ -72,47 +69,47 @@ void main(void){
     
 
     char* IOT_command = verify_pin(&IOT_rx()[1]);
-    switch(IOT_command[0]){
+    switch(IOT_command[ZERO]){
     case 'F': 
-        command_timer = 0;
+        command_timer = ZERO;
         next_command = &forward;
         next_command_time = str_to_int(&IOT_command[1]);
-        IOT_command[4] = '\0';
+        IOT_command[4] = NULL_CHAR;
         str_cpy(next_screen4_line2, IOT_command);
         break;
     case 'B': 
-        command_timer = 0;
+        command_timer = ZERO;
         next_command = &reverse;
         next_command_time = str_to_int(&IOT_command[1]);
-        IOT_command[4] = '\0';
+        IOT_command[4] = NULL_CHAR;
         str_cpy(next_screen4_line2, IOT_command);
         break;
         
     case 'L': 
-        command_timer = 0;
+        command_timer = ZERO;
         next_command = &left_turn;
         next_command_time = str_to_int(&IOT_command[1]);
-        IOT_command[4] = '\0';
+        IOT_command[4] = NULL_CHAR;
         str_cpy(next_screen4_line2, IOT_command);
         break;
         
     case 'R': 
-        command_timer = 0;
+        command_timer = ZERO;
         next_command = &right_turn;
         next_command_time = str_to_int(&IOT_command[1]);
-        IOT_command[4] = '\0';
+        IOT_command[4] = NULL_CHAR;
         str_cpy(next_screen4_line2, IOT_command);
         break;
     case 'S':
-        if(str_to_int(&IOT_command[1]) >= 50)
+        if(str_to_int(&IOT_command[1]) >= MAX_SPEED_PRIOR_MULT)
           command_speed = MAX_SPEED;
         else
-          command_speed = str_to_int(&IOT_command[1])*200;
+          command_speed = str_to_int(&IOT_command[1])*SPEED_MUTIPLIER;
         break;
     case 'N':
         P2OUT |= IR_LED; 
         next_command = &navigate;
-        IOT_command[4] = '\0';
+        IOT_command[4] = NULL_CHAR;
         str_cpy(next_screen4_line2, IOT_command);
         break;
         
@@ -124,7 +121,7 @@ void main(void){
       station_counter++;
       break;
     case 'C':
-      set_clock(0);
+      set_clock(ZERO);
       enable_clock();
       break;
     default:break;

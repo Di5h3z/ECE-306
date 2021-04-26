@@ -7,9 +7,52 @@
 //Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
 
+
+
+//------------------------------------------------------------------------------
+//IOT
+//------------------------------------------------------------------------------
+#define WAIT 1                          //state machine 
+#define FIRST_FORWARD_LEG 10
+#define FIRST_TURN_RIGHT 11
+#define SECOND_FORWARD_LEG 12
+#define SECOND_TURN_RIGHT 13
+#define WHITE_DETECT 14
+#define LINE_DETECT 2
+#define SPIN_BLACK_LINE 3
+#define REVERSE_STATE 5
+#define NAVIGATION 6
+#define CIRCLE 15
+#define BL_EXIT 7
+#define STOP 8
+
+#define I 0
+#define P 1
+#define IPSTART 2
+#define IPEND 3
+
+#define EXIT_DRIVE_TIME 30
+#define EXIT_DRIVE_ADJUST 300
+
+#define INTERCEPT_ARC_LSPEED 2500
+#define INTERCEPT_ARC_RSPEDD 1700
+
+#define NAV_SPEED 2050
+
+#define MOMENTUM_BREAK_TIME 60
+#define SPIN_TIME 250
+
+#define LINE_NAV_TIME 2200
+
+#define ASCII_TO_DEC 0x30
+
+
 //------------------------------------------------------------------------------
 //Serial
 //------------------------------------------------------------------------------
+#define MESSAGE_END '%'
+#define MESSAGE_BEGIN '$'
+
 #define BEGINNING (0)                   
 #define SMALL_RING_SIZE (16)            
 #define SMALL_BUFFER_MASK 0x0f          // 0b 0000_1111
@@ -34,20 +77,13 @@
 //------------------------------------------------------------------------------
 
 
-#define WAIT 1                          //state machine 
-#define FIRST_FORWARD_LEG 10
-#define FIRST_TURN_RIGHT 11
-#define SECOND_FORWARD_LEG 12
-#define SECOND_TURN_RIGHT 13
-#define WHITE_DETECT 14
-#define LINE_DETECT 2
-#define SPIN_BLACK_LINE 3
-#define REVERSE_STATE 5
-#define NAVIGATION 6
-#define CIRCLE 15
-#define BL_EXIT 7
-#define STOP 8
+#define SPEED_MUTIPLIER 200
+#define MAX_SPEED_PRIOR_MULT 50
+#define SLOW_SPEED 2000
 
+#define TWO_CIRCLE_TIME 1010
+#define RX 2
+#define TX 3
 
 #define BLACK_LINE 500                  //used to find the black line is made defunct below
 
@@ -149,6 +185,7 @@
 #define RESET_STATE (0)
 #define NULL 0x00
 #define NULL_PTR ((void*)0)
+#define ZERO 0
 
 #define CARRIAGE_RETURN_CHAR '\r'
 #define NULL_CHAR '\0'

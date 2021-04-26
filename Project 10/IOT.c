@@ -12,10 +12,6 @@
 #include "macros.h"
 
 
-#define I 0
-#define P 1
-#define IPSTART 2
-#define IPEND 3
 
 int command_timer;
 extern int command_time;
@@ -32,9 +28,9 @@ char command_state;
 unsigned int state_count;
 
 void exit(int time){
-  if(command_timer < 30){
+  if(command_timer < EXIT_DRIVE_TIME){
     R_forward(command_speed);
-    L_forward(command_speed-300);
+    L_forward(command_speed-EXIT_DRIVE_ADJUST);
   }else{
     state = STOP;
     R_stop();
@@ -45,18 +41,18 @@ void exit(int time){
 
 
 void navigate(int time){
-    command_timer = 0;
+    command_timer = ZERO;
     
     switch(state){ //intercept and line follow not needed for HW 8 and Project 8
     case WAIT:
-      state_count =0;
+      state_count =ZERO;
       state = WHITE_DETECT;
       break;
     case WHITE_DETECT:
       if((return_vleft_average() < WHITE_VALUE_MAX) && (return_vright_average() < WHITE_VALUE_MAX)){
         state = LINE_DETECT;
       }else{
-        R_forward(1700);L_forward(2500);
+        R_forward(INTERCEPT_ARC_RSPEDD);L_forward(INTERCEPT_ARC_LSPEED);
       }
       
       break;
@@ -64,46 +60,46 @@ void navigate(int time){
       if((return_vleft_average() > BLACK_LINE) && (return_vright_average() > BLACK_LINE)){
         R_stop();L_stop();
         state = REVERSE_STATE;
-        state_count =0;
+        state_count =ZERO;
       }else{
-        R_forward(1700);L_forward(2500);
+        R_forward(INTERCEPT_ARC_RSPEDD);L_forward(INTERCEPT_ARC_LSPEED);
       }
       break;
     case REVERSE_STATE:
-       if(state_count > 60){
+       if(state_count > MOMENTUM_BREAK_TIME){
         R_stop();L_stop();
         state = SPIN_BLACK_LINE;
-        state_count =0;
+        state_count =ZERO;
       }else{
-        R_reverse(2000);L_reverse(2000);
+        R_reverse(SLOW_SPEED);L_reverse(SLOW_SPEED);
       }
       break;
       
     case SPIN_BLACK_LINE:
-      if(state_count > 250){
+      if(state_count > SPIN_TIME){
         R_stop();L_stop();      
-        if(state_count > 1220){
-          state_count =0;
+        if(state_count > SPIN_TIME+FIVE_SECONDS){
+          state_count =ZERO;
           state = NAVIGATION;
         }   
       }else{
-        L_reverse(2000);R_forward(2000);
+        L_reverse(SLOW_SPEED);R_forward(SLOW_SPEED);
       }
       break;
     case NAVIGATION:
-      if(state_count > 2200){
+      if(state_count > LINE_NAV_TIME){
         R_stop();L_stop();
-        if(state_count > 3200){
-          state_count =0;
+        if(state_count > LINE_NAV_TIME+FIVE_SECONDS){
+          state_count =ZERO;
           state = CIRCLE;
         }
       }else{
-        line_nav(2050);
+        line_nav(NAV_SPEED);
       }
       break;
       
     case CIRCLE:
-        line_nav(2050);
+        line_nav(NAV_SPEED);
         break;
     default:break;
     }
@@ -119,8 +115,8 @@ void right_turn(int time){
     L_stop();
     command = next_command;
     command_time = next_command_time;
-    command_timer = 0;
-    next_command_time = 0;
+    command_timer = ZERO;
+    next_command_time = ZERO;
     str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
@@ -134,8 +130,8 @@ void left_turn(int time){
     L_stop();
     command = next_command;
     command_time = next_command_time;
-    command_timer = 0;
-    next_command_time = 0;
+    command_timer = ZERO;
+    next_command_time = ZERO;
     str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
@@ -149,8 +145,8 @@ void reverse(int time){
     L_stop();
     command = next_command;
     command_time = next_command_time;
-    command_timer = 0;
-    next_command_time = 0;
+    command_timer = ZERO;
+    next_command_time = ZERO;
     str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
@@ -164,17 +160,17 @@ void forward(int time){
     L_stop();
     command = next_command;
     command_time = next_command_time;
-    command_timer = 0;
-    next_command_time = 0;
+    command_timer = ZERO;
+    next_command_time = ZERO;
     str_cpy(curr_screen4_line2, next_screen4_line2);
   }
 }
 
 int str_to_int(char*value){//Handles 3 values only
-  int intval=0;
-  intval+= (value[2]-0x30);
-  intval+= (value[1]-0x30)*10;
-  intval+= (value[0]-0x30)*100;
+  int intval=ZERO;
+  intval+= (value[2]-ASCII_TO_DEC);
+  intval+= (value[1]-ASCII_TO_DEC)*10;
+  intval+= (value[0]-ASCII_TO_DEC)*100;
   return intval;
 }
 
@@ -216,7 +212,7 @@ char capture_IP(char current){
     
     if(current == ':'){
       IP_detect_state = I;
-      IP_index = 0;
+      IP_index = ZERO;
     }
     return TRUE;
   default: break;
@@ -229,8 +225,8 @@ char IP_upper[10];
 char IP_lower[10];
 char index;
 char* get_upper_IP(void){
-  char counter=0;
-  index=0;
+  char counter=ZERO;
+  index=ZERO;
   while(counter < 2 && index < 16){
     if(IP[index] == '.'){
       counter++;
@@ -243,11 +239,11 @@ char* get_upper_IP(void){
 }
 
 char* get_lower_IP(void){
-  char placement = 0;
+  char placement = ZERO;
   while(IP[index] != ':' && index < 16){
     IP_lower[placement++] = IP[index];
     index++;
   }
   IP_lower[placement] = NULL_CHAR;
-  return &IP_lower[0];
+  return &IP_lower[ZERO];
 }

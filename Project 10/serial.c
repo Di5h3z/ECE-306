@@ -10,8 +10,7 @@
 #include "macros.h"
 
 
-#define MESSAGE_END '%'
-#define MESSAGE_BEGIN '$'
+
 
 
 
