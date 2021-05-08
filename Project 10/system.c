@@ -6,15 +6,19 @@
 //  Jan 2016
 //  Built with IAR Embedded Workbench Version: V7.3.1.3987 (6.40.1)
 //------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
 #include  "functions.h"
 #include  "msp430.h"
 #include "macros.h"
 
-void enable_interrupts(void);
 
 //------------------------------------------------------------------------------
+//Eanables interrupt for the system                                             enable_interrupts
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
+void enable_interrupts(void);
+
+
 // System Configurations
 
 // Tells the compiler to provide the value in reg as an input to an

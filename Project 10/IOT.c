@@ -5,28 +5,45 @@
 //Date:         3/25/2021
 //Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
-
-//NOTES: use function pointers that accepts a integer time value to easily assing and save comutational power.
 #include "functions.h"
 #include "msp430.h"
 #include "macros.h"
 
 
+//Globals
+  //Command Queue 
+  int command_timer;
+  extern int command_time;
+  extern int next_command_time;
+  extern void (*command)(int);
+  extern void (*next_command)(int);
+  extern char curr_screen4_line2[MAX_LCD_LENGTH];
+  extern char next_screen4_line2[MAX_LCD_LENGTH];
+  extern int command_speed;
 
-int command_timer;
-extern int command_time;
-extern int next_command_time;
-extern void (*command)(int);
-extern void (*next_command)(int);
-extern char curr_screen4_line2[10];
-extern char next_screen4_line2[10];
-extern int command_speed;
+  //Intercept State Machine
+  char state = WAIT;
+  char command_state;
+  unsigned int state_count;
+  
+  //PIN verification
+  char pin[PIN_LENGTH] = "1509";
+  
+  //IP Detection
+  char IP_detect_state;
+  char IP[SMALL_RING_SIZE];
+  char IP_index;
+  
+  //IP Display
+  char IP_upper[MAX_LCD_LENGTH];
+  char IP_lower[MAX_LCD_LENGTH];
+  char index;
 
-
-char state = WAIT;
-char command_state;
-unsigned int state_count;
-
+//------------------------------------------------------------------------------
+// command to exit the circle                                                   exit
+// Passed:      time(duration the command will run)
+// Returned:    None
+//------------------------------------------------------------------------------
 void exit(int time){
   if(command_timer < EXIT_DRIVE_TIME){
     R_forward(command_speed);
@@ -39,11 +56,15 @@ void exit(int time){
   
 }
 
-
+//------------------------------------------------------------------------------
+// command to intercept and navigate the black line                             navigate
+// Passed:      time(duration the command will run)
+// Returned:    None
+//------------------------------------------------------------------------------
 void navigate(int time){
     command_timer = ZERO;
     
-    switch(state){ //intercept and line follow not needed for HW 8 and Project 8
+    switch(state){ 
     case WAIT:
       state_count =ZERO;
       state = WHITE_DETECT;
@@ -106,6 +127,12 @@ void navigate(int time){
 }
 
 
+
+//------------------------------------------------------------------------------
+// command to turn right                                                        right_turn
+// Passed:      time(duration the command will run)
+// Returned:    None
+//------------------------------------------------------------------------------
 void right_turn(int time){
   if(command_timer < time){
     R_reverse(command_speed);
@@ -121,6 +148,11 @@ void right_turn(int time){
   }
 }
 
+//------------------------------------------------------------------------------
+// command to turn left                                                         left_turn
+// Passed:      time(duration the command will run)
+// Returned:    None
+//------------------------------------------------------------------------------
 void left_turn(int time){
   if(command_timer < time){
     R_forward(command_speed);
@@ -136,6 +168,11 @@ void left_turn(int time){
   }
 }
 
+//------------------------------------------------------------------------------
+// command to reverse                                                           reverse
+// Passed:      time(duration the command will run)
+// Returned:    None
+//------------------------------------------------------------------------------
 void reverse(int time){
   if(command_timer < time){
     R_reverse(command_speed);
@@ -151,6 +188,11 @@ void reverse(int time){
   }
 }
 
+//------------------------------------------------------------------------------
+// command to go forward                                                        forward
+// Passed:      time(duration the command will run)
+// Returned:    None
+//------------------------------------------------------------------------------
 void forward(int time){
   if(command_timer < time){
     R_forward(command_speed);
@@ -166,51 +208,62 @@ void forward(int time){
   }
 }
 
+//------------------------------------------------------------------------------
+// converts a string to integer (max 3 digits)                                  str_to_int
+// Passed:      value(pointer to int as string)
+// Returned:    inval(value from string)
+//------------------------------------------------------------------------------
 int str_to_int(char*value){//Handles 3 values only
   int intval=ZERO;
-  intval+= (value[2]-ASCII_TO_DEC);
-  intval+= (value[1]-ASCII_TO_DEC)*10;
-  intval+= (value[0]-ASCII_TO_DEC)*100;
+  intval+= (value[THIRD_CHAR]-ASCII_TO_DEC);
+  intval+= (value[SECOND_CHAR]-ASCII_TO_DEC)*TEN;
+  intval+= (value[FIRST_CHAR]-ASCII_TO_DEC)*HUNDRED;
   return intval;
 }
 
-char pin[5] = "1509";
+
+//------------------------------------------------------------------------------
+// checks the pin and returns command if pin is verified                        verify_pin
+// Passed:      command(pointer to pin)
+// Returned:    command(pointer to start of command)
+//------------------------------------------------------------------------------
 char* verify_pin(char*command){
-   for(int i =0; i< 4;i++){
+   for(int i =BEGINNING; i< PIN_LENGTH-1;i++){
       if(pin[i] != command[i])
         return NULL_PTR;
    }
-   return &command[4];
+   return &command[FITH_CHAR];
    
 }
 
-
-char IP_detect_state;
-char IP[SMALL_RING_SIZE];
-char IP_index;
   
+//------------------------------------------------------------------------------
+// checks for and captures the IP when detect                                   capture_IP
+// Passed:      command(pointer to pin)
+// Returned:    command(pointer to start of command)
+//------------------------------------------------------------------------------
 char capture_IP(char current){
-  switch(IP_detect_state){
+  switch(IP_detect_state){              //state machine to find when IP occurs
   case I:
-    if(current == 'I')
+    if(current == I_CHAR)
       IP_detect_state = P;
     break;
   case P:
-    if(current == 'P')
+    if(current == P_CHAR)
       IP_detect_state = IPSTART;
     else
       IP_detect_state = I;
     break;
   case IPSTART:
-    if(current == '\n'){
+    if(current == NEWLINE_CHAR){
       IP_detect_state = IPEND;
       return TRUE;
     }
     break;
-  case IPEND:
+  case IPEND:                           //Captures the IP
     IP[IP_index++] = current;
     
-    if(current == ':'){
+    if(current == COLON_CHAR){
       IP_detect_state = I;
       IP_index = ZERO;
     }
@@ -221,26 +274,35 @@ char capture_IP(char current){
   return FALSE;
 }   
 
-char IP_upper[10];
-char IP_lower[10];
-char index;
+
+
+//------------------------------------------------------------------------------
+// finds the Upper portion of the IP from the IP buffer                         get_upper_IP
+// Passed:      None
+// Returned:    IP_upper(pointer upper portion of the IP)
+//------------------------------------------------------------------------------
 char* get_upper_IP(void){
   char counter=ZERO;
   index=ZERO;
-  while(counter < 2 && index < 16){
-    if(IP[index] == '.'){
+  while(counter < NUM_PERIODS_DETECTION && index < SMALL_RING_SIZE){    //finds the first portion of the IP
+    if(IP[index] == PERIOD_CHAR){
       counter++;
     }
     IP_upper[index] = IP[index];
     index++;
   }
-  IP_upper[index-1] = NULL_CHAR;
-  return &IP_upper[1];
+  IP_upper[index-1] = NULL_CHAR;                                        
+  return &IP_upper[SECOND_CHAR];
 }
 
+//------------------------------------------------------------------------------
+// finds the Lower portion of the IP from the IP buffer                         get_lower_IP
+// Passed:      None
+// Returned:    IP_lower(pointer lower portion of the IP)
+//------------------------------------------------------------------------------
 char* get_lower_IP(void){
   char placement = ZERO;
-  while(IP[index] != ':' && index < 16){
+  while(IP[index] != COLON_CHAR && index < SMALL_RING_SIZE){            //gets the second portion of the IP
     IP_lower[placement++] = IP[index];
     index++;
   }

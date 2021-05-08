@@ -10,20 +10,25 @@
 #include "msp430.h"
 #include "functions.h"
 
-char switch1_readable;
-char switch1_debounce;
-char switch1_count;
+//Globals
+  //SW1
+  char switch1_readable;
+  char switch1_debounce;
+  char switch1_count;
 
-char switch2_readable;
-char switch2_debounce;
-char switch2_count;
+  //SW2
+  char switch2_readable;
+  char switch2_debounce;
+  char switch2_count;
 
-extern char state;
-extern char line_selected;
-extern char select_fired;
+  //Menu
+  extern char line_selected;
+  extern char select_fired;
 
 //------------------------------------------------------------------------------
 //Port 4 ISR: switch1                                                           switchP4_interrupt
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 #pragma vector=PORT4_VECTOR
 __interrupt void switchP4_interrupt(void) {
@@ -35,7 +40,7 @@ __interrupt void switchP4_interrupt(void) {
     switch1_readable = FALSE;
     switch1_count = RESET_STATE;
     
-    select_fired = TRUE;
+    select_fired = TRUE;                                //fires the selection for the menu
 
     //enables and increments the interupt timer
     TB1CCTL1 &= ~CCIFG;
@@ -47,6 +52,8 @@ __interrupt void switchP4_interrupt(void) {
 
 //------------------------------------------------------------------------------
 //Port 2 ISR: switch2                                                           switchP2_interrupt
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 #pragma vector=PORT2_VECTOR
 __interrupt void switchP2_interrupt(void) {
@@ -58,7 +65,7 @@ __interrupt void switchP2_interrupt(void) {
     switch2_readable = FALSE;
     switch2_count = RESET_STATE;
 
-    line_selected = (line_selected+1) & TWO_BIT_MASK;
+    line_selected = (line_selected+1) & TWO_BIT_MASK;   //changes menu line
     //enables and increments the interupt timer
     TB1CCTL1 &= ~CCIFG;
     TB1CCR1 = TB1R + TB1CCR1_INTERVAL;

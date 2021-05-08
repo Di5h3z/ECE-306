@@ -9,69 +9,63 @@
 #include "msp430.h"
 #include "macros.h"
 
-
-#define SCREEN_ONE 0
-#define SCREEN_TWO 1
-#define SCREEN_THREE 2
-#define SCREEN_FOUR 3
-
-#define LINE_ONE 0
-#define LINE_TWO 1
-#define LINE_THREE 2
-#define LINE_FOUR 3
-
 //Globals
-//externals refrenced in menu.c
+  //externals refrenced in menu.c
   extern char state;
   extern char station_counter;
-  char screen4_line1_hold[11];
+  char screen4_line1_hold[MAX_LCD_LENGTH];
   
-//number display varaibles
-  extern char adc_char[6];
+  //number display varaibles
+  extern char adc_char[BCD_MAX_LEN];
   
-//baud varaibles 
+  //baud varaibles 
   char baud_state;
   
-//clock variables
-  char clock[7];
+  //clock variables
+  char clock[CLOCK_LENGTH];
   int screen_clock;
   char clock_enable;
   
-//base menu varaibles  
+  //base menu varaibles  
   char update_menu;
   char menu_screen;
   char null[] = " ";
   
-//selection varaibles
+  //selection varaibles
   char select_fired;
   char toggle_selected;
   char line_selected;
   char clear_line[] = "          ";
   char ip_toggle;
-//Screen 1
+  //Screen 1
   char* screen1_line1 = "Screen 1";
   char* screen1_line2 = null;
   char* screen1_line3 = null;
   char* screen1_line4 = null;
-//Screen 2
+  //Screen 2
   char* screen2_line1 = "Screen 2";
   char* screen2_line2 = "115,200";
   char* screen2_line3 = null;
   char* screen2_line4 = null;
-//Screen 3
+  //Screen 3
   char* screen3_line1 = "Screen 3";
   char* screen3_line2 = null;
   char* screen3_line3 = null;
   char* screen3_line4 = null;
-//Screen 4
+  //Screen 4
   char* screen4_line1 = "States+Clk";
   char* screen4_line2 = null;
   char* screen4_line3 = null;
   char* screen4_line4 = null;
 
+
+  
 //------------------------------------------------------------------------------
 //Handles the menu based off of the thumbwheel                                  menu
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
+  
 void menu(void){
   if(update_menu){
     //Updating Values once ecery 200ms
@@ -88,13 +82,13 @@ void menu(void){
     screen3_line3 = get_lower_IP();
     
                                 
-    ip_toggle++;
-    if(ip_toggle < 5){
+    ip_toggle++;                //Toggles which part of the IP is displayed for compactness
+    if(ip_toggle < IP_TOGGLE_UP_COUNT){
       screen4_line3 = screen3_line2;
-    }else if(ip_toggle >= 5 && ip_toggle < 10){
+    }else if(ip_toggle >= IP_TOGGLE_UP_COUNT && ip_toggle < IP_TOGGLE_LOW_COUNT){
       screen4_line3 = screen3_line3;
     }else{
-      ip_toggle = 0;
+      ip_toggle = RESET;
     }
     
     //these handle selection functionality
@@ -109,11 +103,17 @@ void menu(void){
 
 }
 
+
+//------------------------------------------------------------------------------
+//Displays the state of the IOT and line navigation                             iot_course_display
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void iot_course_display(void){
   
-  switch(state){
+  switch(state){        //state machine to display state of navigation and intercrption
   case WAIT:
-    screen4_line1_hold[0] = station_counter + 0x30;
+    screen4_line1_hold[FIRST_CHAR] = station_counter + ASCII_TO_DEC;
     screen4_line1 = screen4_line1_hold;
     break;
   case FIRST_FORWARD_LEG:
@@ -141,6 +141,11 @@ void iot_course_display(void){
   }
 }
 
+//------------------------------------------------------------------------------
+//Displays the strings that are always present on a menu                        assign_static_strings
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void assign_static_strings(void){
   screen2_line1 = "TGL Baud";
   screen2_line3 = "Send MSG";
@@ -148,7 +153,11 @@ void assign_static_strings(void){
   
 }
 
-
+//------------------------------------------------------------------------------
+//Blinks lines that are enabled as an indicator                                 blink_selected
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void blink_selected(void){
 toggle_selected ^= TRUE;            //Toggles the variable
     if(toggle_selected){
@@ -184,6 +193,12 @@ toggle_selected ^= TRUE;            //Toggles the variable
 
 }
 
+
+//------------------------------------------------------------------------------
+//preforms a function when the selct button is fired                            handle_select
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void handle_select(void){
 //this selects the current line and screen and will preform the action inside when the select is fired
     if(select_fired){
@@ -211,16 +226,16 @@ void handle_select(void){
                 
                 if(baud_state){
                   screen2_line2 = "460,800";
-                  UCA0BRW = 17 ; // 460,800 baud
-                  UCA0MCTLW = 0x4A00 ;
-                  UCA1BRW = 17 ; // 460,800 baud
-                  UCA1MCTLW = 0x4A00 ;
+                  UCA0BRW = S460800B_BRW ; // 460,800 baud
+                  UCA0MCTLW = S460800B_CTLW ;
+                  UCA1BRW = S460800B_BRW ; // 460,800 baud
+                  UCA1MCTLW = S460800B_CTLW ;
                 }else{
                   screen2_line2 = "115,200"; 
-                  UCA0BRW = 4 ; // 115,200 baud
-                  UCA0MCTLW = 0x5551 ;
-                  UCA1BRW = 4 ; // 115,200 baud
-                  UCA1MCTLW = 0x5551 ;   
+                  UCA0BRW = S115200B_BRW ; // 115,200 baud
+                  UCA0MCTLW = S115200B_CTLW ;
+                  UCA1BRW = S115200B_BRW ; // 115,200 baud
+                  UCA1MCTLW = S115200B_CTLW ;   
                 }
                 
                 
@@ -274,9 +289,14 @@ void handle_select(void){
 
 }
 
+//------------------------------------------------------------------------------
+//Puts the correct strings to the screen for a given menu                       put_screen
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void put_screen(void){
-  if(menu_screen != return_vthumb_average() >> 8){
-      menu_screen = return_vthumb_average() >> 8;
+  if(menu_screen != return_vthumb_average() >> BITSHIFT_8){
+      menu_screen = return_vthumb_average() >> BITSHIFT_8;
       clear_lcd();
     }
     //Putting string to the correct display
@@ -315,22 +335,21 @@ void put_screen(void){
 
 
 
-#define WAIT 1
-#define DRIVE 2
-#define SPIN_BLACK_LINE 3
-#define REVERSE_STATE 5
-#define NAVIGATION 6
-#define SPIN_CENTER 7
-#define DRIVE_CENTER 8
 
 
 
 //------------------------------------------------------------------------------
 // CLOCK functions all the functions that control the clock                     display_clock, set_clock, get_clock_time, disable_clock, enable_clock
 //------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Puts the clock value to the display                                          display_clock
+// Passed:      None    
+// Returned:    None
+//------------------------------------------------------------------------------
 void display_clock(void){
   if(screen_clock > MAX_SCREEN_CLOCK_VALUE)
-    screen_clock = 0;
+    screen_clock = RESET;
   
   if(clock_enable){
     HEXtoBCD(screen_clock);
@@ -340,30 +359,52 @@ void display_clock(void){
   screen4_line4 = clock;
 }
 
+//------------------------------------------------------------------------------
+// changes the clock value                                                      set_clock
+// Passed:      setting(value for clock to start at)    
+// Returned:    None
+//------------------------------------------------------------------------------
 void set_clock(int setting){
   screen_clock = setting;
 }
 
+//------------------------------------------------------------------------------
+// changes the clock value                                                      get_clock_time
+// Passed:      None    
+// Returned:    screen_clock(numerical value of the clock)
+//------------------------------------------------------------------------------
 int get_clock_time(void){
   return screen_clock;
 }
 
+//------------------------------------------------------------------------------
+// disables the clock                                                           disable_clock
+// Passed:      None    
+// Returned:    screen_clock(numerical value of the clock)
+//------------------------------------------------------------------------------
 void disable_clock(void){
   clock_enable = FALSE;
 }
 
+//------------------------------------------------------------------------------
+// enalbes the clock                                                            enable_clock
+// Passed:      None    
+// Returned:    screen_clock(numerical value of the clock)
+//------------------------------------------------------------------------------
 void enable_clock(void){
   clock_enable = TRUE;
 }
 
 //------------------------------------------------------------------------------
 // String copy, copies one string to another                                    str_cpy
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void str_cpy(char* str_copy, char* str_orig){
   int i = RESET_STATE;
-  while(str_orig[i]!= '\0'){
+  while(str_orig[i]!= NULL_CHAR){
     str_copy[i] = str_orig[i];
     i++;
   }
-  str_copy[i] = '\0';
+  str_copy[i] = NULL_CHAR;
 }

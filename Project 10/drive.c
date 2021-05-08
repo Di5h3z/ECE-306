@@ -6,26 +6,28 @@
 //Date:         2/6/2021
 //Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
-
+#include "functions.h"
 #include "msp430.h"
 #include "macros.h"
 
-//globals
-char right_wheel_state;
-char right_wheel_count;
-char right_forward_flag = FALSE;
-char right_reverse_flag = FALSE;
+//Globals
+  char right_wheel_state;
+  char right_wheel_count;
+  char right_forward_flag = FALSE;
+  char right_reverse_flag = FALSE;
 
-char left_wheel_state;
-char left_wheel_count;
-char left_forward_flag = FALSE;
-char left_reverse_flag = FALSE;
+  char left_wheel_state;
+  char left_wheel_count;
+  char left_forward_flag = FALSE;
+  char left_reverse_flag = FALSE;
 
-unsigned int speed_count;
+  unsigned int speed_count;
 
 
 //------------------------------------------------------------------------------
 // Turns the left wheel off                                                     L_stop
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void L_stop(void){
   LEFT_FORWARD_SPEED = WHEEL_OFF;
@@ -33,6 +35,8 @@ void L_stop(void){
 }
 //------------------------------------------------------------------------------
 //Turns the right wheel off                                                     R_stop
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void R_stop(void){
   RIGHT_FORWARD_SPEED = WHEEL_OFF;
@@ -41,6 +45,8 @@ void R_stop(void){
 
 //------------------------------------------------------------------------------
 //Turns the wheel forward checks to make sure proper time since reverse         L_forward
+// Passed:      speed
+// Returned:    None
 //------------------------------------------------------------------------------
 void L_forward(unsigned int speed){
   
@@ -70,6 +76,8 @@ void L_forward(unsigned int speed){
 
 //------------------------------------------------------------------------------
 //Turns the wheel forward checks to make sure proper time since reverse         R_forward
+// Passed:      speed
+// Returned:    None
 //------------------------------------------------------------------------------
 void R_forward(unsigned int speed){
   
@@ -99,6 +107,8 @@ void R_forward(unsigned int speed){
 
 //------------------------------------------------------------------------------
 //Turns the wheel reverse checks to make sure proper time since forward         L_reverse
+// Passed:      speed
+// Returned:    None
 //------------------------------------------------------------------------------
 void L_reverse(unsigned int speed){
   
@@ -127,6 +137,8 @@ void L_reverse(unsigned int speed){
 
 //------------------------------------------------------------------------------
 //Turns the wheel reverse checks to make sure proper time since forward         R_reverse
+// Passed:      speed
+// Returned:    None
 //------------------------------------------------------------------------------
 void R_reverse(unsigned int speed){
    

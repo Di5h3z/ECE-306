@@ -12,39 +12,45 @@
 #include  "msp430.h"
 #include  "functions.h"
 
-//globals declared so they can be seen within init
-extern char display_line[4][11];
-extern char *display[4];
-extern volatile unsigned char update_display;
+//Globals
+  extern char display_line[4][MAX_LCD_LENGTH];
+  extern char *display[4];
+  extern volatile unsigned char update_display;
 
 
-//initilizes the display
-void Init_Conditions(void){
 //------------------------------------------------------------------------------
+// initialilzes the display                                                     Init_Conditions      
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
+void Init_Conditions(void){
   int i;
 
-  for(i=0;i<11;i++){
-    display_line[0][i] = RESET_STATE;
-    display_line[1][i] = RESET_STATE;
-    display_line[2][i] = RESET_STATE;
-    display_line[3][i] = RESET_STATE;
+  for(i=BEGINNING;i<MAX_LCD_LENGTH;i++){
+    display_line[LINE1][i] = RESET_STATE;
+    display_line[LINE2][i] = RESET_STATE;
+    display_line[LINE3][i] = RESET_STATE;
+    display_line[LINE4][i] = RESET_STATE;
   }
-  display_line[0][10] = 0;
-  display_line[1][10] = 0;
-  display_line[2][10] = 0;
-  display_line[3][10] = 0;
+  display_line[LINE1][MAX_LCD_LENGTH-1] = ZERO;
+  display_line[LINE2][MAX_LCD_LENGTH-1] = ZERO;
+  display_line[LINE3][MAX_LCD_LENGTH-1] = ZERO;
+  display_line[LINE4][MAX_LCD_LENGTH-1] = ZERO;
 
-  display[0] = &display_line[0][0];
-  display[1] = &display_line[1][0];
-  display[2] = &display_line[2][0];
-  display[3] = &display_line[3][0];
-  update_display = 0;
-// Interrupts are disabled by default, enable them.
+  display[LINE1] = &display_line[LINE1][FIRST_CHAR];
+  display[LINE2] = &display_line[LINE2][FIRST_CHAR];
+  display[LINE3] = &display_line[LINE3][FIRST_CHAR];
+  display[LINE4] = &display_line[LINE4][FIRST_CHAR];
+  update_display = FALSE;
+  // Interrupts are disabled by default, enable them.
   enable_interrupts();
-//------------------------------------------------------------------------------
 }
 
-//initiializes the ports 1-6
+//------------------------------------------------------------------------------
+// initialilzes the ports                                                       Init_Ports      
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Ports(void){
   Init_Port1();
   Init_Port2();

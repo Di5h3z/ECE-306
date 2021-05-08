@@ -11,42 +11,49 @@
 
 
 //Globals
+  //Navigation and sub functions
+  char nav_enable;
+  char prev_state;
+  char recovery_state;
+  extern unsigned int Time_Sequence; 
 
-char nav_enable;
-char prev_state;
-char recovery_state;
-extern unsigned int Time_Sequence; 
+  unsigned int lspeed;
+  unsigned int rspeed;
 
-unsigned int lspeed;
-unsigned int rspeed;
+  unsigned int recovery_count;
+  unsigned int off_line_count;
 
-unsigned int recovery_count;
-unsigned int off_line_count;
+  extern char adc_char[BCD_MAX_LEN];
+  char l_control_str[BCD_MAX_LEN];
+  char r_control_str[BCD_MAX_LEN];
 
-extern char adc_char[6];
-char l_control_str[6];
-char r_control_str[6];
-
-unsigned int vl_average;
-unsigned int vr_average;
+  unsigned int vl_average;
+  unsigned int vr_average;
 
 //------------------------------------------------------------------------------
-// returns the control value for the eitehr side of the car                     right_side, left_side
+// returns the control value for the right side of the car                      right_side
+// Passed:      speed(navigation speed)
+// Returned:    ret(proportional constrol value)
 //------------------------------------------------------------------------------
 unsigned int right_side(int speed){
   int ret = KP*(BLACK_LINE_VALUE - vr_average);
-  if(ret < 0)
-    return 0;
+  if(ret < ZERO)
+    return ZERO;
   if(ret > speed)
     return speed;
   return (unsigned int)ret;
 
 }
 
+//------------------------------------------------------------------------------
+// returns the control value for the left side of the car                       left_side
+// Passed:      speed(navigation speed)
+// Returned:    ret(proportional constrol value)
+//------------------------------------------------------------------------------
 unsigned int left_side(int speed){
   int ret = KP*(BLACK_LINE_VALUE - vl_average);
-  if(ret < 0)
-    return 0;
+  if(ret < ZERO)
+    return ZERO;
   if(ret > speed)
     return speed;
   return (unsigned int)ret;
@@ -56,6 +63,8 @@ unsigned int left_side(int speed){
 
 //------------------------------------------------------------------------------
 // Gets the current state of the car relative to the line                       get_state
+// Passed:      None
+// Returned:    (state of car relative to line)
 //------------------------------------------------------------------------------
 char get_state(void){
   if(vl_average < WHITE_VALUE_MAX && vr_average < WHITE_VALUE_MAX){
@@ -75,6 +84,8 @@ char get_state(void){
 
 //------------------------------------------------------------------------------
 // Handles the tracking an navigation of a line                                 line_nav
+// Passed:      speed(rate of line navagation)
+// Returned:    None
 //------------------------------------------------------------------------------
 void line_nav(int speed){
   
@@ -101,7 +112,7 @@ void line_nav(int speed){
     char state = get_state();                           //gets the current state
     
     if(state == WHITE_STATE){                           //determines the direction if the car has deviated from the line
-      recovery_count = 0;
+      recovery_count = RESET;
       
       switch(prev_state){
       case RIGHT_STATE:
@@ -118,7 +129,7 @@ void line_nav(int speed){
         break;
       default:
         
-        Time_Sequence = 0;
+        Time_Sequence = RESET;
         rspeed = MIN_SPEED;
         lspeed = speed;   
           break;
@@ -147,7 +158,7 @@ void line_nav(int speed){
             lspeed = speed;        
           }
         }
-      off_line_count = 0;
+      off_line_count = RESET;
       prev_state = state;
       recovery_state =LINE_STATE;
       }

@@ -9,12 +9,6 @@
 #include "msp430.h"
 #include "macros.h"
 
-
-
-
-
-
-
 //GLOBALS
   
   //USB
@@ -50,6 +44,8 @@
     volatile char IOT_passthrough = TRUE;
 //------------------------------------------------------------------------------
 // Inits all of the serial ports @ 115200                                       Init_Serial
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Serial(void){
   Init_Serial_UCA1();
@@ -59,6 +55,8 @@ void Init_Serial(void){
 
 //------------------------------------------------------------------------------
 // Inits the IOT serial port                                                    Init_Serial_UCA0
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Serial_UCA0(void){
 //------------------------------------------------------------------------------
@@ -72,7 +70,7 @@ void Init_Serial_UCA0(void){
 // 8000000 460800 0      17    0    0x4A -2.72 2.56 -3.76 7.28
 //------------------------------------------------------------------------------
 // Configure eUSCI_A0 for UART mode
-UCA0CTLW0 = 0;
+UCA0CTLW0 = ZERO;
 UCA0CTLW0 |= UCSWRST ;                  // Put eUSCI in reset
 UCA0CTLW0 |= UCSSEL__SMCLK;             // Set SMCLK as fBRCLK
 UCA0CTLW0 &= ~UCMSB;                    // MSB, LSB select
@@ -84,8 +82,8 @@ UCA0CTLW0 |= UCMODE_0;
 // BRCLK Baudrate UCOS16 UCBRx UCFx UCSx neg pos neg pos
 // 8000000 115200 1 4 5 0x55 -0.80 0.64 -1.12 1.76
 // UCA?MCTLW = UCSx + UCFx + UCOS16
-UCA0BRW = 4 ;                           // 115,200 baud
-UCA0MCTLW = 0x5551 ;
+UCA0BRW = S115200B_BRW ;                           // 115,200 baud
+UCA0MCTLW = S115200B_CTLW ;
 UCA0CTLW0 &= ~UCSWRST ;                 // release from reset
 UCA0TXBUF = NEWLINE_CHAR;               // Prime the Pump
 UCA0IE |= UCRXIE;                       // Enable RX interrupt
@@ -94,8 +92,12 @@ UCA0IE |= UCTXIE;                       // Enable TX interrupt
 
 }
 
+
+
 //------------------------------------------------------------------------------
 // Begins the transmission of a command to the IOT                              OIT_tx
+// Passed:      pointer to null-terminated command string
+// Returned:    None
 //------------------------------------------------------------------------------
 void IOT_tx(char* command){
   if(IOT_transmitting){
@@ -112,6 +114,8 @@ void IOT_tx(char* command){
 
 //------------------------------------------------------------------------------
 // gets the last IOT command recieved                                           IOT_rx
+// Passed:      None
+// Returned:    pointer to null-termineted message
 //------------------------------------------------------------------------------
 char* IOT_rx(void){
   if(!IOT_message_ready){
@@ -133,6 +137,11 @@ char* IOT_rx(void){
 }
 
 
+//------------------------------------------------------------------------------
+// IOT serial Interrupt                                                         eUSCI_A0_ISR        
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 #pragma vector=EUSCI_A0_VECTOR
 __interrupt void eUSCI_A0_ISR(void){
   unsigned int temp;
@@ -206,6 +215,8 @@ __interrupt void eUSCI_A0_ISR(void){
 
 //------------------------------------------------------------------------------
 // Inits the USB serial port                                                    Init_Serial_UCA1
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Serial_UCA1(void){
 //------------------------------------------------------------------------------
@@ -219,7 +230,7 @@ void Init_Serial_UCA1(void){
 // 8000000 460800 0      17    0    0x4A -2.72 2.56 -3.76 7.28
 //------------------------------------------------------------------------------
 // Configure eUSCI_A0 for UART mode
-UCA1CTLW0 = 0;
+UCA1CTLW0 = ZERO;
 UCA1CTLW0 |= UCSWRST ;                  // Put eUSCI in reset
 UCA1CTLW0 |= UCSSEL__SMCLK;             // Set SMCLK as fBRCLK
 UCA1CTLW0 &= ~UCMSB;                    // MSB, LSB select
@@ -231,8 +242,8 @@ UCA1CTLW0 |= UCMODE_0;
 // BRCLK Baudrate UCOS16 UCBRx UCFx UCSx neg   pos   neg  pos
 // 8000000 115200 1      4     5    0x55 -0.80 0.64 -1.12 1.76
 // UCA1MCTLW = UCSx + UCFx + UCOS16
-UCA1BRW = 4 ;                           // 115,200 baud
-UCA1MCTLW = 0x5551 ;
+UCA1BRW = S115200B_BRW ;                           // 115,200 baud
+UCA1MCTLW = S115200B_CTLW ;
 UCA1CTLW0 &= ~UCSWRST ;                 // release from reset
 UCA1TXBUF = NEWLINE_CHAR;               // Prime the Pump
 UCA1IE |= UCRXIE;                       // Enable RX interrupt
@@ -243,6 +254,8 @@ UCA1IE |= UCTXIE;                       // Enable TX interrupt
 
 //------------------------------------------------------------------------------
 // Begins the transmission of a command to the USB                              USB_tx
+// Passed:      pointer to null-terminated command string
+// Returned:    None
 //------------------------------------------------------------------------------
 void USB_tx(char* command){
   if(USB_transmitting){
@@ -261,6 +274,8 @@ void USB_tx(char* command){
 
 //------------------------------------------------------------------------------
 // gets the last USB command recieved                                           USB_rx
+// Passed:      None
+// Returned:    pointer to null-termineted message
 //------------------------------------------------------------------------------
 char* USB_rx(void){
   if(!USB_message_ready){
@@ -268,7 +283,7 @@ char* USB_rx(void){
   }
   
   char temp = USB_message_index;        //holds IOT_message_index
-  char index = 0;                       //will places the recieved command at the beginning of IOT_message
+  char index = ZERO;                    //will places the recieved command at the beginning of IOT_message
                                         //loops from the start of the command to the end
   while(USB_rxbuf[temp & SMALL_BUFFER_MASK] != MESSAGE_END && index < (SMALL_RING_SIZE-1)){
     char usb_char = USB_rxbuf[temp++ & SMALL_BUFFER_MASK];  //hold volatile
@@ -279,7 +294,11 @@ char* USB_rx(void){
   return USB_message;                   //returns the pointer for convient access
 }
 
-
+//------------------------------------------------------------------------------
+// USB serial Interrupt                                                         eUSCI_A1_ISR        
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 #pragma vector=EUSCI_A1_VECTOR
 __interrupt void eUSCI_A1_ISR(void){
   unsigned int temp;
@@ -288,7 +307,7 @@ __interrupt void eUSCI_A1_ISR(void){
     case 0: // Vector 0 - no interrupt
       break;
     case 2: // Vector 2 – RXIFG
-      
+//******DISABLED TO PREVENT ERRANT COMMUNICATION, DEBUG ONLY******
 //      USB_rx_char = UCA1RXBUF;
 //      
 //      if(USB_rx_char == MESSAGE_BEGIN || USB_recieving){ //command starts with a $

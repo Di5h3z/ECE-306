@@ -10,20 +10,29 @@
 #include "msp430.h"
 #include "macros.h"
 
-
+//------------------------------------------------------------------------------
+// configures internal refrence                                                 Init_REF
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_REF(void){
   // Configure reference module
   PMMCTL0_H = PMMPW_H; // Unlock the PMM registers
   PMMCTL2 = INTREFEN; // Enable internal reference
   PMMCTL2 |= REFVSEL_2; // Select 2.5V reference
-  Second_Count = 0;
+  Second_Count = ZERO;
   while(!(PMMCTL2 & REFGENRDY)){
-    if(Second_Count >= 4){
+    if(Second_Count >= DAC_ERROR_TIMEOUT){
       lcd_line1("IntVref Er");
     }
   } 
 }
 
+//------------------------------------------------------------------------------
+// initilizes the DAC                                                           Init_DAC
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_DAC(void){
   SAC3DAT = MIN_DAC; // Initial DAC data
   SAC3DAC = DACSREF_1; // Select int Vref as DAC reference

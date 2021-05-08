@@ -38,8 +38,13 @@
    //IOT enable
    int IOT_enable_count;
    extern int command_timer;
+   
+   
+
 //------------------------------------------------------------------------------
 //Initilizes the B0 timer that controls time sequence and switch debounce       Init_Timer_B0
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Timer_B0(void){
 
@@ -77,20 +82,22 @@ void Init_Timer_B0(void){
 
 //------------------------------------------------------------------------------
 //TimerB0 CCR0 interrupt                                                        Timer0_B0_ISR
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 #pragma vector = TIMER0_B0_VECTOR
 __interrupt void Timer0_B0_ISR(void){
                                                 // TimerB0 0 Interrupt handler for 5msec timer
-  if(Time_Sequence++ > 250)
+  if(Time_Sequence++ > TIME_SEQUENCE_MAX_COUNT)
     Time_Sequence = RESET_STATE;
 
-  if(nav_count++ > 2){ //every 10 ms
+  if(nav_count++ > NAV_ENABLE_PERIOD){          //every 10 ms
     nav_enable = TRUE;
-    nav_count = 0;
+    nav_count = RESET;
   }
   
-  if(SAC3OA & OAEN && SAC3DAT > 1200){          //controls the DAC voltage rise NOTE: consider adding this to a one time setup time used to handel all the various setup when the IOT module is added
-    SAC3DAT -= 3;
+  if(SAC3OA & OAEN && SAC3DAT > DAC_6V){        //controls the DAC voltage rise NOTE: consider adding this to a one time setup time used to handel all the various setup when the IOT module is added
+    SAC3DAT -= DAV_V_DEC_VAL;
   }
   
   
@@ -108,23 +115,25 @@ __interrupt void Timer0_B0_ISR(void){
 
 //------------------------------------------------------------------------------
 //TimerB0 CCR1-2 interrupt                                                      TIMER0_B1_ISR
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 #pragma vector=TIMER0_B1_VECTOR
 __interrupt void TIMER0_B1_ISR(void){
                                         // TimerB0 1-2, Overflow Interrupt Vector (TBIV) handler
-switch(__even_in_range(TB0IV,14)){
-  case 0: break;                        // No interrupt
-  case 2:                               // CCR1 Used for SW1 Debounce
+switch(__even_in_range(TB0IV,TB_OVER_INT)){
+  case TB_NO_INT: break;                        // No interrupt
+  case TB_CTL1_INT:                               // CCR1 Used for SW1 Debounce
           TB0CCTL1 &= ~CCIE;            //disable capture control reg 1 interupt
           P4IFG &= ~SW1;                //clear SW1 interupts
           P4IE |= SW1;                  //enable SW1 interupt
           break;
-  case 4: // CCR2 Used for SW2 Debounce
+  case TB_CTL2_INT: // CCR2 Used for SW2 Debounce
           TB0CCTL2 &= ~CCIE;            //disable capture control reg 2 interupt
           P2IFG &= ~SW2;                //clear SW2 interupts
           P2IE |= SW2;                  //enable SW2 interupt
           break;
-  case 14:
+  case TB_OVER_INT:
     
     
           
@@ -140,6 +149,8 @@ switch(__even_in_range(TB0IV,14)){
 
 //------------------------------------------------------------------------------
 //Initilizes the B1 timer that controls human timers .25ms-8 seconds              Init_Timer_B1
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Timer_B1(void){
   TB1CTL = TBSSEL__ACLK;                //ACLK 32Khz
@@ -167,6 +178,8 @@ void Init_Timer_B1(void){
 
 //------------------------------------------------------------------------------
 //TimerB1 CCR0 interrupt                                                        Timer1_B0_ISR
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 #pragma vector = TIMER1_B0_VECTOR
 __interrupt void Timer1_B0_ISR(void){
@@ -178,13 +191,15 @@ __interrupt void Timer1_B0_ISR(void){
 
 //------------------------------------------------------------------------------
 //TimerB1 CCR1-2 interrupt                                                      TIMER1_B1_ISR
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 #pragma vector=TIMER1_B1_VECTOR
 __interrupt void TIMER1_B1_ISR(void){
                                         // TimerB0 1-2, Overflow Interrupt Vector (TBIV) handler
-switch(__even_in_range(TB1IV,14)){
-  case 0: break;
-  case 2: 
+switch(__even_in_range(TB1IV,TB_OVER_INT)){
+  case TB_NO_INT: break;
+  case TB_CTL1_INT: 
     if(switch1_debounce){
       switch1_debounce = FALSE;
       TB1CCTL1 &= ~CCIE;            //disable capture control reg 1 interupt
@@ -200,19 +215,21 @@ switch(__even_in_range(TB1IV,14)){
     }
     
     break;
-  case 4: 
-    command_timer += 1;
+  case TB_CTL2_INT: 
+    command_timer ++;
     
     update_menu = TRUE;
     TB1CCR2 = TB1R + TB1CCR2_INTERVAL;
     break;
-  case 14:break;
+  case TB_OVER_INT:break;
   default: break;
   }
 }
 
 //------------------------------------------------------------------------------
-//Initilizes the B2 timer that controls very fast timer                         Init_Timer_B2
+//Initilizes the B2 timer that controls a very fast timer                         Init_Timer_B2
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Timer_B2(void){
 TB2CTL = TBSSEL__SMCLK;
@@ -238,34 +255,43 @@ TB2CTL &= ~TBIFG;
 TB2CTL |= TBIE;
 }
 
+//------------------------------------------------------------------------------
+//Empty ISR to prevent system failure on accidental call                        Timer2_b0_isr
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 #pragma vector = TIMER2_B0_VECTOR
 __interrupt void Timer2_b0_isr(void){
 
 
 }
 
-#define IOT_ENABLE_COUNT_VAL 15
 
+//------------------------------------------------------------------------------
+//Interrupts that control ADC readings and IOT commands                         Timer2_b1_isr
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 #pragma vector = TIMER2_B1_VECTOR
 __interrupt void Timer2_b1_isr(void){
-switch(__even_in_range(TB2IV,14)){
-  case 0: break;
-  case 2: 
+switch(__even_in_range(TB2IV,TB_OVER_INT)){
+  case TB_NO_INT: break;
+  case TB_CTL1_INT: 
     //takes an ADC measurement every .25 ms
     ADCCTL0 |= ADCENC;                  // Enable Conversions
     ADCCTL0 |= ADCSC; 
     
     TB2CCR1 = TB2R + TB2CCR1_INTERVAL;
     break;
-  case 4: break;
-  case 14:
+  case TB_CTL2_INT: break;
+  case TB_OVER_INT:
           if(IOT_enable_count++ > IOT_ENABLE_COUNT_VAL)
               P3OUT |= IOT_RESET;                    //Set IOT_RESET high
-          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 700)
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + WSYNCINTRL_TIMER)
             IOT_tx("\nAT+WSYNCINTRL=60000\r");
-          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 1000)
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + NSTCP_TIMER)
             IOT_tx("\nAT+NSTCP=25565,1\r");
-          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + 1200){
+          if(IOT_enable_count == IOT_ENABLE_COUNT_VAL + PING_TIMER){
             IOT_tx("\nAT+PING=8.8.8.8,1\r");
             TB2CTL &= ~TBIE;
           }
@@ -278,6 +304,8 @@ switch(__even_in_range(TB2IV,14)){
 
 //------------------------------------------------------------------------------
 //Initilizes the B1 timer that controls PWM for wheel speed                     Init_Timer_B3
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Timer_B3(void) {
 //------------------------------------------------------------------------------
@@ -306,6 +334,8 @@ void Init_Timer_B3(void) {
 
 //------------------------------------------------------------------------------
 //init all timers                                                               Init_Timers
+// Passed:      None
+// Returned:    None
 //------------------------------------------------------------------------------
 void Init_Timers(void){
   Init_Timer_B0();

@@ -14,17 +14,17 @@
 //------------------------------------------------------------------------------
 
 //IOT
-void exit(int time);
-void navigate(int time);
-void reverse(int time);
-void left_turn(int time);
-void right_turn(int time);
-void forward(int time);
-int str_to_int(char*value);
-char* verify_pin(char*command);
-char capture_IP(char current);
-char* get_upper_IP(void);
-char* get_lower_IP(void);
+  void exit(int time);
+  void navigate(int time);
+  void reverse(int time);
+  void left_turn(int time);
+  void right_turn(int time);
+  void forward(int time);
+  int str_to_int(char*value);
+  char* verify_pin(char*command);
+  char capture_IP(char current);
+  char* get_upper_IP(void);
+  char* get_lower_IP(void);
 
 //Serial
   void Init_Serial(void);

@@ -7,14 +7,19 @@
 //Date:         2/6/2021
 //Build:        Built with IAR Embedded Workbench Version: V7.20.1.997 (7.20.1)
 //------------------------------------------------------------------------------
-
 #include "macros.h"
 #include  "msp430.h"
+#include "functions.h"
 
+//------------------------------------------------------------------------------
+// inits the pins on port 1                                                     Init_Port1
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Port1(void){                  //Configure PORT 1
 
-P1OUT = 0x00;                           //P1 set Low
-P1DIR = 0x00;                           //Set P1 direction to input
+P1OUT = RESET;                           //P1 set Low
+P1DIR = RESET;                           //Set P1 direction to input
 
 //P1 PIN 0
 P1SEL0 &= ~RED_LED;                      //RedLED G I/O operation
@@ -47,10 +52,15 @@ P1SEL1 &= ~UCA0TXD;                     //UCA0TXD FUNC operation
 
 }
 
+//------------------------------------------------------------------------------
+// inits the pins on port 2                                                     Init_Port2
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Port2(void){                  //Configure PORT 2
 
-P2OUT = 0x00;                           //P2 set Low
-P2DIR = 0x00;                           //Set P2 direction to input
+P2OUT = RESET;                           //P2 set Low
+P2DIR = RESET;                           //Set P2 direction to input
 
 //P2 PIN 0
 P2SEL0 &= ~P2_0;                        //P2_0 G I/O operation
@@ -98,10 +108,15 @@ P2SEL1 |= XIN;                          //XIN FUNC operation
 
 }
 
+//------------------------------------------------------------------------------
+// inits the pins on port 3                                                     Init_Port3
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Port3(void){                  //Configure PORT 3
 
-P3OUT = 0x00;                           //P3 set Low
-P3DIR = 0x00;                           //Set P3 direction to input
+P3OUT = RESET;                           //P3 set Low
+P3DIR = RESET;                           //Set P3 direction to input
 
 //P3 PIN 0
 P3SEL0 &= ~TEST_PROBE;                  //TEST_PROBE G I/O operation
@@ -128,12 +143,7 @@ P3SEL1 &= ~SMCLK;                       //SMCLK FUNC operation
 P3DIR |= SMCLK;
 
 //P3 PIN 5
-P3SELC |= DAC_CNTL;
-
-//P3SEL0 &= ~DAC_CNTL;                     //DAC_CNTL OA3O 
-//P3SEL1 &= ~DAC_CNTL;
-//P3OUT |= DAC_CNTL;  
-//P3DIR |= DAC_CNTL;
+P3SELC |= DAC_CNTL;                     //OA3 DAC
 
 //P3 PIN 6
 P3SEL0 &= ~IOT_LINK;                    //IOT_LINK G I/O operation
@@ -149,10 +159,15 @@ P3DIR |= IOT_RESET;                     //Set IOT_RESET Output
 
 }
 
+//------------------------------------------------------------------------------
+// inits the pins on port 4                                                     Init_Port4
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Port4(void){                  //Configure PORT 4
 
-P4OUT = 0x00;                           //P4 set Low
-P4DIR = 0x00;                           //Set P4 direction to input
+P4OUT = RESET;                           //P4 set Low
+P4DIR = RESET;                           //Set P4 direction to input
 
 //P4 PIN 0
 P4SEL0 &= ~RESET_LCD;                   //RESET_LCD G I/O operation
@@ -198,10 +213,15 @@ P4SEL1 &= ~UCB1SOMI;                    //UCB1SOMI G I/O operation
 
 }
 
+//------------------------------------------------------------------------------
+// inits the pins on port 5                                                     Init_Port5
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Port5(void){                  //Configure PORT 5
 
-P5OUT = 0x00;                           //P5 set Low
-P5DIR = 0x00;                           //Set P5 direction to input
+P5OUT = RESET;                           //P5 set Low
+P5DIR = RESET;                           //Set P5 direction to input
 
 //P5 PIN 0
 P5SEL0 &= ~CHECK_BAT;                   //CHECK_BAT G I/O operation
@@ -225,10 +245,15 @@ P5DIR &= ~IOT_PROGRAM_SELECT;           //Set IOT_PROGRAM_SELECT Input
 
 }
 
+//------------------------------------------------------------------------------
+// inits the pins on port 6                                                     Init_Port6
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void Init_Port6(void){                  //Configure PORT 6
 
-P6OUT = 0x00;                           //P6 set Low
-P6DIR = 0x00;                           //Set P6 direction to input
+P6OUT = RESET;                           //P6 set Low
+P6DIR = RESET;                           //Set P6 direction to input
 
 //P6 PIN 0
 P6SEL0 |= R_FORWARD;                    //R_FORWARD PWM

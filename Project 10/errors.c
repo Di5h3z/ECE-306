@@ -9,8 +9,15 @@
 #include "msp430.h"
 #include "macros.h"
 
-extern unsigned int Time_Sequence;
+//Globals
+  extern unsigned int Time_Sequence;
 
+
+//------------------------------------------------------------------------------
+// protects the FETS from ever being blown                                      wheel_polarity_error
+// Passed:      None
+// Returned:    None
+//------------------------------------------------------------------------------
 void wheel_polarity_error(void){
   //checks to see if the same wheel is being driven in oposite directions
   if((RIGHT_FORWARD_SPEED && RIGHT_REVERSE_SPEED) || (LEFT_FORWARD_SPEED && LEFT_REVERSE_SPEED)){
@@ -19,20 +26,21 @@ void wheel_polarity_error(void){
     LEFT_FORWARD_SPEED = WHEEL_OFF;
     LEFT_REVERSE_SPEED = WHEEL_OFF;
     while(ALWAYS){
-      if(Time_Sequence == 200){
+      if(Time_Sequence == ONE_SECOND){
         lcd_line4("WHEEL ERR");
         LCD_TOGGLE;
       }
     }
   }
 
+  //checks to see if the port pins are being drove in opposite directions
   if(((P6OUT & R_FORWARD)&&(P6OUT & R_REVERSE)) || ((P6OUT & L_FORWARD)&&(P6OUT & L_REVERSE))){
     P6OUT &= ~R_FORWARD;
     P6OUT &= ~R_REVERSE;
     P6OUT &= ~L_FORWARD;
     P6OUT &= ~L_REVERSE;
     while(ALWAYS){
-      if(Time_Sequence == 200){
+      if(Time_Sequence == ONE_SECOND){
         lcd_line4("WHEEL ERR");
         LCD_TOGGLE;
       }
